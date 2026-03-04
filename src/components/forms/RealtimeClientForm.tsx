@@ -25,7 +25,7 @@ import {
   realtimeClientSchema,
   vsnSchema,
   type RealtimeClientFormValues,
-} from "@/schemas/realtimeClient";
+} from "@/schemas/client";
 import {
   NEXT_PUBLIC_REALTIME_URL,
   NEXT_PUBLIC_SUPABASE_KEY,
@@ -232,11 +232,7 @@ export function RealtimeClientForm({
                 >
                   {status === "open" ? "Disconnect" : "Connect"}
                 </Button>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={onDelete}
-                >
+                <Button type="button" variant="destructive" onClick={onDelete}>
                   Delete
                 </Button>
               </div>
