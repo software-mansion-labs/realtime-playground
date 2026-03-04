@@ -39,15 +39,17 @@ const TestCase = ({ test }: TestCaseProps) => {
     <div className="flex flex-col gap-1 py-2 border-b border-border last:border-0">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-mono text-foreground">{test.name}</span>
-        {message ? (
+        <div className="flex gap-2">
+        {message && (
           <button
             className="flex items-center gap-1 hover:opacity-70 transition-opacity"
             onClick={() => setOpen((o) => !o)}
           >
             {open ? <ChevronDown className="size-3 text-muted-foreground" /> : <ChevronRight className="size-3 text-muted-foreground" />}
-            {statusBadge(status)}
           </button>
-        ) : statusBadge(status)}
+        )}
+        {statusBadge(status)}
+        </div>
       </div>
       {open && message && (
         <p className="text-xs font-mono text-destructive bg-destructive/10 rounded px-2 py-1 mt-1 break-all">
