@@ -4,12 +4,12 @@ import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 // Broadcast
 // ---------------------------------------------------------------------------
 
-export interface BroadcastMessage {
+export type BroadcastMessage = {
   timestamp: string;
   channel: string;
   event: string;
-  payload: Record<string, unknown>;
-}
+  payload: Record<string, any>;
+};
 
 // ---------------------------------------------------------------------------
 // Postgres Changes
@@ -36,15 +36,15 @@ export type PostgresChange = RealtimePostgresChangesPayload<
  *   }
  * }
  */
-export type PresenceByChannel = Record<string, Record<string, unknown[]>>;
+export type PresenceByChannel = Record<string, Record<string, any[]>>;
 
 // ---------------------------------------------------------------------------
 // Logs
 // ---------------------------------------------------------------------------
 
-export interface LogEntry {
+export type LogEntry = {
   timestamp: string;
   kind: string;
   message: string;
-  data: Record<string, unknown> | undefined;
-}
+  data: Record<string, any> | undefined;
+};

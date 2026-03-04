@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { NEXT_PUBLIC_TEST_USER_EMAIL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ChannelForm } from "@/components/forms/ChannelForm";
+import ChannelForm from "@/components/forms/ChannelForm";
 import { RealtimeClientForm } from "@/components/forms/RealtimeClientForm";
 import { ActiveChannels } from "@/components/channels/ActiveChannels";
 import {
   PostgresListenerValues,
   type ChannelFormValues,
 } from "@/schemas/channel";
-import { type RealtimeClientFormValues } from "@/schemas/realtimeClient";
+import { type RealtimeClientFormValues } from "@/schemas/client";
 import { useBroadcastMessages } from "@/hooks/useBroadcastMessages";
 import { useLogMessages } from "@/hooks/useLogMessages";
 import { usePostgresChanges } from "@/hooks/usePostgresChanges";
@@ -28,16 +26,12 @@ import {
 } from "@/components/tables";
 import { useRealtimeStore } from "@/store/realtimeStore";
 import { useSupabaseStore } from "@/store/supabaseStore";
-import { PostgresListenerForm } from "@/components/forms/PostgresListenerForm";
+import PostgresListenerForm from "@/components/forms/PostgresListenerForm";
+import Auth from "@/components/Auth";
 
 export default function Home() {
   const status = useRealtimeStore((s) => s.status);
   const socketConfig = useRealtimeStore((s) => s.socketConfig);
-
-  const { userId, email: userEmail, login, logout } = useSupabaseStore();
-
-  const [loginEmail, setLoginEmail] = useState(NEXT_PUBLIC_TEST_USER_EMAIL);
-  const [loginPassword, setLoginPassword] = useState("");
 
   const [presencePayload, setPresencePayload] = useState<
     Record<string, unknown>
@@ -90,20 +84,6 @@ export default function Home() {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
-
-  const handleLogin = async () => {
-    if (!loginEmail || !loginPassword) {
-      toast.warning("Please enter both email and password");
-      return;
-    }
-    await login(loginEmail, loginPassword);
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    setLoginEmail(NEXT_PUBLIC_TEST_USER_EMAIL);
-    setLoginPassword("");
-  };
 
   // ---------------------------------------------------------------------------
   // Listener registration (bridges store channels → React hook state)
@@ -161,79 +141,17 @@ export default function Home() {
               status={status}
             />
 
-            {/* User Authentication */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">User Authentication</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {!userId ? (
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="user@example.com"
-                        value={loginEmail}
-                        onChange={(e) => setLoginEmail(e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="Enter password"
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                      />
-                    </div>
-                    <Button className="w-full" onClick={handleLogin}>
-                      Log In
-                    </Button>
-                    <p className="text-xs text-muted-foreground">
-                      Tip: Set NEXT_PUBLIC_TEST_USER_EMAIL and
-                      NEXT_PUBLIC_TEST_USER_PASSWORD in .env.local
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="rounded-md border border-green-600/40 bg-green-950/30 p-3 space-y-1">
-                      <p className="text-green-400 font-semibold text-xs">
-                        ✓ Authenticated
-                      </p>
-                      <p className="text-xs text-muted-foreground break-all">
-                        <span className="font-semibold">User ID:</span> {userId}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        <span className="font-semibold">Email:</span>{" "}
-                        {userEmail}
-                      </p>
-                    </div>
-                    <Button
-                      variant="destructive"
-                      className="w-full"
-                      onClick={handleLogout}
-                    >
-                      Log Out
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <Auth />
 
             <ChannelForm
               onSubmit={({ name, config }: ChannelFormValues) =>
                 useRealtimeStore.getState().createChannel(name, config)
               }
             />
-
             <ActiveChannels
               onAddBroadcastListener={addBroadcastListener}
               onAddPresenceListener={addPresenceListener}
             />
-
             {/* Postgres Changes Config */}
             <Card>
               <CardHeader className="pb-2">
@@ -243,7 +161,6 @@ export default function Home() {
                 <PostgresListenerForm onSubmit={addPostgresChangesListener} />
               </CardContent>
             </Card>
-
             {/* Presence Track */}
             <Card>
               <CardHeader className="pb-2">

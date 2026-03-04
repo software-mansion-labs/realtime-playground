@@ -20,7 +20,7 @@ interface Props {
   onSubmit: (values: ChannelFormValues) => void;
 }
 
-export function ChannelForm({ onSubmit }: Props) {
+export default function ChannelForm({ onSubmit }: Props) {
   const form = useForm<ChannelFormValues>({
     resolver: zodResolver(channelFormSchema),
     defaultValues: {

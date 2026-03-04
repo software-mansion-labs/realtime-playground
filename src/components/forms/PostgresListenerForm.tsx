@@ -23,7 +23,7 @@ type Props = {
   onSubmit: (values: PostgresListenerValues) => void;
 };
 
-export function PostgresListenerForm({ onSubmit }: Props) {
+export default function PostgresListenerForm({ onSubmit }: Props) {
   const channels = useRealtimeStore((s) => s.channels);
   const channelTopics = useMemo(() => Array.from(channels.keys()), [channels]);
 

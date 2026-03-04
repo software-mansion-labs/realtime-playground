@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { RealtimeClient, RealtimeChannel } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import type { ChannelConfig } from "@/schemas/channel";
-import type { RealtimeClientFormValues } from "@/schemas/realtimeClient";
+import type { RealtimeClientFormValues } from "@/schemas/client";
 
 export type SocketStatus = "closed" | "connecting" | "open" | "closing";
 
