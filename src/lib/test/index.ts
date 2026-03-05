@@ -1,38 +1,38 @@
-import assert from "assert";
+import assert from 'assert'
 
 export type Test = {
-  name: string,
+  name: string
   body: () => Promise<void>
-};
+}
 
 export type TestSuite = {
   [name: string]: Test[]
-};
+}
 
 export const testCases: TestSuite = {
-  "add": [
+  add: [
     {
-      name: "should add 1 + 1",
+      name: 'should add 1 + 1',
       body: async () => {
         assert.equal(1 + 1, 2)
       },
     },
     {
-      name: "should add 2 + 1",
+      name: 'should add 2 + 1',
       body: async () => {
         assert.equal(2 + 1, 4)
       },
     },
   ],
-  "subtract": [
+  subtract: [
     {
-      name: "should subtract 1 - 1",
+      name: 'should subtract 1 - 1',
       body: async () => {
         assert.equal(1 - 1, 0)
       },
     },
     {
-      name: "should add 2 - 1",
+      name: 'should add 2 - 1',
       body: async () => {
         assert.equal(2 - 1, 2)
       },
@@ -40,12 +40,14 @@ export const testCases: TestSuite = {
   ],
 }
 
-export type TestResult = {
-  status: 'passed'
-} | {
-  status: 'failed',
-  message: string
-}
+export type TestResult =
+  | {
+      status: 'passed'
+    }
+  | {
+      status: 'failed'
+      message: string
+    }
 
 export const runTest = async (test: Test): Promise<TestResult> => {
   try {
@@ -54,13 +56,13 @@ export const runTest = async (test: Test): Promise<TestResult> => {
     if (e instanceof assert.AssertionError) {
       return {
         status: 'failed',
-        message: e.message
+        message: e.message,
       }
     }
     throw e
   }
 
   return {
-    status: 'passed'
+    status: 'passed',
   }
 }
