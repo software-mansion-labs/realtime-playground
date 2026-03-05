@@ -78,13 +78,13 @@ type TestSectionProps = {
 
 const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
   const [open, setOpen] = useState(true);
-  const [state, setState] = useState("ready");
+  const [state, setState] = useState("Run");
   const testCasesRefs = useRef<(TestCaseHandle | null)[]>([])
 
   const runAllTests = async () => {
-    setState("loading");
+    setState("Loading");
     await Promise.all(testCasesRefs.current.filter(e => !!e).map(e => e.handleRun()));
-    setState("ready");
+    setState("Done");
   }
 
   useImperativeHandle(ref, () => ({
@@ -103,7 +103,7 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
           {open ? <ChevronDown className="size-4 shrink-0 text-muted-foreground" /> : <ChevronRight className="size-4 shrink-0 text-muted-foreground" />}
           <CardTitle className="text-base">{name}</CardTitle>
         </button>
-      <Button disabled={state != "ready"} size="sm" onClick={runAllTests}>Run</Button>
+      <Button disabled={state != "Run"} size="sm" onClick={runAllTests}>{state}</Button>
       </CardHeader>
       {open && (
         <CardContent>
@@ -118,13 +118,13 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
 TestSection.displayName = "TestSection"
 
 export default function TestsPage() {
-  const [state, setState] = useState("ready");
+  const [state, setState] = useState("Run");
   const testSuitesRefs = useRef<(TestCaseHandle | null)[]>([])
 
   const runAllTests = async () => {
-    setState("loading");
+    setState("Loading");
     await Promise.all(testSuitesRefs.current.filter(e => !!e).map(e => e.handleRun()));
-    setState("ready");
+    setState("Done");
   }
 
   return (
@@ -132,7 +132,7 @@ export default function TestsPage() {
       <div className="mx-auto max-w-7xl">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold mb-6">Test Runner</h1>
-          <Button disabled={state != "ready"} size="sm" onClick={runAllTests}>Run</Button>
+          <Button disabled={state != "Run"} size="sm" onClick={runAllTests}>{state}</Button>
         </div>
         <div className="space-y-4">
           {Object.entries(testCases).map(([k, v]) => (
