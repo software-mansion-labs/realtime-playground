@@ -7,6 +7,33 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronRight, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export default function TestsPage() {
+  const [state, setState] = useState("Run");
+  const testSuitesRefs = useRef<(TestCaseHandle | null)[]>([])
+
+  const runAllTests = async () => {
+    setState("Loading");
+    await Promise.all(testSuitesRefs.current.filter(e => !!e).map(e => e.handleRun()));
+    setState("Done");
+  }
+
+  return (
+    <div className="min-h-screen p-4 font-mono text-sm">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex justify-between">
+          <h1 className="text-2xl font-bold mb-6">Test Runner</h1>
+          <Button disabled={state != "Run"} size="sm" onClick={runAllTests}>{state}</Button>
+        </div>
+        <div className="space-y-4">
+          {Object.entries(testCases).map(([k, v]) => (
+            <TestSection key={k} name={k} tests={v} ref={el => {testSuitesRefs.current.push(el as TestCaseHandle)}}/>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 type TestCaseProps = {
   test: Test
 };
@@ -116,30 +143,3 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
   );
 });
 TestSection.displayName = "TestSection"
-
-export default function TestsPage() {
-  const [state, setState] = useState("Run");
-  const testSuitesRefs = useRef<(TestCaseHandle | null)[]>([])
-
-  const runAllTests = async () => {
-    setState("Loading");
-    await Promise.all(testSuitesRefs.current.filter(e => !!e).map(e => e.handleRun()));
-    setState("Done");
-  }
-
-  return (
-    <div className="min-h-screen p-4 font-mono text-sm">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-bold mb-6">Test Runner</h1>
-          <Button disabled={state != "Run"} size="sm" onClick={runAllTests}>{state}</Button>
-        </div>
-        <div className="space-y-4">
-          {Object.entries(testCases).map(([k, v]) => (
-            <TestSection key={k} name={k} tests={v} ref={el => {testSuitesRefs.current.push(el as TestCaseHandle)}}/>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
