@@ -28,7 +28,7 @@ export type RealtimeClientFormValues = z.infer<typeof realtimeClientSchema>
 
 export const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').default(NEXT_PUBLIC_TEST_USER_EMAIL).nonoptional(),
-  password: z.string().nonoptional(),
+  password: z.string().min(1, 'Password is required').nonoptional(),
 })
 
 export type LoginValues = z.infer<typeof loginSchema>

@@ -8,6 +8,7 @@ interface SupabaseStore {
   client?: SupabaseClient
   userId?: string
   email?: string
+  token?: string
 
   init: () => void
   login: (email: string, password: string) => Promise<void>
@@ -36,10 +37,14 @@ export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
     }
 
     if (data.session) {
-      useRealtimeStore.getState().setAuth(data.session.access_token)
+      const state = useRealtimeStore.getState()
+      state.setAuth(data.session.access_token)
+      if (!state.client) {
+        toast.warning('Realtime client is not created. Update API KEY before creating client')
+      }
     }
 
-    set({ userId: data.user.id, email })
+    set({ userId: data.user.id, email, token: data.session.access_token })
     useRealtimeStore.getState().syncChannels()
   },
 
