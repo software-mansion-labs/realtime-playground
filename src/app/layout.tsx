@@ -17,14 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${sans.variable} ${mono.variable} antialiased`}>
-        <div className="min-h-screen p-4 font-mono text-sm">
-          {" "}
-          <h1 className="text-2xl font-bold mb-6">
+    <html lang="en" className="dark h-full">
+      <body
+        className={`${sans.variable} ${mono.variable} antialiased h-screen w-screen`}
+      >
+        <div className="h-full flex flex-col p-4 font-mono text-sm overflow-hidden">
+          <nav className="text-2xl font-bold mb-4 shrink-0">
             Realtime-js Interactive Example
-          </h1>
-          {children}
+          </nav>
+
+          <div className="flex-1 overflow-hidden">{children}</div>
         </div>
         <Toaster position="bottom-left" theme="dark" />
       </body>
