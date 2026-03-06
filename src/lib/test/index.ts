@@ -1,6 +1,7 @@
 import assert from 'assert'
 import broadcastExtension from './broadcast-extension'
 import presenceExtension from './presence-extension'
+import authorizationCheck from './authorization-check'
 
 export type Test = {
   name: string
@@ -22,7 +23,8 @@ export type TestResult =
 
 export const testCases: TestSuite = {
   ...broadcastExtension,
-  ...presenceExtension
+  ...presenceExtension,
+  ...authorizationCheck
 }
 
 export const runTest = async (test: Test, url: string, key: string): Promise<TestResult> => {
