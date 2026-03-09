@@ -8,7 +8,7 @@ import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Status, statusVariant } from './helpers'
 
 const statusBadge = (status: Status) => {
-  return <>{!!status && <Badge variant={statusVariant(status)}>{status}</Badge>}</>
+  return <Badge variant={statusVariant(status)}>{status}</Badge>
 }
 
 type TestCaseProps = {
@@ -49,8 +49,8 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
                 <ChevronsUpDown className="text-muted-foreground size-3" />
               </CollapsibleTrigger>
             )}
-            {statusBadge(status)}
-            {!(status && ['Passed', 'Running'].includes(status)) && (
+            {status && statusBadge(status)}
+            {(!status || status === 'Failed') && (
               <Button variant="ghost" size="icon-sm" onClick={handleRun}>
                 <Rocket />
               </Button>
