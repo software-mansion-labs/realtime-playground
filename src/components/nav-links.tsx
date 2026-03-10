@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { buttonVariants } from './ui/button'
+import { cn } from '@/lib/utils'
 
 const links = [
   { href: '/playground', label: 'Playground' },
@@ -17,11 +19,12 @@ export function NavLinks() {
         <Link
           key={href}
           href={href}
-          className={`m-auto rounded-sm px-3 py-1.5 text-sm font-semibold ${
-            pathname === href
-              ? 'text-primary border-primary border'
-              : 'text-foreground border-foreground hover:border'
-          }`}
+          className={cn(
+            buttonVariants({
+              variant: 'link',
+              className: href === pathname ? 'text-primary' : 'text-foreground',
+            }),
+          )}
         >
           {label}
         </Link>

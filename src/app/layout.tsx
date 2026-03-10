@@ -17,12 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark h-full">
       <body className={`${sans.variable} ${mono.variable} h-screen w-screen antialiased`}>
         <div className="flex h-full flex-col overflow-hidden p-4 font-mono text-sm">
-          <nav className="flex items-center justify-between">
+          <nav className="flex h-16 items-center justify-between">
             <div className="mb-4 shrink-0 text-2xl font-bold">Supabase Realtime Interactive</div>
             <NavLinks />
           </nav>
 
-          <div className="flex-1 overflow-hidden">{children}</div>
+          <div className="h-[calc(100%-4rem)] min-h-0 overflow-hidden">{children}</div>
         </div>
         <Toaster position="bottom-left" theme="dark" />
       </body>
