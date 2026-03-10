@@ -1,5 +1,5 @@
 import { TestSuite } from '..'
-import { measureThroughput, sleep, waitFor } from '../helpers'
+import { measureThroughput, sleep, waitFor, waitForChannel } from '../helpers'
 
 const BROADCAST_CONFIG = { config: { broadcast: { self: true } } }
 
@@ -10,7 +10,7 @@ export default {
       body: async (supabase) => {
         const channel = supabase.channel('topic:' + crypto.randomUUID()).subscribe()
 
-        const delay = await waitFor(() => channel.state == 'joined')
+        const delay = await waitForChannel(channel)
 
         return `${delay}ms`
       },
@@ -35,7 +35,7 @@ export default {
           })
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
 
         for (let i = 0; i < MESSAGES; i++) {
           sendTimes.set(i, performance.now())
@@ -43,15 +43,7 @@ export default {
         }
 
         await sleep(SETTLE_MS)
-        const results = measureThroughput(latencies, MESSAGES, 'messages', DELIVERY_SLO)
-
-        let res = ''
-
-        for (const result of results) {
-          res += `${result.label}: ${result.value.toFixed(2)}${result.unit}\n`
-        }
-
-        return res
+        return measureThroughput(latencies, MESSAGES, DELIVERY_SLO)
       },
     },
   ],

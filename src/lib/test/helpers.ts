@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
+import { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
 import assert from 'assert'
 
 export const sleep = (ms: number) => {
@@ -20,26 +20,47 @@ export const waitFor = async <T>(cond: () => T, timeout = 5000, retryDelay = 200
   }
 }
 
-export type Metric = { label: string; value: number; unit: string }
+export const waitForChannel = async (channel: RealtimeChannel) => {
+  const result = await waitFor(() => channel.state !== 'joining')
+  if (channel.state !== 'joined') {
+    throw new Error('Channel failed to join')
+  }
 
-export const measureThroughput = (
-  latencies: number[],
-  total: number,
-  label: string,
-  slo: number,
-): Metric[] => {
+  return result
+}
+
+export const waitForPostgresChannel = async (channel: RealtimeChannel) => {
+  let systemOk = false
+  channel.on('system', '*', ({ status }: { status: string }) => {
+    if (status === 'ok') systemOk = true
+  })
+  await waitForChannel(channel)
+  const result = await waitFor(() => systemOk)
+  return result
+}
+
+export const measureThroughput = (latencies: number[], total: number, slo: number): string => {
   const delivered = latencies.length
   const deliveryRate = (delivered / total) * 100
   const sorted = latencies.slice().sort((a, b) => a - b)
-  if (delivered < total) log(`    ${kleur.yellow(`lost ${total - delivered}/${total} ${label}`)}`)
   assert(deliveryRate >= slo, `Delivery rate ${deliveryRate.toFixed(1)}% below ${slo}% SLO`)
-  return [
+
+  const metrics = [
     { label: 'delivered', value: deliveryRate, unit: '%' },
     { label: 'p50', value: sorted[Math.ceil(sorted.length * 0.5) - 1] ?? 0, unit: 'ms' },
     { label: 'p95', value: sorted[Math.ceil(sorted.length * 0.95) - 1] ?? 0, unit: 'ms' },
     { label: 'p99', value: sorted[Math.ceil(sorted.length * 0.99) - 1] ?? 0, unit: 'ms' },
   ]
+
+  let res = ''
+
+  for (const metric of metrics) {
+    res += `${metric.label}: ${metric.value.toFixed(2)}${metric.unit}\n`
+  }
+
+  return res
 }
+
 export async function signInUser(supabase: SupabaseClient, email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

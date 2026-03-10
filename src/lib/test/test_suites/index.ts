@@ -5,9 +5,11 @@ import broadcastChanges from './broadcast-changes'
 import postgresChangesExtension from './postgres-changes-extension'
 import { TestSuite } from '..'
 import connection from './connection'
+import loadPostgresChanges from './load-postgres-changes'
 
 export const testCases: TestSuite = {
   ...connection,
+  ...loadPostgresChanges,
   ...broadcastExtension,
   ...presenceExtension,
   ...authorizationCheck,
