@@ -1,5 +1,5 @@
-import type { TestSuite } from '.'
-import { waitFor } from './helpers'
+import type { TestSuite } from '..'
+import { waitFor } from '../helpers'
 import assert from 'assert'
 
 const config = { config: { broadcast: { self: true } } }

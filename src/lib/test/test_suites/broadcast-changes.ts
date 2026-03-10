@@ -1,5 +1,5 @@
-import { TestSuite } from '.'
-import { signInUser, waitFor } from './helpers'
+import { TestSuite } from '..'
+import { signInUser, waitFor } from '../helpers'
 import assert from 'assert'
 
 export default {

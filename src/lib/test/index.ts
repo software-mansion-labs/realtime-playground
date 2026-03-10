@@ -1,9 +1,6 @@
-import broadcastExtension from './broadcast-extension'
-import presenceExtension from './presence-extension'
-import authorizationCheck from './authorization-check'
-import broadcastChanges from './broadcast-changes'
-import postgresChangesExtension from './postgres-changes-extension'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+
+export { testCases } from './test_suites'
 
 export type Test = {
   name: string
@@ -22,14 +19,6 @@ export type TestResult =
       status: 'failed'
       message: string
     }
-
-export const testCases: TestSuite = {
-  ...broadcastExtension,
-  ...presenceExtension,
-  ...authorizationCheck,
-  ...broadcastChanges,
-  ...postgresChangesExtension,
-}
 
 export const runTest = async (test: Test, url: string, key: string): Promise<TestResult> => {
   const client = createClient(url, key, { realtime: { heartbeatIntervalMs: 5000, timeout: 5000 } })

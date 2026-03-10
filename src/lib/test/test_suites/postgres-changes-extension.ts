@@ -1,5 +1,5 @@
-import { TestSuite } from '.'
-import { executeDelete, executeInsert, executeUpdate, signInUser, waitFor } from './helpers'
+import { TestSuite } from '..'
+import { executeDelete, executeInsert, executeUpdate, signInUser, waitFor } from '../helpers'
 import assert from 'assert'
 
 const config = { config: { broadcast: { self: true } } }
