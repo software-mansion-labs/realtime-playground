@@ -38,13 +38,15 @@ export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
 
     if (data.session) {
       const state = useRealtimeStore.getState()
-      state.setAuth(data.session.access_token)
+      const token = data.session.access_token
+      set({ token: token })
+      state.setAuth(token)
       if (!state.client) {
         toast.warning('Realtime client is not created. Update API KEY before creating client')
       }
     }
 
-    set({ userId: data.user.id, email, token: data.session.access_token })
+    set({ userId: data.user.id, email })
     useRealtimeStore.getState().syncChannels()
   },
 

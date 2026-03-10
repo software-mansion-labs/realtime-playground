@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { RealtimeClient } from '@/app/playground/_components/RealtimeClient'
 import { RealtimeChannels } from '@/app/playground/_components/RealtimeChannels'
 import Auth from '@/app/playground/_components/Auth'
@@ -53,31 +53,35 @@ export default function Playground() {
     return () => clearInterval(interval)
   }, [])
 
-  const addBroadcastListener = (name: string, event: string) => {
-    const ch = useRealtimeStore.getState().channels.get(name)
-    if (!ch) return
-    registerBroadcastListener(ch, name, event)
-    useRealtimeStore.getState().syncChannels()
-  }
+  const addBroadcastListener = useCallback(
+    (name: string, event: string) => {
+      const ch = useRealtimeStore.getState().channels.get(name)
+      if (!ch) return
+      registerBroadcastListener(ch, name, event)
+      useRealtimeStore.getState().syncChannels()
+    },
+    [registerBroadcastListener],
+  )
 
-  const addPresenceListener = (name: string) => {
-    const ch = useRealtimeStore.getState().channels.get(name)
-    if (!ch) return
-    registerPresenceListener(ch, name)
-    useRealtimeStore.getState().syncChannels()
-  }
+  const addPresenceListener = useCallback(
+    (name: string) => {
+      const ch = useRealtimeStore.getState().channels.get(name)
+      if (!ch) return
+      registerPresenceListener(ch, name)
+      useRealtimeStore.getState().syncChannels()
+    },
+    [registerPresenceListener],
+  )
 
-  const addPostgresChangesListener: ListenerCallbacks['addPostgresChangesListener'] = (
-    name,
-    schema,
-    event,
-    table,
-  ) => {
-    const ch = useRealtimeStore.getState().channels.get(name)
-    if (!ch) return
-    registerPostgresListener(ch, name, event, schema, table)
-    useRealtimeStore.getState().syncChannels()
-  }
+  const addPostgresChangesListener = useCallback<ListenerCallbacks['addPostgresChangesListener']>(
+    (name, schema, event, table) => {
+      const ch = useRealtimeStore.getState().channels.get(name)
+      if (!ch) return
+      registerPostgresListener(ch, name, event, schema, table)
+      useRealtimeStore.getState().syncChannels()
+    },
+    [registerPostgresListener],
+  )
 
   return (
     <div className="grid h-full grid-cols-2 gap-2 overflow-hidden">

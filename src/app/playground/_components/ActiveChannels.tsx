@@ -72,7 +72,7 @@ type ChannelCardProps = {
 
 function ChannelCard({ channel, name, listenerCallbacks }: ChannelCardProps) {
   const [listenerCounts, setListenerCounts] = useState({ broadcast: 0, presence: 0, postgres: 0 })
-  const [isTracked, setIsTracked] = useState(false)
+  const [isTracked, setIsTracked] = useState(channel.topic in channel.presence.state)
 
   const isSubscribed = channel.state === 'joined'
   const { broadcast, presence, postgres } = listenerCounts

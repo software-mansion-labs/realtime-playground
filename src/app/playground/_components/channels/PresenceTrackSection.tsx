@@ -36,7 +36,7 @@ export function PresenceTrackSection({ onTrack, onUntrack, isTracked }: Props) {
 
       <Input
         disabled={isTracked}
-        className="h-7 flex-1 resize-none font-mono text-xs"
+        className="h-7 flex-1 font-mono text-xs"
         placeholder='{"status": "online"}'
         value={value}
         onChange={(e) => setValue(e.target.value)}
