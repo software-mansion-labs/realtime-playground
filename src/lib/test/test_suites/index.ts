@@ -7,11 +7,13 @@ import { TestSuite } from '..'
 import connection from './connection'
 import loadPostgresChanges from './load-postgres-changes'
 import loadBroadcastFromDb from './load-broadcast-from-db'
+import loadBroadcast from './load-broadcast'
 
 export const testCases: TestSuite = {
   ...connection,
   ...loadPostgresChanges,
   ...loadBroadcastFromDb,
+  ...loadBroadcast,
   ...broadcastExtension,
   ...presenceExtension,
   ...authorizationCheck,

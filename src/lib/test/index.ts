@@ -4,7 +4,13 @@ export { testCases } from './test_suites'
 
 export type Test = {
   name: string
-  body: (client: SupabaseClient) => Promise<string | void>
+  body: (
+    client: SupabaseClient,
+    opts: {
+      url: string
+      key: string
+    },
+  ) => Promise<string | void>
 }
 
 export type TestSuite = {
@@ -20,7 +26,7 @@ export const runTest = async (test: Test, url: string, key: string): Promise<Tes
   const client = createClient(url, key, { realtime: { heartbeatIntervalMs: 5000, timeout: 5000 } })
   let result: TestResult
   try {
-    const message = (await test.body(client)) ?? undefined
+    const message = (await test.body(client, { url, key })) ?? undefined
     result = {
       status: 'passed',
       message,
