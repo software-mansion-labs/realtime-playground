@@ -1,4 +1,3 @@
-import { createClient } from '@supabase/supabase-js'
 import type { TestSuite } from '.'
 import { waitFor } from './helpers'
 import assert from 'assert'
@@ -9,8 +8,7 @@ export default {
   'broadcast extension': [
     {
       name: 'user is able to receive self broadcast',
-      body: async (url, key) => {
-        const supabase = createClient(url, key)
+      body: async (supabase) => {
         const topic = 'topic:' + crypto.randomUUID()
         const event = crypto.randomUUID()
         const expectedPayload = { message: crypto.randomUUID() }
@@ -35,8 +33,7 @@ export default {
     },
     {
       name: 'user is able to use the endpoint to broadcast',
-      body: async (url, key) => {
-        const supabase = createClient(url, key)
+      body: async (supabase) => {
         const topic = 'topic:' + crypto.randomUUID()
         const event = crypto.randomUUID()
         const expectedPayload = { message: crypto.randomUUID() }

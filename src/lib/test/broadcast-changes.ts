@@ -1,16 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
 import { TestSuite } from '.'
 import { signInUser, waitFor } from './helpers'
 import assert from 'assert'
-
-const realtime = { heartbeatIntervalMs: 5000, timeout: 5000 }
 
 export default {
   'broadcast changes': [
     {
       name: 'authenticated user receives insert broadcast change from a specific topic based on id',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 

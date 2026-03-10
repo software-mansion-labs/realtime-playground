@@ -1,9 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
 import { TestSuite } from '.'
 import { executeDelete, executeInsert, executeUpdate, signInUser, waitFor } from './helpers'
 import assert from 'assert'
-
-const realtime = { heartbeatIntervalMs: 5000, timeout: 5000 }
 
 const config = { config: { broadcast: { self: true } } }
 
@@ -11,8 +8,7 @@ export default {
   'postgres changes extension': [
     {
       name: 'user is able to receive INSERT only events from a subscribed table with filter applied',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
@@ -52,8 +48,7 @@ export default {
     },
     {
       name: 'user is able to receive UPDATE only events from a subscribed table with filter applied',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
@@ -95,8 +90,7 @@ export default {
     },
     {
       name: 'user is able to receive DELETE only events from a subscribed table with filter applied',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 

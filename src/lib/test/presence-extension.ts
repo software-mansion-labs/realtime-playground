@@ -1,17 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
 import type { TestSuite } from '.'
 import { signInUser, waitFor } from './helpers'
 import assert from 'assert'
-
-const realtime = { heartbeatIntervalMs: 5000, timeout: 5000 }
 
 export default {
   'presence extension': [
     {
       name: 'user is able to receive presence updates',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
-
+      body: async (supabase) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const result: any = []
         let error = null
@@ -43,8 +38,7 @@ export default {
     },
     {
       name: 'user is able to receive presence updates on private channels',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 

@@ -4,14 +4,14 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const waitFor = (cond: () => boolean, timeout = 5000, retryDelay = 200) => {
+export const waitFor = <T>(cond: () => T, timeout = 5000, retryDelay = 200) => {
   return new Promise<void>(async (resolve, reject) => {
     setTimeout(() => {
       reject({ message: 'timeout' })
     }, timeout)
 
     while (true) {
-      if (cond()) {
+      if (!!cond()) {
         resolve()
         return
       } else {

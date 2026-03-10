@@ -1,17 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
 import type { TestSuite } from '.'
 import { signInUser, waitFor } from './helpers'
 import assert from 'assert'
-
-const realtime = { heartbeatIntervalMs: 5000, timeout: 5000 }
 
 export default {
   'authorization check': [
     {
       name: 'user using private channel cannot connect if does not have enough permissions',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
-
+      body: async (supabase) => {
         let errMessage: string | null = null
         const topic = 'topic:' + crypto.randomUUID()
 
@@ -31,8 +26,7 @@ export default {
     },
     {
       name: 'user using private channel can connect if they have enough permissions',
-      body: async (url, token) => {
-        const supabase = createClient(url, token, { realtime })
+      body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
