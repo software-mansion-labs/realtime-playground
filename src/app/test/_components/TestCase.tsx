@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { runTest, Test } from '@/lib/test'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
-import { forwardRef, useImperativeHandle, useState } from 'react'
+import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
 import { Status, statusVariant } from './helpers'
 import { useTestSettings } from '@/hooks/useTestSettings'
 
@@ -21,7 +21,8 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
   const [open, setOpen] = useState(true)
   const { supabaseUrl, supabaseKey }  = useTestSettings();
 
-  const handleRun = async () => {
+  const handleRun = useCallback(async () => {
+    if (!supabaseKey || !supabaseUrl) return;
     setStatus('Running')
     setMessage('')
     const res = await runTest(test, supabaseUrl, supabaseKey)
@@ -33,7 +34,7 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
       setMessage(res.message)
       return 'Failed'
     }
-  }
+  }, [test, supabaseUrl, supabaseKey])
 
   useImperativeHandle(ref, () => ({
     handleRun,
