@@ -6,7 +6,6 @@ import {
   measureThroughput,
   signInUser,
   sleep,
-  waitFor,
   waitForPostgresChannel,
 } from '../helpers'
 
