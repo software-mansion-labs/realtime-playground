@@ -1,26 +1,45 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+import assert from 'assert'
 
-const sleep = (ms: number) => {
+export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const waitFor = <T>(cond: () => T, timeout = 5000, retryDelay = 200) => {
-  return new Promise<void>(async (resolve, reject) => {
-    setTimeout(() => {
-      reject({ message: 'timeout' })
-    }, timeout)
+export const waitFor = async <T>(cond: () => T, timeout = 5000, retryDelay = 200) => {
+  const start = Date.now()
+  const deadline = start + timeout
 
-    while (true) {
-      if (!!cond()) {
-        resolve()
-        return
-      } else {
-        await sleep(retryDelay)
-      }
+  while (true) {
+    if (cond()) {
+      return Date.now() - start
     }
-  })
+    if (Date.now() > deadline) {
+      throw new Error('timeout')
+    }
+    await sleep(50)
+  }
 }
 
+export type Metric = { label: string; value: number; unit: string }
+
+export const measureThroughput = (
+  latencies: number[],
+  total: number,
+  label: string,
+  slo: number,
+): Metric[] => {
+  const delivered = latencies.length
+  const deliveryRate = (delivered / total) * 100
+  const sorted = latencies.slice().sort((a, b) => a - b)
+  if (delivered < total) log(`    ${kleur.yellow(`lost ${total - delivered}/${total} ${label}`)}`)
+  assert(deliveryRate >= slo, `Delivery rate ${deliveryRate.toFixed(1)}% below ${slo}% SLO`)
+  return [
+    { label: 'delivered', value: deliveryRate, unit: '%' },
+    { label: 'p50', value: sorted[Math.ceil(sorted.length * 0.5) - 1] ?? 0, unit: 'ms' },
+    { label: 'p95', value: sorted[Math.ceil(sorted.length * 0.95) - 1] ?? 0, unit: 'ms' },
+    { label: 'p99', value: sorted[Math.ceil(sorted.length * 0.99) - 1] ?? 0, unit: 'ms' },
+  ]
+}
 export async function signInUser(supabase: SupabaseClient, email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

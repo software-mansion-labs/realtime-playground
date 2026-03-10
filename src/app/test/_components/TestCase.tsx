@@ -6,6 +6,7 @@ import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
 import { Status, statusVariant } from './helpers'
 import { useTestSettings } from '@/hooks/useTestSettings'
+import { cn } from '@/lib/utils'
 
 const statusBadge = (status: Status) => {
   return <Badge variant={statusVariant(status)}>{status}</Badge>
@@ -25,12 +26,12 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
     setStatus('Running')
     setMessage('')
     const res = await runTest(test, supabaseUrl, supabaseKey)
+    setMessage(res.message || '')
     if (res.status == 'passed') {
       setStatus('Passed')
       return 'Passed'
     } else {
       setStatus('Failed')
-      setMessage(res.message)
       return 'Failed'
     }
   }, [test, supabaseUrl, supabaseKey])
@@ -60,9 +61,16 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
         </div>
         <CollapsibleContent>
           {message && (
-            <p className="text-destructive bg-destructive/10 mt-1 rounded px-2 py-1 font-mono text-xs break-all">
+            <pre
+              className={cn(
+                'mt-1 rounded px-2 py-1 font-mono text-xs break-all',
+                status == 'Passed'
+                  ? 'text-primary bg-primary/10'
+                  : 'text-destructive bg-destructive/10',
+              )}
+            >
               {message}
-            </p>
+            </pre>
           )}
         </CollapsibleContent>
       </div>
