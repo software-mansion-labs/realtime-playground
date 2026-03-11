@@ -44,7 +44,7 @@ export function RealtimeClient({ status, disabled, ...props }: Props) {
       </CardContent>
       <CardFooter>
         <p className="text-muted-foreground flex items-center text-xs">
-          Default API KEY:{' '}
+          Default API KEY:
           <CopyButton content={NEXT_PUBLIC_SUPABASE_KEY} className="hover:text-foreground" />
         </p>
       </CardFooter>

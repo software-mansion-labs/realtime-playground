@@ -38,7 +38,7 @@ export default function Auth() {
               </p>
               {token && (
                 <p className="flex items-center text-xs wrap-break-word">
-                  <span className="font-semibold">Copy Token:</span>{' '}
+                  <span className="font-semibold">Copy Token:</span>
                   <CopyButton className="hover:text-primary" content={token} />
                 </p>
               )}
