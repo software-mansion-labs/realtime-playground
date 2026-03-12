@@ -1,20 +1,24 @@
 import { create } from 'zustand'
 import { RealtimeClient, RealtimeChannel } from '@supabase/supabase-js'
 import { toast } from 'sonner'
-import type { ChannelConfigValues } from '@/schemas/channel'
-import type { RealtimeClientFormValues } from '@/schemas/client'
+import z from 'zod'
+import { realtimeClientSchema } from '@/schemas/client'
+import { channelConfigSchema } from '@/schemas/channel'
 
 export type SocketStatus = 'closed' | 'connecting' | 'open' | 'closing'
+
+type SocketConfigValues = z.infer<typeof realtimeClientSchema>
+type ChannelConfigValues = z.infer<typeof channelConfigSchema>
 
 type Logger = (kind: string, msg: string, data: unknown) => void
 
 export type RealtimeStore = {
   client: RealtimeClient | null
-  socketConfig: RealtimeClientFormValues | null
+  socketConfig: SocketConfigValues | null
   status: SocketStatus
   channels: Map<string, RealtimeChannel>
 
-  create: (config: RealtimeClientFormValues, logger?: Logger) => void
+  create: (config: SocketConfigValues, logger?: Logger) => void
   destroy: () => void
   syncStatus: () => void
   syncChannels: () => void
@@ -96,12 +100,16 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
       return
     }
 
-    const ch = client.channel(name, config ? { config } : undefined)
-    ch.on('system', {}, (payload) => {
-      const msg = `[SYSTEM] ${payload.message}`
-      if (payload.status === 'ok') toast.success(msg)
-      else toast.error(msg)
-    })
+    try {
+      const ch = client.channel(name, config ? { config } : undefined)
+      ch.on('system', {}, (payload) => {
+        const msg = `[SYSTEM] ${payload.message}`
+        if (payload.status === 'ok') toast.success(msg)
+        else toast.error(msg)
+      })
+    } catch (e) {
+      toast.error(`Error while creating channel: ${e}`)
+    }
 
     syncChannels()
   },
