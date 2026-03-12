@@ -33,9 +33,6 @@ export const channelFormSchema = z.object({
     .nonoptional(),
 })
 
-export type ChannelFormValues = z.infer<typeof channelFormSchema>
-export type ChannelConfigValues = z.infer<typeof channelConfigSchema>
-
 // ---------------------------------------------------------------------------
 // Broadcast send form schema
 // ---------------------------------------------------------------------------
@@ -44,8 +41,6 @@ export const broadcastSendSchema = z.object({
   event: z.string().min(1, 'Event is required').default('message').nonoptional(),
   message: z.string().optional(),
 })
-
-export type BroadcastSendValues = z.infer<typeof broadcastSendSchema>
 
 // ---------------------------------------------------------------------------
 // Postgres listener schema
@@ -59,5 +54,3 @@ export const postgresListenerSchema = z.object({
     .default(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT.ALL)
     .nonoptional(),
 })
-
-export type PostgresListenerValues = z.infer<typeof postgresListenerSchema>
