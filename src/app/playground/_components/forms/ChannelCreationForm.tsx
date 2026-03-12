@@ -1,12 +1,15 @@
 'use client'
 
+import { z } from 'zod'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { channelFormSchema, type ChannelFormValues } from '@/schemas/channel'
+import { channelFormSchema } from '@/schemas/channel'
+
+type ChannelFormValues = z.infer<typeof channelFormSchema>
 
 interface Props {
   onSubmit: (values: ChannelFormValues) => void
@@ -22,6 +25,13 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
   const presenceEnabled = useWatch({
     control: form.control,
     name: 'config.presence.enabled',
+  })
+
+  const replayEnabled = useWatch({
+    control: form.control,
+    name: 'config.broadcast.replay',
+    defaultValue: undefined,
+    compute: (value) => value !== undefined,
   })
 
   const errors = form.formState.errors
