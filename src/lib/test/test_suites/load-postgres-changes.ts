@@ -8,11 +8,7 @@ import {
   sleep,
   waitForPostgresChannel,
 } from '../helpers'
-
-const BROADCAST_CONFIG = { config: { broadcast: { self: true } } }
-const LOAD_MESSAGES = 20
-const LOAD_SETTLE_MS = 5000
-const LOAD_DELIVERY_SLO = 99
+import { BROADCAST_CONFIG, LOAD_DELIVERY_SLO, LOAD_MESSAGES, LOAD_SETTLE_MS } from './const'
 
 export default {
   'load-postgres-changes': [

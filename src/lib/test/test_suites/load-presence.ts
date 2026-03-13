@@ -1,10 +1,9 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { TestSuite } from '..'
 import { measureThroughput, sleep, waitForChannel } from '../helpers'
+import { LOAD_DELIVERY_SLO, LOAD_SETTLE_MS } from './const'
 
-const LOAD_SETTLE_MS = 5000
 const CLIENTS = 10
-const LOAD_DELIVERY_SLO = 99
 
 export default {
   'load-presence': [

@@ -5,7 +5,7 @@ export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const waitFor = async <T>(cond: () => T, timeout = 5000, retryDelay = 200) => {
+export const waitFor = async <T>(cond: () => T, timeout = 5000, retryDelay = 50) => {
   const start = Date.now()
   const deadline = start + timeout
 
@@ -16,7 +16,7 @@ export const waitFor = async <T>(cond: () => T, timeout = 5000, retryDelay = 200
     if (Date.now() > deadline) {
       throw new Error('timeout')
     }
-    await sleep(50)
+    await sleep(retryDelay)
   }
 }
 

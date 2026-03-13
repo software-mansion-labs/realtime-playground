@@ -5,11 +5,11 @@ import {
   executeUpdate,
   signInUser,
   waitFor,
+  waitForChannel,
   waitForPostgresChannel,
 } from '../helpers'
 import assert from 'assert'
-
-const config = { config: { broadcast: { self: true } } }
+import { BROADCAST_CONFIG } from './const'
 
 export default {
   'postgres changes extension': [
@@ -27,7 +27,7 @@ export default {
         await executeInsert(supabase, 'dummy')
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on(
             'postgres_changes',
             {
@@ -41,7 +41,7 @@ export default {
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
         await waitFor(() => subscribed == 'ok')
 
         await executeInsert(supabase, 'pg_changes')
@@ -68,7 +68,7 @@ export default {
         const dummyId = await executeInsert(supabase, 'dummy')
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on(
             'postgres_changes',
             {
@@ -82,7 +82,7 @@ export default {
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
         await waitFor(() => subscribed == 'ok')
 
         executeUpdate(supabase, 'pg_changes', mainId)
@@ -110,7 +110,7 @@ export default {
         const dummyId = await executeInsert(supabase, 'dummy')
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on(
             'postgres_changes',
             {
@@ -124,7 +124,7 @@ export default {
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
         await waitFor(() => subscribed == 'ok')
 
         executeDelete(supabase, 'pg_changes', mainId)
@@ -150,7 +150,7 @@ export default {
         const deleteId = await executeInsert(supabase, 'pg_changes')
 
         const channel = supabase
-          .channel('topic:' + crypto.randomUUID(), config)
+          .channel('topic:' + crypto.randomUUID(), BROADCAST_CONFIG)
           .on(
             'postgres_changes',
             {

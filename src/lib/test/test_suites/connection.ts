@@ -1,7 +1,6 @@
 import { TestSuite } from '..'
-import { measureThroughput, sleep, waitFor, waitForChannel } from '../helpers'
-
-const BROADCAST_CONFIG = { config: { broadcast: { self: true } } }
+import { measureThroughput, sleep, waitForChannel } from '../helpers'
+import { BROADCAST_CONFIG } from './const'
 
 export default {
   connection: [

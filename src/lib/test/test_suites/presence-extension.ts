@@ -1,5 +1,5 @@
 import type { TestSuite } from '..'
-import { signInUser, waitFor } from '../helpers'
+import { signInUser, waitFor, waitForChannel } from '../helpers'
 import assert from 'assert'
 
 export default {
@@ -23,7 +23,7 @@ export default {
           )
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
 
         const res = await channel.track(expectedPayload, { timeout: 5000 })
         if (res == 'timed out') error = res
@@ -61,7 +61,7 @@ export default {
           )
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
         const res = await channel.track(expectedPayload, { timeout: 5000 })
         if (res == 'timed out') error = res
 

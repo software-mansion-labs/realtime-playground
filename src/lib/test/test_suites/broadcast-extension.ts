@@ -1,8 +1,7 @@
 import type { TestSuite } from '..'
-import { waitFor } from '../helpers'
+import { waitFor, waitForChannel } from '../helpers'
 import assert from 'assert'
-
-const config = { config: { broadcast: { self: true } } }
+import { BROADCAST_CONFIG } from './const'
 
 export default {
   'broadcast extension': [
@@ -15,11 +14,11 @@ export default {
         let result: object | null = null
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on('broadcast', { event }, ({ payload }) => (result = payload))
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
 
         await channel.send({
           type: 'broadcast',
@@ -40,13 +39,13 @@ export default {
         let result: object | null = null
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on('broadcast', { event }, ({ payload }) => (result = payload))
           .subscribe()
 
-        await waitFor(() => channel.state == 'joined')
+        await waitForChannel(channel)
 
-        await supabase.channel(topic, config).httpSend(event, expectedPayload)
+        await supabase.channel(topic, BROADCAST_CONFIG).httpSend(event, expectedPayload)
 
         await waitFor(() => result != null)
         assert.deepEqual(result, expectedPayload)

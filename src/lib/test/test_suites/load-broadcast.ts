@@ -1,11 +1,6 @@
 import { TestSuite } from '..'
 import { measureThroughput, sleep, waitForChannel } from '../helpers'
-
-const config = { config: { broadcast: { self: true } } }
-
-const LOAD_MESSAGES = 20
-const LOAD_SETTLE_MS = 5000
-const LOAD_DELIVERY_SLO = 99
+import { BROADCAST_CONFIG, LOAD_DELIVERY_SLO, LOAD_MESSAGES, LOAD_SETTLE_MS } from './const'
 
 export default {
   'load-broadcast': [
@@ -18,7 +13,7 @@ export default {
         const latencies: number[] = []
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on('broadcast', { event }, ({ payload }) => {
             const t = sendTimes.get(payload.seq)
             if (t !== undefined) latencies.push(performance.now() - t)
@@ -51,7 +46,7 @@ export default {
         const latencies: number[] = []
 
         const channel = supabase
-          .channel(topic, config)
+          .channel(topic, BROADCAST_CONFIG)
           .on('broadcast', { event }, ({ payload }) => {
             const t = sendTimes.get(payload.seq)
             if (t !== undefined) latencies.push(performance.now() - t)

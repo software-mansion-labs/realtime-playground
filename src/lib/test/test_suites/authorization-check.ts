@@ -1,5 +1,5 @@
 import type { TestSuite } from '..'
-import { signInUser, waitFor } from '../helpers'
+import { signInUser, waitFor, waitForChannel } from '../helpers'
 import assert from 'assert'
 
 export default {
@@ -28,7 +28,6 @@ export default {
       name: 'user using private channel can connect if they have enough permissions',
       body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
-        await supabase.realtime.setAuth()
 
         const topic = 'topic:' + crypto.randomUUID()
         let connected = false
@@ -38,7 +37,8 @@ export default {
           .subscribe((status: string) => {
             if (status == 'SUBSCRIBED') connected = true
           })
-        await waitFor(() => channel.state == 'joined')
+
+        await waitForChannel(channel)
 
         assert.equal(connected, true)
       },
