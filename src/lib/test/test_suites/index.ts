@@ -10,6 +10,7 @@ import loadBroadcastFromDb from './load-broadcast-from-db'
 import loadBroadcast from './load-broadcast'
 import loadBroadcastReplay from './load-broadcast-replay'
 import broadcastReplay from './broadcast-replay'
+import loadPresence from './load-presence'
 
 export const testCases: TestSuite = {
   ...connection,
@@ -17,6 +18,7 @@ export const testCases: TestSuite = {
   ...loadBroadcastFromDb,
   ...loadBroadcast,
   ...loadBroadcastReplay,
+  ...loadPresence,
   ...broadcastExtension,
   ...presenceExtension,
   ...authorizationCheck,
