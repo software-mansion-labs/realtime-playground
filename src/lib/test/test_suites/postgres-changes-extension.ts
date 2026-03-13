@@ -1,5 +1,12 @@
 import { TestSuite } from '..'
-import { executeDelete, executeInsert, executeUpdate, signInUser, waitFor, waitForPostgresChannel } from '../helpers'
+import {
+  executeDelete,
+  executeInsert,
+  executeUpdate,
+  signInUser,
+  waitFor,
+  waitForPostgresChannel,
+} from '../helpers'
 import assert from 'assert'
 
 const config = { config: { broadcast: { self: true } } }
@@ -131,39 +138,58 @@ export default {
       },
     },
     {
-      name: "user receives INSERT, UPDATE and DELETE concurrently",
+      name: 'user receives INSERT, UPDATE and DELETE concurrently',
       body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
-        let insertResult: unknown = null, updateResult: unknown = null, deleteResult: unknown = null;
+        let insertResult: unknown = null,
+          updateResult: unknown = null,
+          deleteResult: unknown = null
 
-        const insertId = await executeInsert(supabase, "pg_changes");
-        const updateId = await executeInsert(supabase, "pg_changes");
-        const deleteId = await executeInsert(supabase, "pg_changes");
+        const insertId = await executeInsert(supabase, 'pg_changes')
+        const updateId = await executeInsert(supabase, 'pg_changes')
+        const deleteId = await executeInsert(supabase, 'pg_changes')
 
         const channel = supabase
-          .channel("topic:" + crypto.randomUUID(), config)
-          .on("postgres_changes", { event: "INSERT", schema: "public", table: "pg_changes", filter: `id=eq.${insertId + 3}` }, (p) => (insertResult = p))
-          .on("postgres_changes", { event: "UPDATE", schema: "public", table: "pg_changes", filter: `id=eq.${updateId}` }, (p) => (updateResult = p))
-          .on("postgres_changes", { event: "DELETE", schema: "public", table: "pg_changes", filter: `id=eq.${deleteId}` }, (p) => (deleteResult = p))
-          .subscribe();
+          .channel('topic:' + crypto.randomUUID(), config)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'pg_changes',
+              filter: `id=eq.${insertId + 3}`,
+            },
+            (p) => (insertResult = p),
+          )
+          .on(
+            'postgres_changes',
+            { event: 'UPDATE', schema: 'public', table: 'pg_changes', filter: `id=eq.${updateId}` },
+            (p) => (updateResult = p),
+          )
+          .on(
+            'postgres_changes',
+            { event: 'DELETE', schema: 'public', table: 'pg_changes', filter: `id=eq.${deleteId}` },
+            (p) => (deleteResult = p),
+          )
+          .subscribe()
 
         await waitForPostgresChannel(channel)
 
         await Promise.all([
-          executeInsert(supabase, "pg_changes"),
-          executeUpdate(supabase, "pg_changes", updateId),
-          executeDelete(supabase, "pg_changes", deleteId),
-        ]);
+          executeInsert(supabase, 'pg_changes'),
+          executeUpdate(supabase, 'pg_changes', updateId),
+          executeDelete(supabase, 'pg_changes', deleteId),
+        ])
         await Promise.all([
           waitFor(() => insertResult),
           waitFor(() => updateResult),
           waitFor(() => deleteResult),
-        ]);
+        ])
 
-        assert.strictEqual(insertResult.eventType, "INSERT");
-        assert.strictEqual(updateResult.eventType, "UPDATE");
-        assert.strictEqual(deleteResult.eventType, "DELETE");
-      }
-    }
+        assert.strictEqual(insertResult.eventType, 'INSERT')
+        assert.strictEqual(updateResult.eventType, 'UPDATE')
+        assert.strictEqual(deleteResult.eventType, 'DELETE')
+      },
+    },
   ],
 } satisfies TestSuite

@@ -1,57 +1,64 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { TestSuite } from "..";
-import { measureThroughput, sleep, waitForChannel } from "../helpers";
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { TestSuite } from '..'
+import { measureThroughput, sleep, waitForChannel } from '../helpers'
 
-const LOAD_SETTLE_MS = 5000;
+const LOAD_SETTLE_MS = 5000
 const CLIENTS = 10
 const LOAD_DELIVERY_SLO = 99
 
 export default {
-  "load-presence": [
+  'load-presence': [
     {
-      name: "presence join throughput",
+      name: 'presence join throughput',
       body: async (supabase, { url, key }) => {
-        const senders: SupabaseClient[] = [];
-        const topic = "topic:" + crypto.randomUUID();
-        const trackTimes = new Map<string, number>();
-        const latencies: number[] = [];
+        const senders: SupabaseClient[] = []
+        const topic = 'topic:' + crypto.randomUUID()
+        const trackTimes = new Map<string, number>()
+        const latencies: number[] = []
 
         try {
           const observerChannel = supabase
-            .channel(topic, { config: { broadcast: { self: true }, presence: { key: "observer" } } })
-            .on("presence", { event: "join" }, (e) => {
-              if (e.key === "observer") return;
-              const t = trackTimes.get(e.key);
-              if (t !== undefined) latencies.push(performance.now() - t);
+            .channel(topic, {
+              config: { broadcast: { self: true }, presence: { key: 'observer' } },
             })
-            .subscribe();
+            .on('presence', { event: 'join' }, (e) => {
+              if (e.key === 'observer') return
+              const t = trackTimes.get(e.key)
+              if (t !== undefined) latencies.push(performance.now() - t)
+            })
+            .subscribe()
 
           await waitForChannel(observerChannel)
           const clients = Array.from({ length: CLIENTS }, (_, i) => ({
-            client: createClient(url, key, { realtime: { heartbeatIntervalMs: 5000, timeout: 5000 } }),
+            client: createClient(url, key, {
+              realtime: { heartbeatIntervalMs: 5000, timeout: 5000 },
+            }),
             key: `client-${i}`,
-          }));
-          senders.push(...clients.map((c) => c.client));
+          }))
+          senders.push(...clients.map((c) => c.client))
 
-          const channels = await Promise.all(clients.map(async ({ client, key }) => {
-            const ch = client.channel(topic, { config: { presence: { key } } }).subscribe();
-            await waitForChannel(ch);
-            return { ch, key };
-          }));
+          const channels = await Promise.all(
+            clients.map(async ({ client, key }) => {
+              const ch = client.channel(topic, { config: { presence: { key } } }).subscribe()
+              await waitForChannel(ch)
+              return { ch, key }
+            }),
+          )
 
-          await Promise.all(channels.map(({ ch, key }) => {
-            trackTimes.set(key, performance.now());
-            return ch.track({ key });
-          }));
+          await Promise.all(
+            channels.map(({ ch, key }) => {
+              trackTimes.set(key, performance.now())
+              return ch.track({ key })
+            }),
+          )
 
-          await sleep(LOAD_SETTLE_MS);
+          await sleep(LOAD_SETTLE_MS)
 
-          return measureThroughput(latencies, CLIENTS, LOAD_DELIVERY_SLO);
-
+          return measureThroughput(latencies, CLIENTS, LOAD_DELIVERY_SLO)
         } finally {
-          await Promise.all(senders.map((c) => c.realtime.disconnect()));
+          await Promise.all(senders.map((c) => c.realtime.disconnect()))
         }
-      }
-    }
-  ]
+      },
+    },
+  ],
 } satisfies TestSuite

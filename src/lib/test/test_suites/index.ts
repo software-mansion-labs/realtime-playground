@@ -24,5 +24,5 @@ export const testCases: TestSuite = {
   ...authorizationCheck,
   ...broadcastChanges,
   ...postgresChangesExtension,
-  ...broadcastReplay
+  ...broadcastReplay,
 }
