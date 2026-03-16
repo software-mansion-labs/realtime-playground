@@ -42,7 +42,7 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRun: runAllTests,
-    setRunning
+    setRunning,
   }))
 
   return (

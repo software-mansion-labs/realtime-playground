@@ -31,7 +31,7 @@ export default {
           const clients = Array.from({ length: CLIENTS }, (_, i) => ({
             client: createClient(url, key, {
               realtime: { heartbeatIntervalMs: 5000, timeout: 5000 },
-              auth: { storageKey: crypto.randomUUID() }
+              auth: { storageKey: crypto.randomUUID() },
             }),
             key: `client-${i}`,
           }))

@@ -1,6 +1,6 @@
 import { TestSuite } from '..'
 import { measureThroughput, signInUser, waitForChannel } from '../helpers'
-import { LOAD_DELIVERY_SLO, LOAD_MESSAGES,  } from './const'
+import { LOAD_DELIVERY_SLO, LOAD_MESSAGES } from './const'
 
 export default {
   'load-broadcast-replay': [

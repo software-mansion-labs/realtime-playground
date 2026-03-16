@@ -24,9 +24,10 @@ export type TestResult = {
 
 export const runTest = async (test: Test, url: string, key: string): Promise<TestResult> => {
   const client = createClient(url, key, {
-    realtime: { heartbeatIntervalMs: 5000, timeout: 5000 }, auth: {
-      storageKey: crypto.randomUUID()
-    }
+    realtime: { heartbeatIntervalMs: 5000, timeout: 5000 },
+    auth: {
+      storageKey: crypto.randomUUID(),
+    },
   })
   let result: TestResult
   try {

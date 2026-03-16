@@ -39,8 +39,12 @@ export const waitForPostgresChannel = async (channel: RealtimeChannel) => {
   return result
 }
 
-export const measureThroughput = async (latencies: number[], total: number, slo: number): Promise<string> => {
-  await waitFor(() => (latencies.length === total), 20_000)
+export const measureThroughput = async (
+  latencies: number[],
+  total: number,
+  slo: number,
+): Promise<string> => {
+  await waitFor(() => latencies.length === total, 20_000)
 
   const delivered = latencies.length
   const deliveryRate = (delivered / total) * 100

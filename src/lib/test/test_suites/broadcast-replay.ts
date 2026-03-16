@@ -17,6 +17,7 @@ export default {
           .from('replay_check')
           .insert({ id: crypto.randomUUID(), topic, event, payload })
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any = null
         const receiver = supabase
           .channel(topic, {
@@ -43,6 +44,7 @@ export default {
           .from('replay_check')
           .insert({ id: crypto.randomUUID(), topic, event, payload: { value: 1 } })
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let receivedMeta: any = null
         const receiver = supabase
           .channel(topic, {
@@ -70,6 +72,7 @@ export default {
         await sleep(1000)
         const since = Date.now()
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any = null
         const receiver = supabase
           .channel(topic, {

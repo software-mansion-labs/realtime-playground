@@ -1,5 +1,5 @@
 import { TestSuite } from '..'
-import { measureThroughput, sleep, waitForChannel } from '../helpers'
+import { measureThroughput, waitForChannel } from '../helpers'
 import { BROADCAST_CONFIG, LOAD_DELIVERY_SLO, LOAD_MESSAGES } from './const'
 
 export default {

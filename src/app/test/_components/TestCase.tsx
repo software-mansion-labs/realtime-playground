@@ -42,7 +42,7 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRun,
-    setRunning
+    setRunning,
   }))
 
   return (

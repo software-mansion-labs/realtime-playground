@@ -11,6 +11,7 @@ export default {
 
         const id = crypto.randomUUID()
         const value = crypto.randomUUID()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any = null
 
         const channel = supabase
@@ -39,6 +40,7 @@ export default {
         const originalValue = crypto.randomUUID()
         const updatedValue = crypto.randomUUID()
         await supabase.from('broadcast_changes').insert({ value: originalValue, id })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any = null
 
         const channel = supabase
@@ -67,6 +69,7 @@ export default {
         const id = crypto.randomUUID()
         const value = crypto.randomUUID()
         await supabase.from('broadcast_changes').insert({ value, id })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any = null
 
         const channel = supabase
