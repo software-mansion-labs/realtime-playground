@@ -27,11 +27,10 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
     name: 'config.presence.enabled',
   })
 
-  const replayEnabled = useWatch({
+  const replayEnabled = !!useWatch({
     control: form.control,
     name: 'config.broadcast.replay',
     defaultValue: undefined,
-    compute: (value) => value !== undefined,
   })
 
   const errors = form.formState.errors
