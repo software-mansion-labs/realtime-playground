@@ -17,12 +17,18 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
   const [status, setStatus] = useState<Status>(null)
   const testCasesRefs = useRef<(TestCaseHandle | null)[]>([])
 
-  const runAllTests = async () => {
+  const setRunning = () => {
     setStatus('Running')
+    for (const c of testCasesRefs.current) {
+      c?.setRunning()
+    }
+  }
+
+  const runAllTests = async () => {
+    setRunning()
     // Copy all values so tests do not rerun indefinetly
-    const cases = [...testCasesRefs.current]
     let failed = false
-    for (const testCase of cases) {
+    for (const testCase of testCasesRefs.current) {
       if (testCase) {
         if ((await testCase.handleRun()) == 'Failed') {
           failed = true
@@ -36,6 +42,7 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRun: runAllTests,
+    setRunning
   }))
 
   return (

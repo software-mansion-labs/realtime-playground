@@ -12,12 +12,18 @@ export default function TestsPage() {
   const [status, setStatus] = useState<Status>(null)
   const testSuitesRefs = useRef<(TestCaseHandle | null)[]>([])
 
-  const runAllTests = async () => {
+  const setRunning = () => {
     setStatus('Running')
+    for (const c of testSuitesRefs.current) {
+      c?.setRunning()
+    }
+  }
+
+  const runAllTests = async () => {
+    setRunning()
     // Copy all values so tests do not rerun indefinetly
-    const cases = [...testSuitesRefs.current]
     let failed = false
-    for (const testCase of cases) {
+    for (const testCase of testSuitesRefs.current) {
       if (testCase) {
         if ((await testCase.handleRun()) == 'Failed') {
           failed = true
