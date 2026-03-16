@@ -34,15 +34,6 @@ export const channelFormSchema = z.object({
 })
 
 // ---------------------------------------------------------------------------
-// Broadcast send form schema
-// ---------------------------------------------------------------------------
-
-export const broadcastSendSchema = z.object({
-  event: z.string().min(1, 'Event is required').default('message').nonoptional(),
-  message: z.string().optional(),
-})
-
-// ---------------------------------------------------------------------------
 // Postgres listener schema
 // ---------------------------------------------------------------------------
 
