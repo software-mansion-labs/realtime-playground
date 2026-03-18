@@ -72,6 +72,7 @@ const RenderTestData = ({ data, status }: RenderTestDataProps) => {
         </TableBody>
       </Table>
     )
+  return null
 }
 
 type TestCaseProps = {

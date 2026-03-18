@@ -48,7 +48,9 @@ export const measureThroughput = async (
   // do not throw 'timeout'
   try {
     await waitFor(() => latencies.length === total, 20_000)
-  } catch { }
+  } catch (e) {
+    if (!(e instanceof Error) || e.message !== 'timeout') throw e
+  }
 
   const delivered = latencies.length
   const deliveryRate = (delivered / total) * 100

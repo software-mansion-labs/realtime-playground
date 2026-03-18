@@ -44,7 +44,6 @@ export const runTest = async (test: Test, url: string, key: string): Promise<Tes
   let result: TestResult
   try {
     const data = (await test.body(client, { url, key })) ?? undefined
-    console.log(data)
     result = {
       status: 'passed',
       data,
@@ -54,7 +53,7 @@ export const runTest = async (test: Test, url: string, key: string): Promise<Tes
       status: 'failed',
       data: {
         type: 'normal',
-        message: (e as Error).message
+        message: (e as Error)?.message
       }
     }
   }
