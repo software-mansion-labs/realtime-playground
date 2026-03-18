@@ -1,12 +1,13 @@
 import { create } from 'zustand'
-import { RealtimeClient, RealtimeChannel, RealtimeClientOptions } from '@supabase/supabase-js'
+import {
+  RealtimeClient,
+  RealtimeChannel,
+  RealtimeClientOptions,
+  RealtimeChannelOptions,
+} from '@supabase/supabase-js'
 import { toast } from 'sonner'
-import z from 'zod'
-import { channelConfigSchema } from '@/schemas/channel'
 
 export type SocketStatus = 'closed' | 'connecting' | 'open' | 'closing'
-
-type ChannelConfigValues = z.infer<typeof channelConfigSchema>
 
 type State = {
   client: RealtimeClient | null
@@ -18,7 +19,7 @@ type Action = {
   destroy: () => void
   syncChannels: () => void
 
-  createChannel: (name: string, config?: ChannelConfigValues) => void
+  createChannel: (name: string, config?: RealtimeChannelOptions) => void
   removeChannel: (name: string) => void
   subscribe: (name: string) => void
   unsubscribe: (name: string) => void
@@ -31,11 +32,6 @@ type Action = {
 export type RealtimeStore = State & Action
 
 export const useClientCreated = () => useRealtimeStore(({ client }) => !!client)
-
-export const useSubscribedChannels = () =>
-  useRealtimeStore(({ channels }) =>
-    Array.from(channels.entries()).filter(([, ch]) => ch.state === 'joined'),
-  )
 
 export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
   client: null,
@@ -75,7 +71,7 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
     let ch: RealtimeChannel
 
     try {
-      ch = client.channel(name, config ? { config } : undefined)
+      ch = client.channel(name, config)
     } catch (e) {
       toast.error(`[CHANNEL]: ${e instanceof Error ? e.message : JSON.stringify(e)}`)
       return

@@ -7,10 +7,10 @@ import { ChannelFormValues } from '@/schemas/channel'
 
 export function RealtimeChannels() {
   const handleCreate = ({ name, config }: ChannelFormValues) => {
-    useRealtimeStore.getState().client?.channel(name, { config })
+    useRealtimeStore.getState().createChannel(name, { config })
   }
 
-  const disabled = useClientCreated()
+  const disabled = !useClientCreated()
 
   return (
     <>

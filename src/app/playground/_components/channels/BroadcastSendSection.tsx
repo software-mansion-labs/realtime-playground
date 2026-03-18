@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import z from 'zod'
+import { z } from 'zod'
 
 const broadcastSendSchema = z.object({
   event: z.string().min(1, 'Event is required').default('message').nonoptional(),

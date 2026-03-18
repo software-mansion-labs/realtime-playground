@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 import { NEXT_PUBLIC_TEST_USER_EMAIL } from '@/lib/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import z from 'zod'
+import { z } from 'zod'
 
 export const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').nonoptional(),

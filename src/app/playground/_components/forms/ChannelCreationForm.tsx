@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ChannelFormInput, channelFormSchema, ChannelFormValues } from '@/schemas/channel'
+import { channelFormSchema, type ChannelFormInput, type ChannelFormValues } from '@/schemas/channel'
 
 import { transformOptionalNumber } from './helpers'
 

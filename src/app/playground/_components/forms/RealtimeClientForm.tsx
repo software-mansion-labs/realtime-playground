@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { realtimeClientSchema, vsnSchema, type RealtimeClientValues } from '@/schemas/client'
-import z from 'zod'
+import { z } from 'zod'
 import { transformOptionalNumber } from './helpers'
 import { NEXT_PUBLIC_REALTIME_URL, NEXT_PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { useRealtimeStore } from '@/store/realtimeStore'
@@ -178,7 +178,7 @@ function realtimeOptions(options: Omit<RealtimeClientValues, 'url'>) {
   const { worker, timeout, apiKey, vsn, heartbeatIntervalMs } = options
   const params = {
     apikey: apiKey,
-    ...(vsn ? { vsn } : {}),
+    vsn,
   }
 
   return {
