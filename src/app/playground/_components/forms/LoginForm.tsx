@@ -3,9 +3,18 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { loginSchema, type LoginValues } from '@/schemas/client'
+import { NEXT_PUBLIC_TEST_USER_EMAIL } from '@/lib/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import z from 'zod'
+
+export const loginSchema = z.object({
+  email: z.string().min(1, 'Email is required').nonoptional(),
+  password: z.string().min(1, 'Password is required').nonoptional(),
+})
+
+export type LoginValues = z.infer<typeof loginSchema>
+
 type Props = {
   onSubmit: (values: LoginValues) => void
 }
@@ -13,7 +22,9 @@ type Props = {
 export function LoginForm({ onSubmit }: Props) {
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: loginSchema.pick({ email: true }).parse({}),
+    defaultValues: {
+      email: NEXT_PUBLIC_TEST_USER_EMAIL,
+    },
     reValidateMode: 'onSubmit',
   })
 

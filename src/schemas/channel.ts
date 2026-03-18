@@ -11,7 +11,11 @@ export const channelConfigSchema = z.object({
     self: z.boolean().nonoptional(),
     replay: z
       .object({
-        since: z.number({ error: 'Required' }).int().nonnegative().nonoptional(),
+        since: z
+          .date({ error: 'Required' })
+          .refine((d) => d <= new Date(), { message: 'Cannot be in the future' })
+          .transform((d) => d.getTime())
+          .nonoptional(),
         limit: z.number().int().positive().max(25).optional(),
       })
       .optional(),
@@ -24,14 +28,11 @@ export const channelConfigSchema = z.object({
 
 export const channelFormSchema = z.object({
   name: z.string().min(1, 'Channel name is required').nonoptional(),
-  config: channelConfigSchema
-    .default({
-      private: false,
-      broadcast: { ack: true, self: true },
-      presence: { enabled: true },
-    })
-    .nonoptional(),
+  config: channelConfigSchema.nonoptional(),
 })
+
+export type ChannelFormValues = z.infer<typeof channelFormSchema>
+export type ChannelFormInput = z.input<typeof channelFormSchema>
 
 // ---------------------------------------------------------------------------
 // Postgres listener schema
@@ -45,3 +46,5 @@ export const postgresListenerSchema = z.object({
     .default(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT.ALL)
     .nonoptional(),
 })
+
+export type PostgresListenerValues = z.infer<typeof postgresListenerSchema>

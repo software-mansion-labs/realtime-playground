@@ -1,29 +1,14 @@
 import { z } from 'zod'
-import {
-  NEXT_PUBLIC_REALTIME_URL,
-  NEXT_PUBLIC_SUPABASE_KEY,
-  NEXT_PUBLIC_TEST_USER_EMAIL,
-} from '../lib/constants'
 
-export const vsnSchema = z.enum(['1.0.0', '2.0.0'])
-
-const positiveIntStr = z
-  .string()
-  .optional()
-  .refine((v) => v === undefined || v === '' || (Number.isFinite(Number(v)) && Number(v) > 0), {
-    message: 'Must be a positive number',
-  })
+export const vsnSchema = z.enum(['1.0.0', '2.0.0'], { error: 'Incorrect VSN' })
 
 export const realtimeClientSchema = z.object({
-  url: z.string().min(1, 'URL is required').default(NEXT_PUBLIC_REALTIME_URL).nonoptional(),
-  apiKey: z.string().min(1, 'API key is required').default(NEXT_PUBLIC_SUPABASE_KEY).nonoptional(),
-  worker: z.boolean().default(true).nonoptional(),
-  vsn: vsnSchema.default('2.0.0').nonoptional(),
-  timeout: positiveIntStr.optional(),
-  heartbeatIntervalMs: positiveIntStr.optional(),
+  url: z.string().min(1, 'URL is required').nonoptional(),
+  apiKey: z.string().min(1, 'API key is required').nonoptional(),
+  worker: z.boolean().nonoptional(),
+  vsn: vsnSchema.nonoptional(),
+  timeout: z.number().int().positive().optional(),
+  heartbeatIntervalMs: z.number().int().positive().optional(),
 })
 
-export const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').default(NEXT_PUBLIC_TEST_USER_EMAIL).nonoptional(),
-  password: z.string().min(1, 'Password is required').nonoptional(),
-})
+export type RealtimeClientValues = z.infer<typeof realtimeClientSchema>

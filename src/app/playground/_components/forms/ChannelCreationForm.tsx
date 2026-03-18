@@ -1,25 +1,32 @@
 'use client'
 
-import { z } from 'zod'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DateTimePicker } from '@/components/ui/date-time-picker'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { channelFormSchema } from '@/schemas/channel'
+import { ChannelFormInput, channelFormSchema, ChannelFormValues } from '@/schemas/channel'
 
-type ChannelFormValues = z.infer<typeof channelFormSchema>
+import { transformOptionalNumber } from './helpers'
 
-interface Props {
+type Props = {
   onSubmit: (values: ChannelFormValues) => void
   disabled: boolean
 }
 
 export function ChannelCreationForm({ onSubmit, disabled }: Props) {
-  const form = useForm<ChannelFormValues>({
+  const form = useForm<ChannelFormInput, unknown, ChannelFormValues>({
     resolver: zodResolver(channelFormSchema),
-    defaultValues: channelFormSchema.parse({ name: 'test' }),
+    defaultValues: {
+      name: 'test',
+      config: {
+        private: false,
+        broadcast: { ack: true, self: true },
+        presence: { enabled: true },
+      },
+    },
   })
 
   const presenceEnabled = useWatch({
@@ -108,7 +115,9 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
                 <Checkbox
                   disabled={disabled}
                   checked={field.value !== undefined}
-                  onCheckedChange={(checked) => field.onChange(checked ? {} : undefined)}
+                  onCheckedChange={(checked) =>
+                    field.onChange(checked ? { since: new Date() } : undefined)
+                  }
                 />
                 <Label className="text-xs font-normal">Enable replay</Label>
               </div>
@@ -117,7 +126,6 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
           {replayEnabled && (
             <div className="flex w-full items-end gap-2">
               <div className="w-1/2 space-y-1">
-                {/* since is a unix timestamp (milliseconds since epoch) */}
                 <div className="flex justify-between">
                   <Label className="text-xs">Since</Label>
                   {errors.config?.broadcast?.replay?.since && (
@@ -126,13 +134,16 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
                     </p>
                   )}
                 </div>
-                <Input
-                  type="number"
-                  disabled={disabled}
-                  placeholder="e.g., 1741737600000"
-                  {...form.register('config.broadcast.replay.since', {
-                    setValueAs: (v) => (v === '' ? undefined : Number(v)),
-                  })}
+                <Controller
+                  control={form.control}
+                  name="config.broadcast.replay.since"
+                  render={({ field }) => (
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={disabled}
+                    />
+                  )}
                 />
               </div>
               <div className="w-1/2 space-y-1">
@@ -142,7 +153,7 @@ export function ChannelCreationForm({ onSubmit, disabled }: Props) {
                   disabled={disabled}
                   placeholder="e.g., 10"
                   {...form.register('config.broadcast.replay.limit', {
-                    setValueAs: (v) => (v === '' ? undefined : Number(v)),
+                    setValueAs: transformOptionalNumber,
                   })}
                 />
               </div>
