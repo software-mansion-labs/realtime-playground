@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useClientCreated, useRealtimeStore } from '@/store/realtimeStore'
 import { ChannelCreationForm } from './forms/ChannelCreationForm'
-import { ChannelFormValues } from '@/schemas/channel'
+import type { ChannelFormValues } from '@/schemas/channel'
 
 export function RealtimeChannels() {
   const handleCreate = ({ name, config }: ChannelFormValues) => {

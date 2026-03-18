@@ -4,7 +4,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { RealtimeClientForm } from './forms'
 import { NEXT_PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { CopyButton } from '@/components/copy'
-import {} from '@/schemas/client'
 import { useClientCreated } from '@/store/realtimeStore'
 import { RealtimeLogger } from '@/types/realtime'
 
