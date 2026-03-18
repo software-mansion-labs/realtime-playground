@@ -11,7 +11,7 @@ export default {
 
         const delay = await waitForChannel(channel)
 
-        return `${delay}ms`
+        return {type: "normal", message: `${delay}ms`}
       },
     },
     {
