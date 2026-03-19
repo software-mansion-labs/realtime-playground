@@ -1,7 +1,14 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { runTest, Test, TestData } from '@/lib/test'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
@@ -33,7 +40,9 @@ const metricColor = (value: number, unit: string) => {
 }
 
 const MetricValue = ({ value, unit }: { value: number; unit: string }) => (
-  <span className={cn('inline-block rounded px-1.5 py-0.5 font-semibold', metricColor(value, unit))}>
+  <span
+    className={cn('inline-block rounded px-1.5 py-0.5 font-semibold', metricColor(value, unit))}
+  >
     {value.toFixed(2)}
     <span className="ml-0.5 font-normal opacity-70">{unit}</span>
   </span>
@@ -53,7 +62,7 @@ const RenderTestData = ({ data, status }: RenderTestDataProps) => {
     )
   if (data.type === 'load')
     return (
-      <Table className="mt-1 w-auto rounded border bg-muted/50">
+      <Table className="bg-muted/50 mt-1 w-auto rounded border">
         <TableHeader>
           <TableRow>
             {data.metrics.map((m) => (

@@ -59,13 +59,12 @@ export const measureThroughput = async (
 
   return {
     type: 'load',
-    metrics:
-      [
-        { label: 'delivered', value: deliveryRate, unit: '%' },
-        { label: 'p50', value: sorted[Math.ceil(sorted.length * 0.5) - 1] ?? 0, unit: 'ms' },
-        { label: 'p95', value: sorted[Math.ceil(sorted.length * 0.95) - 1] ?? 0, unit: 'ms' },
-        { label: 'p99', value: sorted[Math.ceil(sorted.length * 0.99) - 1] ?? 0, unit: 'ms' },
-      ]
+    metrics: [
+      { label: 'delivered', value: deliveryRate, unit: '%' },
+      { label: 'p50', value: sorted[Math.ceil(sorted.length * 0.5) - 1] ?? 0, unit: 'ms' },
+      { label: 'p95', value: sorted[Math.ceil(sorted.length * 0.95) - 1] ?? 0, unit: 'ms' },
+      { label: 'p99', value: sorted[Math.ceil(sorted.length * 0.99) - 1] ?? 0, unit: 'ms' },
+    ],
   }
 }
 

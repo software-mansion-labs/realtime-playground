@@ -12,13 +12,14 @@ export default {
         const latency = await waitForChannel(channel)
 
         return {
-          type: "load", metrics: [
+          type: 'load',
+          metrics: [
             {
-              label: "latency",
-              unit: "ms",
-              value: latency
-            }
-          ]
+              label: 'latency',
+              unit: 'ms',
+              value: latency,
+            },
+          ],
         }
       },
     },
