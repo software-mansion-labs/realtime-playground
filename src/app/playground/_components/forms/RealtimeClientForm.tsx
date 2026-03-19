@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import { FieldLabel } from '@/components/field-label'
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -53,18 +54,12 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
       className="flex flex-col gap-4"
     >
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-url">
-            URL
-          </Label>
-          {errors.url && <p className="text-destructive text-xs">{errors.url.message}</p>}
-        </div>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-apikey">
-            API Key
-          </Label>
-          {errors.apiKey && <p className="text-destructive text-xs">{errors.apiKey.message}</p>}
-        </div>
+        <FieldLabel className="text-xs" htmlFor="realtime-client-form-url" error={errors.url}>
+          URL
+        </FieldLabel>
+        <FieldLabel className="text-xs" htmlFor="realtime-client-form-apikey" error={errors.apiKey}>
+          API Key
+        </FieldLabel>
         <Input
           id="realtime-client-form-url"
           placeholder="https://your-project.supabase.co/realtime/v1"
@@ -88,20 +83,20 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
         <Label className="text-xs" htmlFor="realtime-client-form-vsn">
           VSN
         </Label>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-heartbeat">
-            Heartbeat Interval (ms)
-          </Label>
-          {errors.heartbeatIntervalMs && (
-            <p className="text-destructive text-xs">{errors.heartbeatIntervalMs.message}</p>
-          )}
-        </div>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-timeout">
-            Timeout (ms)
-          </Label>
-          {errors.timeout && <p className="text-destructive text-xs">{errors.timeout.message}</p>}
-        </div>
+        <FieldLabel
+          className="text-xs"
+          htmlFor="realtime-client-form-heartbeat"
+          error={errors.heartbeatIntervalMs}
+        >
+          Heartbeat Interval (ms)
+        </FieldLabel>
+        <FieldLabel
+          className="text-xs"
+          htmlFor="realtime-client-form-timeout"
+          error={errors.timeout}
+        >
+          Timeout (ms)
+        </FieldLabel>
         <Controller
           control={form.control}
           name="worker"

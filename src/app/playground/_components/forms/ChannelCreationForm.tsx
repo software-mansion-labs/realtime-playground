@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
 import { Input } from '@/components/ui/input'
+import { FieldLabel } from '@/components/field-label'
 import { Label } from '@/components/ui/label'
 import { channelFormSchema, type ChannelFormInput, type ChannelFormValues } from '@/schemas/channel'
 
@@ -60,10 +61,9 @@ function BasicSection({ form, disabled }: { form: ChannelForm; disabled: boolean
   return (
     <>
       <div className="flex flex-col gap-2">
-        <div className="flex justify-between">
-          <Label className="text-xs">Channel Name</Label>
-          {errors.name && <p className="text-destructive text-xs">{errors.name.message}</p>}
-        </div>
+        <FieldLabel className="text-xs" error={errors.name}>
+          Channel Name
+        </FieldLabel>
         <Input
           disabled={disabled}
           placeholder="e.g., my-room, game-lobby, chat-1"
@@ -146,14 +146,9 @@ function BroadcastSection({ form, disabled }: { form: ChannelForm; disabled: boo
       {replayEnabled && (
         <div className="flex w-full items-end gap-2">
           <div className="w-1/2 space-y-1">
-            <div className="flex justify-between">
-              <Label className="text-xs">Since</Label>
-              {errors.config?.broadcast?.replay?.since && (
-                <p className="text-destructive text-right text-xs">
-                  {errors.config.broadcast.replay.since.message}
-                </p>
-              )}
-            </div>
+            <FieldLabel className="text-xs" error={errors.config?.broadcast?.replay?.since}>
+              Since
+            </FieldLabel>
             <Controller
               control={control}
               name="config.broadcast.replay.since"
@@ -163,14 +158,12 @@ function BroadcastSection({ form, disabled }: { form: ChannelForm; disabled: boo
             />
           </div>
           <div className="w-1/2 space-y-1">
-            <div className="flex justify-between">
-              <Label className="text-xs font-normal">Limit (Optional)</Label>
-              {errors.config?.broadcast?.replay?.limit && (
-                <p className="text-destructive text-right text-xs">
-                  {errors.config.broadcast.replay.limit.message}
-                </p>
-              )}
-            </div>
+            <FieldLabel
+              className="text-xs font-normal"
+              error={errors.config?.broadcast?.replay?.limit}
+            >
+              Limit (Optional)
+            </FieldLabel>
             <Input
               type="number"
               disabled={disabled}
