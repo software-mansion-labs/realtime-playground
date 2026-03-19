@@ -5,7 +5,7 @@ import { RealtimeClientForm } from './forms'
 import { NEXT_PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { CopyButton } from '@/components/copy'
 import { useClientCreated } from '@/store/realtimeStore'
-import { RealtimeLogger } from '@/types/realtime'
+import type { RealtimeLogger } from '@/types/realtime'
 
 type Props = {
   logger: RealtimeLogger

@@ -14,7 +14,7 @@ import {
   PostgresChangesTable,
   PresenceStateTable,
 } from '@/app/playground/_components/tables'
-import { SocketStatus, useRealtimeStore } from '@/store/realtimeStore'
+import { type SocketStatus, useRealtimeStore } from '@/store/realtimeStore'
 import { useSupabaseStore } from '@/store/supabaseStore'
 import { ActiveChannels, ListenerCallbacks } from './_components/ActiveChannels'
 
