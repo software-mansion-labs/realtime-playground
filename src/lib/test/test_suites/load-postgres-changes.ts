@@ -22,13 +22,21 @@ export default {
           .on(
             'postgres_changes',
             { event: 'INSERT', schema: 'public', table: 'pg_changes' },
-            () => {},
+            () => { },
           )
           .subscribe()
 
         const latency = await waitForPostgresChannel(channel)
 
-        return {type: "normal", message: `${latency}ms`}
+        return {
+          type: "load", metrics: [
+            {
+              label: "latency",
+              unit: "ms",
+              value: latency
+            }
+          ]
+        }
       },
     },
     {

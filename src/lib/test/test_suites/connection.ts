@@ -9,9 +9,17 @@ export default {
       body: async (supabase) => {
         const channel = supabase.channel('topic:' + crypto.randomUUID()).subscribe()
 
-        const delay = await waitForChannel(channel)
+        const latency = await waitForChannel(channel)
 
-        return {type: "normal", message: `${delay}ms`}
+        return {
+          type: "load", metrics: [
+            {
+              label: "latency",
+              unit: "ms",
+              value: latency
+            }
+          ]
+        }
       },
     },
     {
