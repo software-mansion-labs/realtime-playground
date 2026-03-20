@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  Pressable,
   StyleSheet,
   Text,
   type PressableProps,
@@ -9,13 +10,12 @@ import {
 } from 'react-native'
 
 import { colors, radii, shadow } from './theme'
-import { SlottablePressable, renderTextChild } from './utils'
+import { renderTextChild } from './utils'
 
 type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 type ButtonSize = 'default' | 'xs' | 'sm' | 'lg' | 'icon' | 'icon-xs' | 'icon-sm' | 'icon-lg'
 
 export type ButtonProps = PressableProps & {
-  asChild?: boolean
   variant?: ButtonVariant
   size?: ButtonSize
   style?: StyleProp<ViewStyle>
@@ -154,7 +154,6 @@ const textSizes: Record<ButtonSize, TextStyle> = {
 }
 
 export function Button({
-  asChild = false,
   children,
   disabled,
   size = 'default',
@@ -164,9 +163,8 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <SlottablePressable
+    <Pressable
       accessibilityRole="button"
-      asChild={asChild}
       disabled={disabled}
       style={({ pressed }) => [
         styles.base,
@@ -178,8 +176,12 @@ export function Button({
       ]}
       {...props}
     >
-      {renderTextChild(children, [styles.text, textVariants[variant], textSizes[size], textStyle], 1)}
-    </SlottablePressable>
+      {renderTextChild(
+        children,
+        [styles.text, textVariants[variant], textSizes[size], textStyle],
+        1,
+      )}
+    </Pressable>
   )
 }
 

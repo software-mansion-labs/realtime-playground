@@ -105,13 +105,11 @@ export default function UIListScreen() {
                   render={({ field }) => (
                     <Form.Item>
                       <Form.Label>Channel name</Form.Label>
-                      <Form.Control>
-                        <Input
-                          onBlur={field.onBlur}
-                          onChangeText={field.onChange}
-                          value={field.value}
-                        />
-                      </Form.Control>
+                      <Input
+                        onBlur={field.onBlur}
+                        onChangeText={field.onChange}
+                        value={field.value}
+                      />
                       <Form.Description>
                         Used as the room identifier for the realtime session.
                       </Form.Description>
@@ -133,15 +131,13 @@ export default function UIListScreen() {
                   render={({ field }) => (
                     <Form.Item>
                       <Form.Label>Owner email</Form.Label>
-                      <Form.Control>
-                        <Input
-                          autoCapitalize="none"
-                          keyboardType="email-address"
-                          onBlur={field.onBlur}
-                          onChangeText={field.onChange}
-                          value={field.value}
-                        />
-                      </Form.Control>
+                      <Input
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        onBlur={field.onBlur}
+                        onChangeText={field.onChange}
+                        value={field.value}
+                      />
                       <Form.Message />
                     </Form.Item>
                   )}
@@ -153,13 +149,11 @@ export default function UIListScreen() {
                   render={({ field }) => (
                     <Form.Item>
                       <Form.Label>Notes</Form.Label>
-                      <Form.Control>
-                        <Textarea
-                          onBlur={field.onBlur}
-                          onChangeText={field.onChange}
-                          value={field.value}
-                        />
-                      </Form.Control>
+                      <Textarea
+                        onBlur={field.onBlur}
+                        onChangeText={field.onChange}
+                        value={field.value}
+                      />
                       <Form.Description>
                         Multiline body text uses the same surface tokens as `Input`.
                       </Form.Description>

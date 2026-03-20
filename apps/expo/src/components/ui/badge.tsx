@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { StyleSheet, Text, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type TextStyle,
+  type ViewStyle,
+} from 'react-native'
 
 import { colors, radii } from './theme'
 import { renderTextChild } from './utils'
@@ -62,12 +69,7 @@ const textVariants: Record<BadgeVariant, TextStyle> = {
   },
 }
 
-export function Badge({
-  children,
-  variant = 'default',
-  style,
-  textStyle,
-}: BadgeProps) {
+export function Badge({ children, variant = 'default', style, textStyle }: BadgeProps) {
   return (
     <View style={[styles.base, containerVariants[variant], style]}>
       {renderTextChild(children, [styles.text, textVariants[variant], textStyle], 1)}

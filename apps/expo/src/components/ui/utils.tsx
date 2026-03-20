@@ -1,14 +1,5 @@
 import * as React from 'react'
-import {
-  Pressable,
-  type PressableStateCallbackType,
-  Text,
-  type GestureResponderEvent,
-  type PressableProps,
-  type StyleProp,
-  type TextStyle,
-  type ViewStyle,
-} from 'react-native'
+import { StyleProp, Text, TextStyle } from 'react-native'
 
 type ControllableStateProps<T> = {
   value?: T
@@ -68,77 +59,4 @@ export function renderTextChild(
   }
 
   return children
-}
-
-type SlottablePressableProps = PressableProps & {
-  asChild?: boolean
-  children: React.ReactNode
-  style?: PressableProps['style']
-}
-
-export function SlottablePressable({
-  asChild = false,
-  children,
-  onPress,
-  style,
-  ...props
-}: SlottablePressableProps) {
-  if (asChild && React.isValidElement(children)) {
-    const childElement = children as React.ReactElement<PressableProps>
-    const childProps = childElement.props as PressableProps & {
-      style?: PressableProps['style']
-    }
-
-    return React.cloneElement(childElement, {
-      ...props,
-      ...childProps,
-      onPress: composeEventHandlers(childProps.onPress, onPress),
-      style: mergePressableStyles(style, childProps.style),
-    })
-  }
-
-  return (
-    <Pressable onPress={onPress} style={style} {...props}>
-      {children}
-    </Pressable>
-  )
-}
-
-export function withPressableState(
-  baseStyle: StyleProp<any>,
-  pressedStyle?: StyleProp<any>,
-  disabledStyle?: StyleProp<any>,
-  disabled?: boolean,
-) {
-  return ({ pressed }: PressableStateCallbackType) => [
-    baseStyle,
-    pressed && pressedStyle,
-    disabled && disabledStyle,
-  ]
-}
-
-function resolvePressableStyle(
-  style: PressableProps['style'],
-  state: PressableStateCallbackType,
-): StyleProp<ViewStyle> {
-  return typeof style === 'function' ? style(state) : style
-}
-
-function mergePressableStyles(
-  left?: PressableProps['style'],
-  right?: PressableProps['style'],
-): PressableProps['style'] {
-  if (!left) {
-    return right
-  }
-
-  if (!right) {
-    return left
-  }
-
-  return (state) => [resolvePressableStyle(left, state), resolvePressableStyle(right, state)]
-}
-
-export function stopEvent<T extends GestureResponderEvent>(event: T) {
-  event.stopPropagation()
 }
