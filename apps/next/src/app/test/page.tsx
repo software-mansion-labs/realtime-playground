@@ -39,7 +39,7 @@ export default function TestsPage() {
     }
   }, [sectionCount])
 
-  const runAllTests = async () => {
+  const handleClick = useCallback(async () => {
     prepare()
     for (let i = 0; i < testSuitesRefs.current.length; i++) {
       const testCase = testSuitesRefs.current[i]
@@ -48,8 +48,7 @@ export default function TestsPage() {
       }
     }
     setStatus(computePageStatus())
-    return computePageStatus() === 'Failed' ? 'Failed' : 'Passed'
-  }
+  }, [prepare, computePageStatus])
 
   return (
     <EnvProvider
@@ -67,7 +66,7 @@ export default function TestsPage() {
               disabled={status === 'Running'}
               variant={statusVariant(status)}
               size="sm"
-              onClick={runAllTests}
+              onClick={handleClick}
             >
               {status || 'Run'}
             </Button>

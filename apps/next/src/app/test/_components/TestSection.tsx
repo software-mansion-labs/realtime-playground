@@ -45,8 +45,7 @@ const TestSection = forwardRef(({ name, tests, onStatusChange }: TestSectionProp
     }
   }, [onStatusChange, tests])
 
-  const runAllTests = async () => {
-    prepare()
+  const runAllTests = useCallback(async () => {
     for (let i = 0; i < testCasesRefs.current.length; i++) {
       const testCase = testCasesRefs.current[i]
       if (testCase) {
@@ -56,8 +55,12 @@ const TestSection = forwardRef(({ name, tests, onStatusChange }: TestSectionProp
     const finalStatus = computeSectionStatus()
     setStatus(finalStatus)
     onStatusChange?.(finalStatus)
-    return finalStatus === 'Failed' ? 'Failed' : 'Passed'
-  }
+  }, [onStatusChange, computeSectionStatus])
+
+  const handleClick = useCallback(() => {
+    prepare()
+    runAllTests()
+  }, [prepare, runAllTests])
 
   useImperativeHandle(ref, () => ({
     handleRun: runAllTests,
@@ -76,7 +79,7 @@ const TestSection = forwardRef(({ name, tests, onStatusChange }: TestSectionProp
             disabled={status === 'Running'}
             variant={statusVariant(status)}
             size="sm"
-            onClick={runAllTests}
+            onClick={handleClick}
           >
             {status || 'Run'}
           </Button>
