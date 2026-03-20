@@ -18,7 +18,6 @@ import {
   Separator,
   Skeleton,
   Spinner,
-  Table,
   Textarea,
   Toaster,
   colors,
@@ -262,51 +261,6 @@ export default function UIListScreen() {
               </Dialog.Content>
             </Dialog.Root>
           </Card.Content>
-        </Card.Root>
-
-        <Card.Root>
-          <Card.Header>
-            <Card.Title>Table</Card.Title>
-            <Card.Description>
-              Horizontal-scrollable data table for mobile layouts.
-            </Card.Description>
-          </Card.Header>
-          <Card.Content>
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.Head flex={1.2}>Channel</Table.Head>
-                  <Table.Head>Type</Table.Head>
-                  <Table.Head>Status</Table.Head>
-                  <Table.Head flex={1.6}>Last event</Table.Head>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell flex={1.2}>realtime-room</Table.Cell>
-                  <Table.Cell>Broadcast</Table.Cell>
-                  <Table.Cell>
-                    <Badge>Live</Badge>
-                  </Table.Cell>
-                  <Table.Cell flex={1.6}>presence sync completed</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell flex={1.2}>metrics-feed</Table.Cell>
-                  <Table.Cell>Postgres</Table.Cell>
-                  <Table.Cell>
-                    <Badge variant="secondary">Idle</Badge>
-                  </Table.Cell>
-                  <Table.Cell flex={1.6}>waiting for database change</Table.Cell>
-                </Table.Row>
-              </Table.Body>
-              <Table.Caption>Compact mobile alternative to the web table primitives.</Table.Caption>
-            </Table.Root>
-          </Card.Content>
-          <Card.Footer>
-            <Button variant="outline" onPress={() => toast.info('Table refresh requested')}>
-              Refresh rows
-            </Button>
-          </Card.Footer>
         </Card.Root>
       </ScrollView>
     </SafeAreaView>
