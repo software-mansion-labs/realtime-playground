@@ -16,9 +16,6 @@ export const selectStyles = StyleSheet.create({
     borderColor: colors.border,
     borderWidth: StyleSheet.hairlineWidth,
     maxHeight: '70%',
-    paddingHorizontal: 6,
-    paddingTop: 10,
-    paddingBottom: 18,
     width: '100%',
     ...shadow,
   },
@@ -61,6 +58,7 @@ export const selectStyles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   placeholder: {
     color: colors.mutedForeground,
@@ -100,5 +98,9 @@ export const selectStyles = StyleSheet.create({
     color: colors.foreground,
     fontSize: 14,
     lineHeight: 18,
+  },
+  scrollViewContent: {
+    paddingHorizontal: 12,
+    paddingTop: 16,
   },
 })
