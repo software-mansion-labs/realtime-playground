@@ -5,5 +5,14 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "web": "yarn workspace @realtime-playground/next run dev",
+    "ios": "yarn workspace @realtime-playground/expo run ios",
+    "android": "yarn workspace @realtime-playground/expo run android",
+    "dev": "concurrently \"yarn web\" \"yarn ios\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }
