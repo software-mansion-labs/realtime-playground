@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { useControllableState } from '../utils'
 import { SelectContext } from './SelectContext'
@@ -31,24 +31,18 @@ export function SelectRoot({
     defaultValue,
     onChange: onValueChange,
   })
-  const items = React.useRef(new Map<string, string>())
-  const [, forceRender] = React.useState(0)
+  const [items, setItems] = useState<Record<string, string>>({})
 
-  const registerItem = React.useCallback((itemValue: string, label: string) => {
-    if (items.current.get(itemValue) === label) {
-      return
-    }
-
-    items.current.set(itemValue, label)
-    forceRender((current) => current + 1)
+  const registerItem = useCallback((itemValue: string, label: string) => {
+    setItems((current) => ({ ...current, [itemValue]: label }))
   }, [])
 
-  const valueObject = React.useMemo(
+  const valueObject = useMemo(
     () => ({
-      items: items.current,
+      items,
       open: !!isOpen,
       registerItem,
-      selectedLabel: selectedValue ? items.current.get(selectedValue) : undefined,
+      selectedLabel: selectedValue ? items[selectedValue] : undefined,
       setOpen,
       setValue: (nextValue: string) => {
         setSelectedValue(nextValue)
@@ -56,7 +50,7 @@ export function SelectRoot({
       },
       value: selectedValue,
     }),
-    [isOpen, registerItem, selectedValue, setOpen, setSelectedValue],
+    [isOpen, items, registerItem, selectedValue, setOpen, setSelectedValue],
   )
 
   return <SelectContext.Provider value={valueObject}>{children}</SelectContext.Provider>

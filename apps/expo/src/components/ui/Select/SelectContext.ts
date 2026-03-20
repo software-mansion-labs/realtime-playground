@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export type SelectContextValue = {
-  items: Map<string, string>
+  items: Record<string, string>
   open: boolean
   registerItem: (value: string, label: string) => void
   selectedLabel?: string

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useContext } from 'react'
 
 export type CollapsibleContextValue = {
   open: boolean
@@ -8,7 +8,7 @@ export type CollapsibleContextValue = {
 export const CollapsibleContext = React.createContext<CollapsibleContextValue | null>(null)
 
 export function useCollapsibleContext() {
-  const context = React.useContext(CollapsibleContext)
+  const context = useContext(CollapsibleContext)
 
   if (!context) {
     throw new Error('Collapsible components must be used inside <Collapsible>.')

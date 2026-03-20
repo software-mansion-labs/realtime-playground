@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useSyncExternalStore } from 'react'
 
 import type { ToastInput, ToastRecord, ToastType } from './sonnerTypes'
 
@@ -51,7 +51,7 @@ export function dismiss(id?: string) {
 }
 
 export function useToasts() {
-  return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 }
 
 export const toast = {

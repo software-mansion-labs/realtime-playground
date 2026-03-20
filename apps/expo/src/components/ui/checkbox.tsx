@@ -1,7 +1,16 @@
 import * as React from 'react'
-import { Pressable, StyleSheet, Text, View, type PressableProps, type StyleProp, type TextStyle, type ViewStyle } from 'react-native'
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type PressableProps,
+  type StyleProp,
+  type TextStyle,
+  type ViewStyle,
+} from 'react-native'
 
-import { colors, radii } from './theme'
+import { colors } from './theme'
 
 export type CheckboxProps = Omit<PressableProps, 'onChange'> & {
   checked?: boolean | 'indeterminate'

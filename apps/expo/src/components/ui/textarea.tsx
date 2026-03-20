@@ -1,15 +1,28 @@
 import * as React from 'react'
-import { StyleSheet, TextInput, type StyleProp, type TextInputProps, type TextStyle } from 'react-native'
+import {
+  StyleSheet,
+  TextInput,
+  type StyleProp,
+  type TextInputProps,
+  type TextStyle,
+} from 'react-native'
 
-import { colors } from './theme'
 import { inputStyles } from './input'
+import { colors } from './theme'
 
 export type TextareaProps = TextInputProps & {
   style?: StyleProp<TextStyle>
 }
 
 export const Textarea = React.forwardRef<TextInput, TextareaProps>(function Textarea(
-  { editable = true, multiline = true, numberOfLines = 4, placeholderTextColor = colors.mutedForeground, style, ...props },
+  {
+    editable = true,
+    multiline = true,
+    numberOfLines = 4,
+    placeholderTextColor = colors.mutedForeground,
+    style,
+    ...props
+  },
   ref,
 ) {
   return (

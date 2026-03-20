@@ -1,12 +1,13 @@
-import * as React from 'react'
-import {
-  Animated,
+import React, { useEffect } from 'react'
+import { StyleProp, StyleSheet, ViewProps, ViewStyle } from 'react-native'
+import Animated, {
   Easing,
-  StyleSheet,
-  type StyleProp,
-  type ViewProps,
-  type ViewStyle,
-} from 'react-native'
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated'
 
 import { colors, radii } from './theme'
 
@@ -15,34 +16,23 @@ type SkeletonProps = ViewProps & {
 }
 
 export function Skeleton({ style, ...props }: SkeletonProps) {
-  const opacity = React.useRef(new Animated.Value(0.45)).current
+  const opacity = useSharedValue(0.45)
 
-  React.useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, {
-          duration: 700,
-          easing: Easing.inOut(Easing.ease),
-          toValue: 0.95,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          duration: 700,
-          easing: Easing.inOut(Easing.ease),
-          toValue: 0.45,
-          useNativeDriver: true,
-        }),
-      ]),
+  useEffect(() => {
+    opacity.value = withRepeat(
+      withSequence(
+        withTiming(0.95, { duration: 700, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0.45, { duration: 700, easing: Easing.inOut(Easing.ease) }),
+      ),
+      -1,
     )
+  }, [])
 
-    animation.start()
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }))
 
-    return () => {
-      animation.stop()
-    }
-  }, [opacity])
-
-  return <Animated.View style={[styles.base, { opacity }, style]} {...props} />
+  return <Animated.View style={[styles.base, animatedStyle, style]} {...props} />
 }
 
 const styles = StyleSheet.create({

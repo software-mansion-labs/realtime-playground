@@ -1,11 +1,5 @@
-import * as React from 'react'
-import {
-  Pressable,
-  Text,
-  type PressableProps,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native'
+import React, { useEffect } from 'react'
+import { Pressable, Text, type PressableProps, type StyleProp, type ViewStyle } from 'react-native'
 
 import { useSelectContext } from './SelectContext'
 import { selectStyles } from './selectStyles'
@@ -18,9 +12,10 @@ export type SelectItemProps = PressableProps & {
 
 export function SelectItem({ children, style, value, ...props }: SelectItemProps) {
   const { registerItem, setValue, value: selectedValue } = useSelectContext()
-  const label = typeof children === 'string' || typeof children === 'number' ? String(children) : value
+  const label =
+    typeof children === 'string' || typeof children === 'number' ? String(children) : value
 
-  React.useEffect(() => {
+  useEffect(() => {
     registerItem(value, label)
   }, [label, registerItem, value])
 

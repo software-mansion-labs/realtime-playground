@@ -9,11 +9,6 @@ export const sonnerStyles = StyleSheet.create({
     justifyContent: 'center',
     width: 28,
   },
-  closeText: {
-    color: colors.mutedForeground,
-    fontSize: 14,
-    fontWeight: '600',
-  },
   copy: {
     flex: 1,
     gap: 2,
@@ -25,11 +20,6 @@ export const sonnerStyles = StyleSheet.create({
     color: colors.mutedForeground,
     fontSize: 13,
     lineHeight: 18,
-  },
-  icon: {
-    color: colors.primaryForeground,
-    fontSize: 10,
-    fontWeight: '700',
   },
   iconContainer: {
     alignItems: 'center',
@@ -44,10 +34,21 @@ export const sonnerStyles = StyleSheet.create({
   },
   root: {
     flex: 1,
-    gap: 10,
     justifyContent: 'flex-end',
     paddingHorizontal: 16,
     zIndex: 100,
+  },
+  stack: {
+    position: 'relative',
+  },
+  stackItem: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  stackItemFront: {
+    position: 'relative',
   },
   title: {
     color: colors.foreground,

@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { StyleSheet, TextInput, type StyleProp, type TextInputProps, type TextStyle, type ViewStyle } from 'react-native'
+import {
+  StyleSheet,
+  TextInput,
+  type StyleProp,
+  type TextInputProps,
+  type TextStyle,
+  type ViewStyle,
+} from 'react-native'
 
 import { colors, radii } from './theme'
 

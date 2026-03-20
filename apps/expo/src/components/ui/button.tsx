@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   Pressable,
   StyleSheet,
-  Text,
   type PressableProps,
   type StyleProp,
   type TextStyle,

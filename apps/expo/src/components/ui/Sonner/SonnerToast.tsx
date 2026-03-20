@@ -1,8 +1,9 @@
+import { SymbolView, type SFSymbol } from 'expo-symbols'
 import { Pressable, Text, View } from 'react-native'
 
 import { colors } from '../theme'
-import { sonnerStyles } from './sonnerStyles'
 import { dismiss } from './sonnerStore'
+import { sonnerStyles } from './sonnerStyles'
 import type { ToastRecord, ToastType } from './sonnerTypes'
 
 type SonnerToastProps = {
@@ -10,18 +11,18 @@ type SonnerToastProps = {
   wide?: boolean
 }
 
-function iconForType(type: ToastType) {
+function iconForType(type: ToastType): SFSymbol {
   switch (type) {
     case 'success':
-      return 'OK'
+      return 'checkmark'
     case 'info':
-      return 'i'
+      return 'info'
     case 'warning':
-      return '!'
+      return 'exclamationmark.triangle.fill'
     case 'error':
-      return 'x'
+      return 'xmark'
     case 'loading':
-      return '...'
+      return 'ellipsis'
   }
 }
 
@@ -58,7 +59,12 @@ export function SonnerToast({ record, wide = false }: SonnerToastProps) {
           { backgroundColor: colorForType(record.type) },
         ]}
       >
-        <Text style={sonnerStyles.icon}>{iconForType(record.type)}</Text>
+        <SymbolView
+          name={iconForType(record.type)}
+          tintColor={colors.primaryForeground}
+          size={12}
+          weight="bold"
+        />
       </View>
       <View style={[sonnerStyles.copy, !hasDescription ? sonnerStyles.copyCentered : null]}>
         <Text style={sonnerStyles.title}>{record.title}</Text>
@@ -66,8 +72,12 @@ export function SonnerToast({ record, wide = false }: SonnerToastProps) {
           <Text style={sonnerStyles.description}>{record.description}</Text>
         ) : null}
       </View>
-      <Pressable accessibilityRole="button" onPress={() => dismiss(record.id)} style={sonnerStyles.close}>
-        <Text style={sonnerStyles.closeText}>x</Text>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => dismiss(record.id)}
+        style={sonnerStyles.close}
+      >
+        <SymbolView name="xmark" tintColor={colors.mutedForeground} size={14} weight="semibold" />
       </Pressable>
     </View>
   )

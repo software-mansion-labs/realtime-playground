@@ -62,11 +62,24 @@ export default function UIListScreen() {
           <Card.Content style={styles.stackMd}>
             <View style={styles.rowWrap}>
               <Button onPress={() => toast.success('Primary action completed')}>Primary</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link button</Button>
+              <Button variant="secondary" onPress={() => toast.info('Secondary button pressed')}>
+                Secondary
+              </Button>
+              <Button variant="outline" onPress={() => toast.info('Outline button pressed')}>
+                Outline
+              </Button>
+              <Button
+                variant="destructive"
+                onPress={() => toast.error('Destructive action triggered')}
+              >
+                Destructive
+              </Button>
+              <Button variant="ghost" onPress={() => toast.info('Ghost button pressed')}>
+                Ghost
+              </Button>
+              <Button variant="link" onPress={() => toast.info('Link button pressed')}>
+                Link button
+              </Button>
               <Button size="icon" onPress={() => toast.info('Icon button pressed')}>
                 +
               </Button>
