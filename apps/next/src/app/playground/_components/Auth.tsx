@@ -1,6 +1,6 @@
 import { useSupabaseStore } from '@/store/supabaseStore'
 
-import { LoginValues } from '@/schemas/client'
+import { LoginValues } from './forms/LoginForm'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoginForm } from './forms'
 import { Button } from '@/components/ui/button'
@@ -22,9 +22,7 @@ export default function Auth() {
         {!userId ? (
           <div className="flex flex-col gap-2">
             <LoginForm onSubmit={handleLogin} />
-            <p className="text-muted-foreground text-xs">
-              Tip: Set PUBLIC_TEST_USER_EMAIL in .env
-            </p>
+            <p className="text-muted-foreground text-xs">Tip: Set PUBLIC_TEST_USER_EMAIL in .env</p>
           </div>
         ) : (
           <div className="space-y-3">

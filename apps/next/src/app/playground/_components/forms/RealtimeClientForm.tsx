@@ -14,10 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { realtimeClientSchema, vsnSchema, type RealtimeClientValues } from '@/schemas/client'
+import { realtimeClientSchema, vsnSchema, type RealtimeClientFormValues } from '@/schemas/client'
 import { z } from 'zod'
 import { transformOptionalNumber } from './helpers'
-import { NEXT_PUBLIC_REALTIME_URL, NEXT_PUBLIC_SUPABASE_KEY } from '@/lib/constants'
+import { PUBLIC_REALTIME_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { useRealtimeStore } from '@/store/realtimeStore'
 import { RealtimeLogger } from '@/types/realtime'
 
@@ -28,18 +28,18 @@ type Props = {
 }
 
 export function RealtimeClientForm({ disabled, status, logger }: Props) {
-  const onSubmit = ({ url, ...options }: RealtimeClientValues) => {
+  const onSubmit = ({ url, ...options }: RealtimeClientFormValues) => {
     useRealtimeStore.getState().create(url, { ...realtimeOptions(options), logger })
   }
   const onDisconnect = () => useRealtimeStore.getState().client?.disconnect()
   const onConnect = () => useRealtimeStore.getState().client?.connect()
   const onDelete = () => useRealtimeStore.getState().destroy()
 
-  const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientValues>({
+  const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
     defaultValues: {
-      url: NEXT_PUBLIC_REALTIME_URL,
-      apiKey: NEXT_PUBLIC_SUPABASE_KEY,
+      url: PUBLIC_REALTIME_URL,
+      apiKey: PUBLIC_SUPABASE_KEY,
       worker: true,
       vsn: '2.0.0',
     },
@@ -169,7 +169,7 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
   )
 }
 
-function realtimeOptions(options: Omit<RealtimeClientValues, 'url'>) {
+function realtimeOptions(options: Omit<RealtimeClientFormValues, 'url'>) {
   const { worker, timeout, apiKey, vsn, heartbeatIntervalMs } = options
   const params = {
     apikey: apiKey,
