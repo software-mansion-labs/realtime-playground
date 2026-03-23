@@ -16,8 +16,8 @@ export function Navbar() {
     <nav className="flex h-16 items-center justify-between">
       <div className="mb-4 shrink-0 text-2xl font-bold">Supabase Realtime Interactive</div>
       <div className="flex items-center gap-4">
-        <SettingsModal />
         <NavLinks />
+        <SettingsModal />
       </div>
     </nav>
   )
@@ -27,7 +27,7 @@ function NavLinks() {
   const pathname = usePathname()
 
   return (
-    <nav className="mb-4 flex gap-4">
+    <div className="flex items-center">
       {links.map(({ href, label }) => (
         <Link
           key={href}
@@ -42,6 +42,6 @@ function NavLinks() {
           {label}
         </Link>
       ))}
-    </nav>
+    </div>
   )
 }
