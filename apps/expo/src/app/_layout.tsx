@@ -16,7 +16,6 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" options={{ title: '' }} />
-        <Stack.Screen name="playground" options={{ title: 'Playground' }} />
         <Stack.Screen name="ui-list" options={{ title: 'UI List' }} />
       </Stack>
       <Toaster />
