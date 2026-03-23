@@ -18,7 +18,6 @@ import {
   Skeleton,
   Spinner,
   Textarea,
-  Toaster,
   colors,
   toast,
   typography,
@@ -44,7 +43,6 @@ export default function UIListScreen() {
 
   return (
     <Screen>
-      <Toaster />
       <ScrollView contentContainerStyle={styles.content}>
         <Card.Root>
           <Card.Header>

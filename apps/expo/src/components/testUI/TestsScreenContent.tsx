@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { testCases } from '@realtime-playground/tests'
+
 import { colors, Dialog, Screen, spacing, Spinner, typography } from '../ui'
 import { type Status, type TestRunnerHandle } from './shared'
 import { StatusBadge } from './StatusBadge'
@@ -40,16 +41,6 @@ export function TestsScreenContent() {
     <>
       <Stack.Screen
         options={{
-          // headerLeft: () => (
-          //   <Pressable
-          //     onPress={() => {
-          //       router.navigate('/playground')
-          //     }}
-          //     style={({ pressed }) => [styles.headerRightContainer]}
-          //   >
-          //     <Text style={{ color: colors.primary }}>Playground</Text>
-          //   </Pressable>
-          // ),
           headerRight: () => (
             <View style={styles.headerRight}>
               <Pressable

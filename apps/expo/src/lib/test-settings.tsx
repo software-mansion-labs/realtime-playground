@@ -1,12 +1,5 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react'
 import { createTestSettingsDefaults, type TestSettings } from '@realtime-playground/realtime-core'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from './constants'
 
 type TestSettingsContextValue = TestSettings & {

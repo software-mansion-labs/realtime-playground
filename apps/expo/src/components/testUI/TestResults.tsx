@@ -1,6 +1,8 @@
-import { type TestData } from '@realtime-playground/tests'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors, radii, spacing, typography } from '../ui'
+
+import { type TestData } from '@realtime-playground/tests'
+
+import { colors, spacing } from '../ui'
 
 export function TestResults({ data }: { data: TestData }) {
   if (data.type === 'normal') {
