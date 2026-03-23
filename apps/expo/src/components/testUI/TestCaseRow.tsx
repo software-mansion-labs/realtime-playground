@@ -2,9 +2,9 @@ import { SymbolView } from 'expo-symbols'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
+import { useTestSettings } from '@realtime-playground/realtime-core'
 import { runTest, type Test, type TestData } from '@realtime-playground/tests'
 
-import { useTestSettings } from '../../lib/test-settings'
 import { Button, colors, spacing, typography } from '../ui'
 import { StatusBadge } from './StatusBadge'
 import { TestResults } from './TestResults'

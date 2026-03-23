@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { useTestSettings } from '../../lib/test-settings'
-import { Button, Input, Label, spacing, typography } from '../ui'
+
+import { useTestSettings } from '@realtime-playground/realtime-core'
+
+import { Input, Label, spacing, typography } from '../ui'
 
 export function TestSettingsPanel() {
-  const { reset, setSupabaseKey, setSupabaseUrl, supabaseKey, supabaseUrl } = useTestSettings()
+  const { setSupabaseKey, setSupabaseUrl, supabaseKey, supabaseUrl } = useTestSettings()
 
   return (
     <View style={styles.formStack}>
@@ -15,12 +17,7 @@ export function TestSettingsPanel() {
         <Label>Supabase Key</Label>
         <Input value={supabaseKey} onChangeText={setSupabaseKey} autoCapitalize="none" />
       </View>
-      <View style={styles.inlineRow}>
-        <Button variant="outline" onPress={reset}>
-          Reset defaults
-        </Button>
-        <Text style={typography.muted}>All suites use this connection.</Text>
-      </View>
+      <Text style={typography.muted}>All suites use this connection.</Text>
     </View>
   )
 }
@@ -30,11 +27,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   formStack: {
-    gap: spacing.md,
-  },
-  inlineRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
     gap: spacing.md,
   },
 })

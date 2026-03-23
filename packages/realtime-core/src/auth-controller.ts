@@ -1,7 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import type { FeedbackLevel, RealtimeController } from './controller'
 import { createExternalStore, useExternalStoreSnapshot } from './store'
-import type { FeedbackLevel } from './controller'
-import type { RealtimeController } from './controller'
 
 export type SupabaseAuthState = {
   client?: SupabaseClient

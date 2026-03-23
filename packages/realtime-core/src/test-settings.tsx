@@ -1,28 +1,28 @@
-import { createTestSettingsDefaults, type TestSettings } from '@realtime-playground/realtime-core'
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from './constants'
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 
-type TestSettingsContextValue = TestSettings & {
+import { createTestSettingsDefaults } from './schemas'
+import type { RealtimeEnvDefaults, TestSettings } from './types'
+
+export type TestSettingsConfig = Pick<RealtimeEnvDefaults, 'supabaseKey' | 'supabaseUrl'>
+
+export type TestSettingsContextValue = TestSettings & {
   setSupabaseUrl: (url: string) => void
   setSupabaseKey: (key: string) => void
-  reset: () => void
 }
-
-const defaults = createTestSettingsDefaults({
-  supabaseUrl: PUBLIC_SUPABASE_URL,
-  supabaseKey: PUBLIC_SUPABASE_KEY,
-})
 
 const TestSettingsContext = createContext<TestSettingsContextValue | null>(null)
 
-export function TestSettingsProvider({ children }: { children: ReactNode }) {
+export function TestSettingsProvider({
+  children,
+  config,
+}: {
+  children: ReactNode
+  config?: TestSettingsConfig
+}) {
+  const defaults = useMemo(() => createTestSettingsDefaults(config), [config])
+
   const [supabaseUrl, setSupabaseUrl] = useState(defaults.supabaseUrl)
   const [supabaseKey, setSupabaseKey] = useState(defaults.supabaseKey)
-
-  const reset = useCallback(() => {
-    setSupabaseUrl(defaults.supabaseUrl)
-    setSupabaseKey(defaults.supabaseKey)
-  }, [])
 
   const value = useMemo<TestSettingsContextValue>(
     () => ({
@@ -30,9 +30,8 @@ export function TestSettingsProvider({ children }: { children: ReactNode }) {
       supabaseKey,
       setSupabaseUrl,
       setSupabaseKey,
-      reset,
     }),
-    [reset, supabaseKey, supabaseUrl],
+    [supabaseKey, supabaseUrl],
   )
 
   return <TestSettingsContext.Provider value={value}>{children}</TestSettingsContext.Provider>

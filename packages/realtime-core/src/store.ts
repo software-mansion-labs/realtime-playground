@@ -8,7 +8,7 @@ export type ExternalStore<T> = {
   subscribe: (listener: Listener) => () => void
 }
 
-export const createExternalStore = <T,>(initialState: T): ExternalStore<T> => {
+export const createExternalStore = <T>(initialState: T): ExternalStore<T> => {
   let state = initialState
   const listeners = new Set<Listener>()
 
@@ -27,5 +27,5 @@ export const createExternalStore = <T,>(initialState: T): ExternalStore<T> => {
   }
 }
 
-export const useExternalStoreSnapshot = <T,>(store: ExternalStore<T>) =>
+export const useExternalStoreSnapshot = <T>(store: ExternalStore<T>) =>
   useSyncExternalStore(store.subscribe, store.getState, store.getState)

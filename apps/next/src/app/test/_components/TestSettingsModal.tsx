@@ -1,5 +1,6 @@
 'use client'
 
+import { useTestSettings } from '@realtime-playground/realtime-core'
 import {
   Dialog,
   DialogContent,
@@ -11,7 +12,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { useTestSettings } from '@/hooks/useTestSettings'
 import { ArrowLeft, ClipboardPaste, Cog } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import SqlSnippet from './SqlSnippet'

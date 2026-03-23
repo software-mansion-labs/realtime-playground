@@ -1,4 +1,8 @@
-import { RealtimeChannel, RealtimeClient, type REALTIME_POSTGRES_CHANGES_LISTEN_EVENT } from '@supabase/supabase-js'
+import {
+  RealtimeChannel,
+  RealtimeClient,
+  type REALTIME_POSTGRES_CHANGES_LISTEN_EVENT,
+} from '@supabase/supabase-js'
 import type { ChannelConfigValues, RealtimeClientFormValues } from './schemas'
 import { createExternalStore, useExternalStoreSnapshot } from './store'
 
@@ -47,7 +51,9 @@ export class RealtimeController {
     this.eventListeners.forEach((listener) => listener(event))
   }
 
-  private setState(next: RealtimeControllerState | ((prev: RealtimeControllerState) => RealtimeControllerState)) {
+  private setState(
+    next: RealtimeControllerState | ((prev: RealtimeControllerState) => RealtimeControllerState),
+  ) {
     this.store.setState(next)
   }
 
@@ -97,7 +103,9 @@ export class RealtimeController {
 
     this.setState((prev) => ({
       ...prev,
-      channels: client ? new Map(client.getChannels().map((channel) => [channel.subTopic, channel])) : new Map(),
+      channels: client
+        ? new Map(client.getChannels().map((channel) => [channel.subTopic, channel]))
+        : new Map(),
     }))
   }
 
@@ -151,7 +159,9 @@ export class RealtimeController {
   }
 
   subscribedChannels() {
-    return Array.from(this.getState().channels.entries()).filter(([, channel]) => channel.state === 'joined')
+    return Array.from(this.getState().channels.entries()).filter(
+      ([, channel]) => channel.state === 'joined',
+    )
   }
 
   subscribeToChannel(name: string) {

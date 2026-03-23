@@ -1,24 +1,27 @@
+import type { REALTIME_POSTGRES_CHANGES_LISTEN_EVENT, RealtimeChannel } from '@supabase/supabase-js'
 import { useCallback, useState } from 'react'
-import type { RealtimeChannel, REALTIME_POSTGRES_CHANGES_LISTEN_EVENT } from '@supabase/supabase-js'
 import { isoNow } from './runtime'
 import type { BroadcastMessage, LogEntry, PostgresChange, PresenceByChannel } from './types'
 
 export function useBroadcastMessages() {
   const [messages, setMessages] = useState<BroadcastMessage[]>([])
 
-  const addListener = useCallback((channel: RealtimeChannel, channelName: string, event?: string) => {
-    channel.on('broadcast', { event: event ?? '*' }, ({ event: nextEvent, payload }) => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          timestamp: isoNow(),
-          channel: channelName,
-          event: nextEvent,
-          payload,
-        },
-      ])
-    })
-  }, [])
+  const addListener = useCallback(
+    (channel: RealtimeChannel, channelName: string, event?: string) => {
+      channel.on('broadcast', { event: event ?? '*' }, ({ event: nextEvent, payload }) => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            timestamp: isoNow(),
+            channel: channelName,
+            event: nextEvent,
+            payload,
+          },
+        ])
+      })
+    },
+    [],
+  )
 
   const clear = useCallback(() => setMessages([]), [])
 

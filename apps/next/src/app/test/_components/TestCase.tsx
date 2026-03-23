@@ -1,3 +1,4 @@
+import { useTestSettings } from '@realtime-playground/realtime-core'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -13,7 +14,6 @@ import { runTest, Test, TestData } from '@/lib/test'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
 import { Status, statusVariant } from './helpers'
-import { useTestSettings } from '@/hooks/useTestSettings'
 import { cn } from '@/lib/utils'
 
 const statusBadge = (status: Status) => {
