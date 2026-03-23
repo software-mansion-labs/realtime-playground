@@ -16,10 +16,7 @@ import type {
   RealtimePostgresUpdatePayload,
 } from '@supabase/supabase-js'
 
-type Payload = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
-}
+type Payload = Record<string, unknown>
 
 export default {
   'postgres changes extension': [

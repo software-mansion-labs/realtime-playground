@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  format:
-    name: Format check
+  ci:
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,34 +17,9 @@ jobs:
           node-version: 20
           cache: yarn
       - run: yarn install --immutable
-      - run: yarn format:check
-
-  lint:
-    name: Lint (${{ matrix.app }})
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app: [next, expo]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: yarn
-      - run: yarn install --immutable
-      - run: yarn workspace @realtime-playground/${{ matrix.app }} run lint
-
-  typecheck:
-    name: Typecheck (${{ matrix.app }})
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app: [next, expo]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: yarn
-      - run: yarn install --immutable
-      - run: yarn workspace @realtime-playground/${{ matrix.app }} run typecheck
+      - name: Format check
+        run: yarn format:check
+      - name: Lint
+        run: yarn lint
+      - name: Typecheck
+        run: yarn typecheck
