@@ -16,6 +16,11 @@ import type {
   RealtimePostgresUpdatePayload,
 } from '@supabase/supabase-js'
 
+type Payload = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+}
+
 export default {
   'postgres changes extension': [
     {
@@ -25,7 +30,7 @@ export default {
         await supabase.realtime.setAuth()
 
         let subscribed: string | null = null
-        let result: RealtimePostgresInsertPayload<any> | null = null
+        let result: RealtimePostgresInsertPayload<Payload> | null = null
         const topic = 'topic:' + crypto.randomUUID()
 
         const previousId = await executeInsert(supabase, 'pg_changes')
@@ -64,7 +69,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: RealtimePostgresUpdatePayload<any> | null = null
+        let result: RealtimePostgresUpdatePayload<Payload> | null = null
         let subscribed: string | null = null
         const topic = 'topic:' + crypto.randomUUID()
 
@@ -106,7 +111,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: RealtimePostgresDeletePayload<any> | null = null
+        let result: RealtimePostgresDeletePayload<Payload> | null = null
         let subscribed: string | null = null
         const topic = 'topic:' + crypto.randomUUID()
 
@@ -146,9 +151,9 @@ export default {
       name: 'user receives INSERT, UPDATE and DELETE concurrently',
       body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
-        let insertResult: RealtimePostgresInsertPayload<any> | null = null
-        let updateResult: RealtimePostgresUpdatePayload<any> | null = null
-        let deleteResult: RealtimePostgresDeletePayload<any> | null = null
+        let insertResult: RealtimePostgresInsertPayload<Payload> | null = null
+        let updateResult: RealtimePostgresUpdatePayload<Payload> | null = null
+        let deleteResult: RealtimePostgresDeletePayload<Payload> | null = null
 
         const insertId = await executeInsert(supabase, 'pg_changes')
         const updateId = await executeInsert(supabase, 'pg_changes')
