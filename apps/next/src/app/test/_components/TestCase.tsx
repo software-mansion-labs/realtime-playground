@@ -13,7 +13,7 @@ import { runTest, Test, TestData } from '@/lib/test'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
 import { Status, statusVariant } from './helpers'
-import { useTestSettings } from '@/hooks/useTestSettings'
+import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 
 const statusBadge = (status: Status) => {
@@ -92,7 +92,7 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
   const [status, setStatus] = useState<Status>(null)
   const [data, setData] = useState<TestData | undefined>()
   const [open, setOpen] = useState(true)
-  const { supabaseUrl, supabaseKey } = useTestSettings()
+  const { supabaseUrl, supabaseKey } = useSettings()
 
   const prepare = useCallback(() => {
     setStatus('Running')

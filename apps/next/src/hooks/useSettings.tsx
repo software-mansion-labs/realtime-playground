@@ -1,36 +1,38 @@
+'use client'
+
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 
-interface TestSettings {
+interface Settings {
   supabaseUrl: string
   supabaseKey: string
 }
 
-interface TestSettingsContextValue extends TestSettings {
+interface SettingsContext extends Settings {
   setSupabaseUrl: (url: string) => void
   setSupabaseKey: (key: string) => void
 }
 
-const TestSettingsContext = createContext<TestSettingsContextValue | null>(null)
+const SettingsContext = createContext<SettingsContext | null>(null)
 
-export function TestSettingsProvider({ children }: { children: ReactNode }) {
+export function SettingsProvider({ children }: { children: ReactNode }) {
   const [supabaseUrl, setSupabaseUrl] = useState(PUBLIC_SUPABASE_URL)
   const [supabaseKey, setSupabaseKey] = useState(PUBLIC_SUPABASE_KEY)
 
-  const value: TestSettingsContextValue = {
+  const value: SettingsContext = {
     supabaseUrl: supabaseUrl,
     supabaseKey: supabaseKey,
     setSupabaseUrl: useCallback((url: string) => setSupabaseUrl(url), []),
     setSupabaseKey: useCallback((key: string) => setSupabaseKey(key), []),
   }
 
-  return <TestSettingsContext.Provider value={value}>{children}</TestSettingsContext.Provider>
+  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>
 }
 
-export function useTestSettings(): TestSettingsContextValue {
-  const context = useContext(TestSettingsContext)
+export function useSettings(): SettingsContext {
+  const context = useContext(SettingsContext)
   if (!context) {
-    throw new Error('useTestSettings must be used within a TestSettingsContext.Provider')
+    throw new Error('useSettings must be used within a SettingsContext.Provider')
   }
   return context
 }

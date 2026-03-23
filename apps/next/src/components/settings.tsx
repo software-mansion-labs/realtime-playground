@@ -11,30 +11,22 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { useTestSettings } from '@/hooks/useTestSettings'
+import { useSettings } from '@/hooks/useSettings'
 import { ArrowLeft, ClipboardPaste, Cog } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
-import SqlSnippet from './SqlSnippet'
+import SqlSnippet from './sql-snippet'
 
 type Screen = 'settings' | 'setup'
 
 function SettingsScreen({ onShowSetup }: { onShowSetup: () => void }) {
-  const { supabaseUrl, supabaseKey, setSupabaseUrl, setSupabaseKey } = useTestSettings()
+  const { supabaseUrl, supabaseKey, setSupabaseUrl, setSupabaseKey } = useSettings()
 
   const handlePaste = async () => {
     const text = await navigator.clipboard.readText()
-    const lines = text
-      .split('\n')
-      .map((l) => l.trim())
-      .filter(Boolean)
-    for (const line of lines) {
-      const eqIndex = line.indexOf('=')
-      if (eqIndex === -1) continue
-      const prefix = line.slice(0, eqIndex)
-      const value = line.slice(eqIndex + 1)
-      if (prefix.includes('URL')) setSupabaseUrl(value)
-      if (prefix.includes('KEY')) setSupabaseKey(value)
-    }
+    const { key, url } = parseSupabaseEnv(text)
+
+    if (key) setSupabaseKey(key)
+    if (url) setSupabaseUrl(url)
   }
 
   return (
@@ -109,7 +101,7 @@ function SetupScreen({ onBack }: { onBack: () => void }) {
   )
 }
 
-export default function TestSettingsModal({ children }: { children?: ReactNode }) {
+export default function SettingsModal({ children }: { children?: ReactNode }) {
   const [screen, setScreen] = useState<Screen>('settings')
 
   return (
@@ -134,4 +126,32 @@ export default function TestSettingsModal({ children }: { children?: ReactNode }
       </DialogContent>
     </Dialog>
   )
+}
+
+export function parseSupabaseEnv(text: string) {
+  let key: string | null = null
+  let url: string | null = null
+
+  const lines = text
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+
+  for (const line of lines) {
+    const eqIndex = line.indexOf('=')
+    if (eqIndex === -1) continue
+    const prefix = line.slice(0, eqIndex)
+    const value = line.slice(eqIndex + 1)
+    if (prefix.includes('URL')) {
+      url = value
+    }
+    if (prefix.includes('KEY')) {
+      key = value
+    }
+  }
+
+  return {
+    url,
+    key,
+  }
 }
