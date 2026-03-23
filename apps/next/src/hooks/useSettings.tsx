@@ -8,18 +8,18 @@ interface Settings {
   supabaseKey: string
 }
 
-interface SettingsContext extends Settings {
+interface SettingsContextValue extends Settings {
   setSupabaseUrl: (url: string) => void
   setSupabaseKey: (key: string) => void
 }
 
-const SettingsContext = createContext<SettingsContext | null>(null)
+const SettingsContext = createContext<SettingsContextValue | null>(null)
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [supabaseUrl, setSupabaseUrl] = useState(PUBLIC_SUPABASE_URL)
   const [supabaseKey, setSupabaseKey] = useState(PUBLIC_SUPABASE_KEY)
 
-  const value: SettingsContext = {
+  const value: SettingsContextValue = {
     supabaseUrl: supabaseUrl,
     supabaseKey: supabaseKey,
     setSupabaseUrl: useCallback((url: string) => setSupabaseUrl(url), []),
@@ -29,7 +29,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>
 }
 
-export function useSettings(): SettingsContext {
+export function useSettings(): SettingsContextValue {
   const context = useContext(SettingsContext)
   if (!context) {
     throw new Error('useSettings must be used within a SettingsContext.Provider')

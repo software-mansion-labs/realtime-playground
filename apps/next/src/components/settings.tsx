@@ -32,7 +32,7 @@ function SettingsScreen({ onShowSetup }: { onShowSetup: () => void }) {
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Test Settings</DialogTitle>
+        <DialogTitle>Settings</DialogTitle>
         <DialogDescription className="sr-only">Configure Supabase connection</DialogDescription>
       </DialogHeader>
       <div className="flex flex-col gap-4">

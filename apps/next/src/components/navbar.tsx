@@ -14,7 +14,7 @@ const links = [
 export function Navbar() {
   return (
     <nav className="flex h-16 items-center justify-between">
-      <div className="mb-4 shrink-0 text-2xl font-bold">Supabase Realtime Interactive</div>
+      <div className="shrink-0 text-2xl font-bold">Supabase Realtime Interactive</div>
       <div className="flex items-center gap-4">
         <NavLinks />
         <SettingsModal />
