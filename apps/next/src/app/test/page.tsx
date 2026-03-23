@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
-import { TestSettingsProvider } from '@realtime-playground/realtime-core'
+import { EnvProvider } from '@realtime-playground/realtime-core'
 import { testCases } from '@realtime-playground/tests'
 import { useCallback, useRef, useState } from 'react'
 import { Status, statusVariant, type TestCaseHandle } from './_components/helpers'
@@ -35,8 +35,8 @@ export default function TestsPage() {
   }
 
   return (
-    <TestSettingsProvider
-      config={{
+    <EnvProvider
+      defaults={{
         supabaseUrl: PUBLIC_SUPABASE_URL,
         supabaseKey: PUBLIC_SUPABASE_KEY,
       }}
@@ -69,6 +69,6 @@ export default function TestsPage() {
           ))}
         </div>
       </div>
-    </TestSettingsProvider>
+    </EnvProvider>
   )
 }

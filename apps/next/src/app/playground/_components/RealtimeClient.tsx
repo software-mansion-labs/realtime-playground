@@ -1,11 +1,11 @@
 'use client'
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { RealtimeClientForm } from './forms'
-import { PUBLIC_SUPABASE_KEY } from '@/lib/constants'
+import { useClientCreated, type RealtimeLogger } from '@realtime-playground/realtime-core'
+
 import { CopyButton } from '@/components/copy'
-import { useClientCreated } from '@/store/realtimeStore'
-import type { RealtimeLogger } from '@/types/realtime'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { PUBLIC_SUPABASE_KEY } from '@/lib/constants'
+import { RealtimeClientForm } from './forms'
 
 type Props = {
   logger: RealtimeLogger

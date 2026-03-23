@@ -1,4 +1,8 @@
+import { ReactNode } from 'react'
+
 export type ToastType = 'success' | 'info' | 'warning' | 'error' | 'loading'
+
+type TitleType = (() => ReactNode) | ReactNode
 
 export interface ExtraPayload {
   description?: string
@@ -7,10 +11,10 @@ export interface ExtraPayload {
 }
 
 export interface ToasterProvider {
-  info: (title: string, input?: ExtraPayload) => string
-  error: (title: string, input?: ExtraPayload) => string
-  success: (title: string, input?: ExtraPayload) => string
-  warning: (title: string, input?: ExtraPayload) => string
+  info: (title: TitleType, input?: ExtraPayload) => string | number
+  error: (title: TitleType, input?: ExtraPayload) => string | number
+  success: (title: TitleType, input?: ExtraPayload) => string | number
+  warning: (title: TitleType, input?: ExtraPayload) => string | number
 }
 
 class ToasterWrapper {
@@ -26,22 +30,22 @@ class ToasterWrapper {
     }
   }
 
-  info(title: string, input?: ExtraPayload) {
+  info(title: TitleType, input?: ExtraPayload) {
     this.validateProvider()
     return this.provider.info(title, input)
   }
 
-  error(title: string, input?: ExtraPayload) {
+  error(title: TitleType, input?: ExtraPayload) {
     this.validateProvider()
     return this.provider.error(title, input)
   }
 
-  success(title: string, input?: ExtraPayload) {
+  success(title: TitleType, input?: ExtraPayload) {
     this.validateProvider()
     return this.provider.success(title, input)
   }
 
-  warning(title: string, input?: ExtraPayload) {
+  warning(title: TitleType, input?: ExtraPayload) {
     this.validateProvider()
     return this.provider.warning(title, input)
   }

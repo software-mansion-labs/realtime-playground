@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { useTestSettings } from '@realtime-playground/realtime-core'
+import { useEnv } from '@realtime-playground/realtime-core'
 import { runTest, Test, TestData } from '@realtime-playground/tests'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
@@ -92,7 +92,7 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
   const [status, setStatus] = useState<Status>(null)
   const [data, setData] = useState<TestData | undefined>()
   const [open, setOpen] = useState(true)
-  const { supabaseUrl, supabaseKey } = useTestSettings()
+  const { supabaseUrl, supabaseKey } = useEnv()
 
   const prepare = useCallback(() => {
     setStatus('Running')

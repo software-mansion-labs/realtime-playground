@@ -1,3 +1,5 @@
+import type { PostgresChange } from '@realtime-playground/realtime-core'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { PostgresChange } from '@/types/realtime'
 
 interface Props {
   changes: PostgresChange[]

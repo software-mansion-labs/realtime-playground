@@ -6,13 +6,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   channelFormSchema,
-  createChannelFormDefaults,
+  createChannelDefaults,
   type ChannelFormInput,
   type ChannelFormValues,
-} from '@/schemas/channel'
-import { zodResolver } from '@hookform/resolvers/zod'
+} from '@realtime-playground/realtime-core'
 import { Controller, useForm, useWatch, type UseFormReturn } from 'react-hook-form'
 
 import { transformOptionalNumber } from './helpers'
@@ -27,7 +27,7 @@ type Props = {
 export function ChannelCreationForm({ onSubmit, disabled }: Props) {
   const form = useForm<ChannelFormInput, unknown, ChannelFormValues>({
     resolver: zodResolver(channelFormSchema),
-    defaultValues: createChannelFormDefaults('test'),
+    defaultValues: createChannelDefaults('test'),
   })
 
   return (

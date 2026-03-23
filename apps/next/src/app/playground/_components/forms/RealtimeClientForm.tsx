@@ -1,5 +1,18 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import {
+  createRealtimeClientDefaults,
+  realtimeClientSchema,
+  RealtimeLogger,
+  useRealtimeStore,
+  vsnSchema,
+  type RealtimeClientFormValues,
+} from '@realtime-playground/realtime-core'
+
 import { FieldLabel } from '@/components/field-label'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -12,17 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  createRealtimeClientFormDefaults,
-  realtimeClientSchema,
-  vsnSchema,
-  type RealtimeClientFormValues,
-} from '@/schemas/client'
-import { useRealtimeStore } from '@/store/realtimeStore'
-import { RealtimeLogger } from '@/types/realtime'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { PUBLIC_REALTIME_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { transformOptionalNumber } from './helpers'
 
 type Props = {
@@ -41,7 +44,10 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
 
   const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
-    defaultValues: createRealtimeClientFormDefaults(),
+    defaultValues: createRealtimeClientDefaults({
+      realtimeUrl: PUBLIC_REALTIME_URL,
+      supabaseKey: PUBLIC_SUPABASE_KEY,
+    }),
   })
 
   const { errors } = form.formState

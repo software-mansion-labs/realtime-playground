@@ -1,10 +1,9 @@
-import { useSupabaseStore } from '@/store/supabaseStore'
+import { LoginValues, useSupabaseStore } from '@realtime-playground/realtime-core'
 
-import { LoginValues } from './forms/LoginForm'
+import { CopyButton } from '@/components/copy'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoginForm } from './forms'
-import { Button } from '@/components/ui/button'
-import { CopyButton } from '@/components/copy'
 
 export default function Auth() {
   const { userId, email: userEmail, token, login, logout } = useSupabaseStore()

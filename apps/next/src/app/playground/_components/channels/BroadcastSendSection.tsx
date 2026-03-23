@@ -1,14 +1,12 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  broadcastSendSchema,
-  createBroadcastSendFormDefaults,
-  type BroadcastSendValues,
-} from '@/schemas/channel'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+
+import { broadcastSendSchema, type BroadcastSendValues } from '@realtime-playground/realtime-core'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 type Props = {
   onSend: (values: BroadcastSendValues) => void
@@ -17,7 +15,7 @@ type Props = {
 export function BroadcastSendSection({ onSend }: Props) {
   const form = useForm<BroadcastSendValues>({
     resolver: zodResolver(broadcastSendSchema),
-    defaultValues: createBroadcastSendFormDefaults(),
+    defaultValues: broadcastSendSchema.parse({}),
   })
 
   const onSubmit = (values: BroadcastSendValues) => {

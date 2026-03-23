@@ -1,3 +1,5 @@
+'use client'
+
 import type {
   REALTIME_POSTGRES_CHANGES_LISTEN_EVENT,
   RealtimeChannel,

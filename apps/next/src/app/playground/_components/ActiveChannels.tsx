@@ -1,13 +1,15 @@
 'use client'
 
+import { REALTIME_POSTGRES_CHANGES_LISTEN_EVENT, RealtimeChannel } from '@supabase/supabase-js'
+import { Database, Radio, Users } from 'lucide-react'
 import { useState } from 'react'
+
+import { useRealtimeStore } from '@realtime-playground/realtime-core'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useRealtimeStore } from '@/store/realtimeStore'
-import { REALTIME_POSTGRES_CHANGES_LISTEN_EVENT, RealtimeChannel } from '@supabase/supabase-js'
-import { Database, Radio, Users } from 'lucide-react'
 import {
   BroadcastListenerRow,
   BroadcastSendSection,

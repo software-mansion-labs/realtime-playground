@@ -1,3 +1,5 @@
+'use client'
+
 import type { RealtimeClientOptions } from '@supabase/supabase-js'
 import { useCallback, useState } from 'react'
 

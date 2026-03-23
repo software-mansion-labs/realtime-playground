@@ -146,3 +146,5 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
     get().client?.setAuth(token)
   },
 }))
+
+export const useClientCreated = () => useRealtimeStore(({ client }) => !!client)

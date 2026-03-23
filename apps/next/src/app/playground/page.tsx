@@ -11,13 +11,15 @@ import {
   PostgresChangesTable,
   PresenceStateTable,
 } from '@/app/playground/_components/tables'
-import { type SocketStatus, useRealtimeStore } from '@/store/realtimeStore'
-import { useSupabaseStore } from '@/store/supabaseStore'
+import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
 import {
+  type SocketStatus,
   useBroadcastMessages,
   useLogMessages,
   usePostgresChanges,
   usePresenceState,
+  useRealtimeStore,
+  useSupabaseStore,
 } from '@realtime-playground/realtime-core'
 import { ActiveChannels, ListenerCallbacks } from './_components/ActiveChannels'
 
@@ -45,7 +47,8 @@ export default function Playground() {
   } = usePresenceState()
 
   useEffect(() => {
-    useSupabaseStore.getState().init()
+    useSupabaseStore.getState().init(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY)
+
     const interval = setInterval(() => {
       const client = useRealtimeStore.getState().client
       const status = client ? (client.connectionState() as SocketStatus) : undefined

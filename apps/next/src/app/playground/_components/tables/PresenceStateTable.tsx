@@ -1,7 +1,8 @@
+import type { PresenceByChannel } from '@realtime-playground/realtime-core'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { PresenceByChannel } from '@/types/realtime'
 
 interface Props {
   presenceState: PresenceByChannel
