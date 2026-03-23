@@ -10,7 +10,7 @@ import {
 } from '../helpers'
 import assert from 'assert'
 import { BROADCAST_CONFIG } from './const'
-import {
+import type {
   RealtimePostgresDeletePayload,
   RealtimePostgresInsertPayload,
   RealtimePostgresUpdatePayload,
