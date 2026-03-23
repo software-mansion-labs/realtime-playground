@@ -24,7 +24,12 @@ export function Toaster({ style }: ToasterProps) {
   return (
     <View
       pointerEvents="box-none"
-      style={[styles.overlay, sonnerStyles.root, { paddingBottom: Math.max(insets.bottom, 16) }, style]}
+      style={[
+        styles.overlay,
+        sonnerStyles.root,
+        { paddingBottom: Math.max(insets.bottom, 16) },
+        style,
+      ]}
     >
       <View pointerEvents="box-none" style={sonnerStyles.stack}>
         {toasts.reverse().map((record, i) => (
@@ -34,10 +39,7 @@ export function Toaster({ style }: ToasterProps) {
             style={[
               sonnerStyles.stackItem,
               {
-                transform: [
-                  { translateY: i * STACK_OFFSET },
-                  { scale: 1 - i * STACK_SCALE_STEP },
-                ],
+                transform: [{ translateY: i * STACK_OFFSET }, { scale: 1 - i * STACK_SCALE_STEP }],
                 zIndex: toasts.length - i,
               },
             ]}
