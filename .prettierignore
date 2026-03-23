@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+build
+.expo
+dist
+.yarn
+*.tsbuildinfo
