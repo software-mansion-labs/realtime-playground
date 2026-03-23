@@ -128,7 +128,7 @@ export default function SettingsModal({ children }: { children?: ReactNode }) {
   )
 }
 
-export function parseSupabaseEnv(text: string) {
+function parseSupabaseEnv(text: string) {
   let key: string | null = null
   let url: string | null = null
 
