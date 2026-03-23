@@ -27,7 +27,8 @@ export type RealtimeStore = RealtimeControllerState & {
 }
 
 const actions = {
-  create: (config: RealtimeClientFormValues, logger?: Logger) => realtimeController.create(config, logger),
+  create: (config: RealtimeClientFormValues, logger?: Logger) =>
+    realtimeController.create(config, logger),
   destroy: () => realtimeController.destroy(),
   syncStatus: () => realtimeController.syncStatus(),
   syncChannels: () => realtimeController.syncChannels(),

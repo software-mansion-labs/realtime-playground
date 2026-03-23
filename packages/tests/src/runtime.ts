@@ -6,4 +6,4 @@ export const randomId = () => {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`
 }
 
-export const now = () => globalThis.performance?.now?.() ?? Date.now()
+export const now = () => performance.now()

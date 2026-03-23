@@ -8,11 +8,7 @@ import {
   type RealtimeClientFormValues,
   type Vsn,
 } from '@realtime-playground/realtime-core'
-import {
-  PUBLIC_REALTIME_URL,
-  PUBLIC_SUPABASE_KEY,
-  PUBLIC_TEST_USER_EMAIL,
-} from '../lib/constants'
+import { PUBLIC_REALTIME_URL, PUBLIC_SUPABASE_KEY, PUBLIC_TEST_USER_EMAIL } from '../lib/constants'
 
 export {
   loginSchema,

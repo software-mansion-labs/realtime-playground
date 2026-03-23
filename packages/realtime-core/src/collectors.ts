@@ -50,7 +50,7 @@ export function usePostgresChanges() {
             ...payload,
             timestamp: isoNow(),
             channel: channelName,
-          } as PostgresChange,
+          },
         ])
       })
     },

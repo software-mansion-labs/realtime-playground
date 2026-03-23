@@ -19,7 +19,12 @@ export function CardRoot({
     </View>
   )
 
-  if (!collapsible && defaultOpen === undefined && onOpenChange === undefined && open === undefined) {
+  if (
+    !collapsible &&
+    defaultOpen === undefined &&
+    onOpenChange === undefined &&
+    open === undefined
+  ) {
     return content
   }
 

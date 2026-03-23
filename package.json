@@ -10,9 +10,19 @@
     "web": "yarn workspace @realtime-playground/next run dev",
     "ios": "yarn workspace @realtime-playground/expo run ios",
     "android": "yarn workspace @realtime-playground/expo run android",
-    "dev": "concurrently \"yarn web\" \"yarn ios\""
+    "dev": "concurrently \"yarn web\" \"yarn ios\"",
+    "lint": "yarn workspaces foreach -A --exclude realtime-playground --topological-dev --verbose run lint",
+    "format": "yarn workspaces foreach -A --exclude realtime-playground --topological-dev --verbose run format",
+    "ts": "yarn workspaces foreach -A --exclude realtime-playground --topological-dev --verbose run ts"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^9.2.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.1"
   }
 }

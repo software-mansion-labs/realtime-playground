@@ -1,7 +1,4 @@
-import {
-  useSupabaseAuthState,
-  type SupabaseAuthState,
-} from '@realtime-playground/realtime-core'
+import { useSupabaseAuthState, type SupabaseAuthState } from '@realtime-playground/realtime-core'
 import { authController } from './controllers'
 
 interface SupabaseStore extends SupabaseAuthState {

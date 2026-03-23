@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "eslint": "eslint .",
+    "format": "prettier --check . --ignore-path ../../.prettierignore",
+    "ts": "tsc --project tsconfig.json --noEmit",
+    "lint": "yarn eslint && yarn format && yarn ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

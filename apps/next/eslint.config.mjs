@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    'node_modules/**',
+    '**/node_modules/**',
     // Default ignores of eslint-config-next:
     '.next/**',
     'out/**',

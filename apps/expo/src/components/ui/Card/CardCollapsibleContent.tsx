@@ -1,7 +1,4 @@
-import {
-  CollapsibleContent,
-  type CollapsibleContentProps,
-} from '../Collapsible/CollapsibleContent'
+import { CollapsibleContent, type CollapsibleContentProps } from '../Collapsible/CollapsibleContent'
 import { cardStyles } from './cardStyles'
 
 export type CardCollapsibleContentProps = CollapsibleContentProps
