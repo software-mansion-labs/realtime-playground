@@ -20,6 +20,8 @@ import { transformOptionalNumber } from './helpers'
 import { PUBLIC_REALTIME_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { useRealtimeStore } from '@/store/realtimeStore'
 import { RealtimeLogger } from '@/types/realtime'
+import { useSettings } from '@/hooks/useSettings'
+import { useEffect } from 'react'
 
 type Props = {
   logger: RealtimeLogger
@@ -35,6 +37,8 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
   const onConnect = () => useRealtimeStore.getState().client?.connect()
   const onDelete = () => useRealtimeStore.getState().destroy()
 
+  const { supabaseKey, supabaseUrl } = useSettings()
+
   const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
     defaultValues: {
@@ -44,6 +48,16 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
       vsn: '2.0.0',
     },
   })
+
+  const { setValue } = form
+
+  useEffect(() => {
+    setValue('apiKey', supabaseKey)
+  }, [supabaseKey, setValue])
+
+  useEffect(() => {
+    setValue('url', supabaseUrl)
+  }, [supabaseUrl, setValue])
 
   const { errors } = form.formState
 
