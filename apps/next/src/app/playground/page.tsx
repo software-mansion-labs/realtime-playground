@@ -1,13 +1,8 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
-import { RealtimeClient } from '@/app/playground/_components/RealtimeClient'
-import { RealtimeChannels } from '@/app/playground/_components/RealtimeChannels'
 import Auth from '@/app/playground/_components/Auth'
-import { useBroadcastMessages } from '@/hooks/useBroadcastMessages'
-import { useLogMessages } from '@/hooks/useLogMessages'
-import { usePostgresChanges } from '@/hooks/usePostgresChanges'
-import { usePresenceState } from '@/hooks/usePresenceState'
+import { RealtimeChannels } from '@/app/playground/_components/RealtimeChannels'
+import { RealtimeClient } from '@/app/playground/_components/RealtimeClient'
 import {
   BroadcastMessagesTable,
   LogsTable,
@@ -16,6 +11,13 @@ import {
 } from '@/app/playground/_components/tables'
 import { useRealtimeStore } from '@/store/realtimeStore'
 import { useSupabaseStore } from '@/store/supabaseStore'
+import {
+  useBroadcastMessages,
+  useLogMessages,
+  usePostgresChanges,
+  usePresenceState,
+} from '@realtime-playground/realtime-core'
+import { useCallback, useEffect } from 'react'
 import { ActiveChannels, ListenerCallbacks } from './_components/ActiveChannels'
 
 export default function Playground() {

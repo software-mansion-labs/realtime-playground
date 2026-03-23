@@ -1,7 +1,11 @@
 import type { REALTIME_POSTGRES_CHANGES_LISTEN_EVENT, RealtimeChannel } from '@supabase/supabase-js'
 import { useCallback, useState } from 'react'
-import { isoNow } from './runtime'
+
 import type { BroadcastMessage, LogEntry, PostgresChange, PresenceByChannel } from './types'
+
+function isoNow() {
+  return new Date().toISOString()
+}
 
 export function useBroadcastMessages() {
   const [messages, setMessages] = useState<BroadcastMessage[]>([])
