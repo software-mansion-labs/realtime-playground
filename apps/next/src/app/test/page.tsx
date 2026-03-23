@@ -1,10 +1,10 @@
 'use client'
 
-import { TestSettingsProvider } from '@realtime-playground/realtime-core'
-import { testCases } from '@/lib/test'
-import { useCallback, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
+import { TestSettingsProvider } from '@realtime-playground/realtime-core'
+import { testCases } from '@realtime-playground/tests'
+import { useCallback, useRef, useState } from 'react'
 import { Status, statusVariant, type TestCaseHandle } from './_components/helpers'
 import TestSection from './_components/TestSection'
 import TestSettingsModal from './_components/TestSettingsModal'

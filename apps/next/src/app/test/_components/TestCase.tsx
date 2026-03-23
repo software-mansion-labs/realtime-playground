@@ -1,4 +1,3 @@
-import { useTestSettings } from '@realtime-playground/realtime-core'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -10,11 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { runTest, Test, TestData } from '@/lib/test'
-import { ChevronsUpDown, Rocket } from 'lucide-react'
-import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
-import { Status, statusVariant } from './helpers'
 import { cn } from '@/lib/utils'
+import { useTestSettings } from '@realtime-playground/realtime-core'
+import { runTest, Test, TestData } from '@realtime-playground/tests'
+import { ChevronsUpDown, Rocket } from 'lucide-react'
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import { Status, statusVariant } from './helpers'
 
 const statusBadge = (status: Status) => {
   return <Badge variant={statusVariant(status)}>{status}</Badge>
