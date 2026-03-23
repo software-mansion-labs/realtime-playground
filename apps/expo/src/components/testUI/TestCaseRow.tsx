@@ -2,7 +2,7 @@ import { SymbolView } from 'expo-symbols'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-import { useTestSettings } from '@realtime-playground/realtime-core'
+import { useEnv } from '@realtime-playground/realtime-core'
 import { runTest, type Test, type TestData } from '@realtime-playground/tests'
 
 import { Button, colors, spacing, typography } from '../ui'
@@ -16,7 +16,7 @@ export const TestCaseRow = forwardRef<TestRunnerHandle, { test: Test }>(function
 ) {
   const [status, setStatus] = useState<Status>(null)
   const [data, setData] = useState<TestData | undefined>()
-  const { supabaseKey, supabaseUrl } = useTestSettings()
+  const { supabaseKey, supabaseUrl } = useEnv()
 
   const prepare = useCallback(() => {
     setStatus('Running')

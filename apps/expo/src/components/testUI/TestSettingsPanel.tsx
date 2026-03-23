@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-import { useTestSettings } from '@realtime-playground/realtime-core'
+import { useEnv } from '@realtime-playground/realtime-core'
 
 import { Input, Label, spacing, typography } from '../ui'
 
 export function TestSettingsPanel() {
-  const { setSupabaseKey, setSupabaseUrl, supabaseKey, supabaseUrl } = useTestSettings()
+  const { setSupabaseKey, setSupabaseUrl, supabaseKey, supabaseUrl } = useEnv()
 
   return (
     <View style={styles.formStack}>
