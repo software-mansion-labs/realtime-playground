@@ -12,6 +12,12 @@ import {
 import { TestSuite } from '../types'
 import { BROADCAST_CONFIG } from './const'
 
+type PgChangePayload = {
+  eventType: string
+  new?: { id: number }
+  old?: { id: number }
+}
+
 export default {
   'postgres changes extension': [
     {
@@ -21,7 +27,7 @@ export default {
         await supabase.realtime.setAuth()
 
         let subscribed: string | null = null
-        let result: { eventType: string; new: { id: number } } | null = null
+        let result: PgChangePayload | null = null
         const topic = `topic:${randomId()}`
 
         const previousId = await executeInsert(supabase, 'pg_changes')
@@ -37,8 +43,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${previousId + 1}`,
             },
-            (payload) =>
-              (result = payload as unknown as { eventType: string; new: { id: number } }),
+            (payload) => (result = payload as unknown as PgChangePayload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -50,10 +55,11 @@ export default {
         await executeInsert(supabase, 'dummy')
 
         await waitFor(() => result !== null)
-        const insertPayload = result as unknown as { eventType: string; new: { id: number } }
-        assert.equal(typeof insertPayload.new.id, 'number')
+        const insertPayload = result as unknown as PgChangePayload
+
+        assert.equal(typeof insertPayload.new!.id, 'number')
         assert.equal(insertPayload.eventType, 'INSERT')
-        assert.equal(insertPayload.new.id, previousId + 1)
+        assert.equal(insertPayload.new!.id, previousId + 1)
       },
     },
     {
@@ -62,7 +68,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: { eventType: string; new: { id: number } } | null = null
+        let result: PgChangePayload | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -80,8 +86,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${mainId}`,
             },
-            (payload) =>
-              (result = payload as unknown as { eventType: string; new: { id: number } }),
+            (payload) => (result = payload as unknown as PgChangePayload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -94,10 +99,10 @@ export default {
         executeUpdate(supabase, 'dummy', dummyId)
 
         await waitFor(() => result !== null)
-        const updatePayload = result as unknown as { eventType: string; new: { id: number } }
-        assert.equal(typeof updatePayload.new.id, 'number')
+        const updatePayload = result as unknown as PgChangePayload
+        assert.equal(typeof updatePayload.new!.id, 'number')
         assert.equal(updatePayload.eventType, 'UPDATE')
-        assert.equal(updatePayload.new.id, mainId)
+        assert.equal(updatePayload.new!.id, mainId)
       },
     },
     {
@@ -106,7 +111,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: { eventType: string; old: { id: number } } | null = null
+        let result: PgChangePayload | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -124,8 +129,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${mainId}`,
             },
-            (payload) =>
-              (result = payload as unknown as { eventType: string; old: { id: number } }),
+            (payload) => (result = payload as unknown as PgChangePayload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -138,10 +142,10 @@ export default {
         executeDelete(supabase, 'dummy', dummyId)
 
         await waitFor(() => result !== null)
-        const deletePayload = result as unknown as { eventType: string; old: { id: number } }
-        assert.equal(typeof deletePayload.old.id, 'number')
+        const deletePayload = result as unknown as PgChangePayload
+        assert.equal(typeof deletePayload.old!.id, 'number')
         assert.equal(deletePayload.eventType, 'DELETE')
-        assert.equal(deletePayload.old.id, mainId)
+        assert.equal(deletePayload.old!.id, mainId)
       },
     },
     {

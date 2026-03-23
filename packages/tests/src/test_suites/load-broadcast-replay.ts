@@ -12,7 +12,8 @@ export default {
         const event = randomId()
         const topic = `topic:${randomId()}`
 
-        const since = Date.now() - 1000
+        const since = Date.now() - 60 * 1000
+
         await Promise.all(
           Array.from({ length: LOAD_MESSAGES }, (_, i) =>
             supabase
@@ -28,6 +29,7 @@ export default {
             config: { private: true, broadcast: { replay: { since, limit: 25 } } },
           })
           .on('broadcast', { event }, () => {
+            console.log('received message')
             latencies.push(now() - replayStart)
           })
           .subscribe()

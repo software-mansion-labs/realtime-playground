@@ -2,12 +2,15 @@ import assert from 'assert'
 import { randomId, signInUser, waitFor, waitForChannel } from '../helpers'
 import type { TestSuite } from '../types'
 
+type Presence = { message: string }
+type Presences = Array<Presence>
+
 export default {
   'presence extension': [
     {
       name: 'user is able to receive presence updates',
       body: async (supabase) => {
-        const result: { key: string; newPresences: Array<{ message: string }> }[] = []
+        const result: { key: string; newPresences: Presences }[] = []
         let error = null
         const topic = `topic:${randomId()}`
         const message = randomId()
@@ -20,7 +23,7 @@ export default {
           .on('presence', { event: 'join' }, ({ key: nextKey, newPresences }) =>
             result.push({
               key: nextKey,
-              newPresences: newPresences as unknown as Array<{ message: string }>,
+              newPresences: newPresences as unknown as Presences,
             }),
           )
           .subscribe()
@@ -44,7 +47,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        const result: { key: string; newPresences: Array<{ message: string }> }[] = []
+        const result: { key: string; newPresences: Presences }[] = []
         let error = null
         const topic = `topic:${randomId()}`
         const message = randomId()
@@ -60,7 +63,7 @@ export default {
           .on('presence', { event: 'join' }, ({ key: nextKey, newPresences }) =>
             result.push({
               key: nextKey,
-              newPresences: newPresences as unknown as Array<{ message: string }>,
+              newPresences: newPresences as unknown as Presences,
             }),
           )
           .subscribe()

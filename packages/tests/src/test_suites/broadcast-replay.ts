@@ -26,8 +26,7 @@ export default {
         await waitForChannel(receiver)
 
         await waitFor(() => result)
-        const delivered = result as unknown as { message: string }
-        assert.strictEqual(delivered.message, payload.message)
+        assert.strictEqual(result!.message, payload.message)
       },
     },
     {
@@ -53,8 +52,7 @@ export default {
         await waitForChannel(receiver)
 
         await waitFor(() => receivedMeta)
-        const meta = receivedMeta as unknown as { replayed?: boolean }
-        assert.strictEqual(meta.replayed, true)
+        assert.strictEqual(receivedMeta!.replayed, true)
       },
     },
     {

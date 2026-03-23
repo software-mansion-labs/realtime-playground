@@ -1,5 +1,9 @@
 import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
+// ---------------------------------------------------------------------------
+// Broadcast
+// ---------------------------------------------------------------------------
+
 export type BroadcastMessage = {
   timestamp: string
   channel: string
@@ -7,12 +11,34 @@ export type BroadcastMessage = {
   payload: Record<string, unknown>
 }
 
+// ---------------------------------------------------------------------------
+// Postgres Changes
+// ---------------------------------------------------------------------------
+
 export type PostgresChange = RealtimePostgresChangesPayload<Record<string, unknown>> & {
+  /** ISO string — time we received the event in the browser */
   timestamp: string
+  /** Channel name the event arrived on */
   channel: string
 }
 
+// ---------------------------------------------------------------------------
+// Presence
+// ---------------------------------------------------------------------------
+
+/**
+ * Example:
+ * {
+ *   "my-channel": {
+ *     "user-123": [{ "key": "value" }]
+ *   }
+ * }
+ */
 export type PresenceByChannel = Record<string, Record<string, unknown[]>>
+
+// ---------------------------------------------------------------------------
+// Logs
+// ---------------------------------------------------------------------------
 
 export type LogEntry = {
   timestamp: string
