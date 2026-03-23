@@ -1,173 +1,81 @@
-import { create } from 'zustand'
-import { RealtimeClient, RealtimeChannel } from '@supabase/supabase-js'
-import { toast } from 'sonner'
+import {
+  useRealtimeControllerState,
+  type RealtimeClientFormValues,
+  type RealtimeControllerState,
+  type SocketStatus,
+} from '@realtime-playground/realtime-core'
 import type { ChannelConfigValues } from '@/schemas/channel'
-import type { RealtimeClientFormValues } from '@/schemas/client'
-
-export type SocketStatus = 'closed' | 'connecting' | 'open' | 'closing'
+import { realtimeController } from './controllers'
 
 type Logger = (kind: string, msg: string, data: unknown) => void
 
-export type RealtimeStore = {
-  client: RealtimeClient | null
-  socketConfig: RealtimeClientFormValues | null
-  status: SocketStatus
-  channels: Map<string, RealtimeChannel>
-
+export type RealtimeStore = RealtimeControllerState & {
   create: (config: RealtimeClientFormValues, logger?: Logger) => void
   destroy: () => void
   syncStatus: () => void
   syncChannels: () => void
-
   connect: () => void
   disconnect: () => void
-
   createChannel: (name: string, config?: ChannelConfigValues) => void
   removeChannel: (name: string) => void
-  subscribedChannels: () => [string, RealtimeChannel][]
+  subscribedChannels: () => ReturnType<typeof realtimeController.subscribedChannels>
   subscribe: (name: string) => void
   unsubscribe: (name: string) => void
   trackPresence: (name: string, payload: Record<string, unknown>) => void
   untrackPresence: (name: string) => void
-
   setAuth: (token: string) => void
 }
 
-export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
-  client: null,
-  socketConfig: null,
-  status: 'closed',
-  channels: new Map(),
-
-  create(config, logger) {
-    get().client?.disconnect()
-    const timeout = config.timeout ? parseInt(config.timeout) : undefined
-    const heartbeatIntervalMs = config.heartbeatIntervalMs
-      ? parseInt(config.heartbeatIntervalMs)
-      : undefined
-    set({
-      socketConfig: config,
-      client: new RealtimeClient(config.url, {
-        params: {
-          apikey: config.apiKey,
-          ...(config.vsn ? { vsn: config.vsn } : {}),
-        },
-        worker: config.worker,
-        ...(timeout !== undefined ? { timeout } : {}),
-        ...(heartbeatIntervalMs !== undefined ? { heartbeatIntervalMs } : {}),
-        logger,
-      }),
-    })
+const actions = {
+  create: (config: RealtimeClientFormValues, logger?: Logger) => realtimeController.create(config, logger),
+  destroy: () => realtimeController.destroy(),
+  syncStatus: () => realtimeController.syncStatus(),
+  syncChannels: () => realtimeController.syncChannels(),
+  connect: () => realtimeController.connect(),
+  disconnect: () => realtimeController.disconnect(),
+  createChannel: (name: string, config?: ChannelConfigValues) => {
+    realtimeController.createChannel(name, config)
   },
-
-  destroy() {
-    get().client?.disconnect()
-    set({
-      client: null,
-      socketConfig: null,
-      status: 'closed',
-      channels: new Map(),
-    })
+  removeChannel: (name: string) => {
+    realtimeController.removeChannel(name)
   },
-
-  syncStatus() {
-    const { client } = get()
-    if (!client) return
-    const status = client.connectionState() as SocketStatus
-    set({ status })
+  subscribedChannels: () => realtimeController.subscribedChannels(),
+  subscribe: (name: string) => {
+    realtimeController.subscribeToChannel(name)
   },
-
-  syncChannels() {
-    const { client } = get()
-    if (!client) return
-    set({
-      channels: new Map(client.getChannels().map((ch) => [ch.subTopic, ch])),
-    })
+  unsubscribe: (name: string) => {
+    realtimeController.unsubscribe(name)
   },
-
-  connect: () => get().client?.connect(),
-  disconnect: () => get().client?.disconnect(),
-
-  createChannel(name, config) {
-    const { client, channels, syncChannels } = get()
-    if (!client) return
-    if (channels.has(name)) {
-      toast.warning(`Channel "${name}" already exists`)
-      return
-    }
-
-    const ch = client.channel(name, config ? { config } : undefined)
-    ch.on('system', {}, (payload) => {
-      const msg = `[SYSTEM] ${payload.message}`
-      if (payload.status === 'ok') toast.success(msg)
-      else toast.error(msg)
-    })
-
-    syncChannels()
+  trackPresence: (name: string, payload: Record<string, unknown>) => {
+    void realtimeController.trackPresence(name, payload)
   },
-
-  removeChannel(name) {
-    const { channels, syncChannels } = get()
-    const ch = channels.get(name)
-    if (!ch) {
-      toast.error(`[REMOVE] Channel "${name}" not found`)
-      return
-    }
-    ch.unsubscribe()
-    syncChannels()
+  untrackPresence: (name: string) => {
+    void realtimeController.untrackPresence(name)
   },
-
-  subscribedChannels() {
-    const { channels } = get()
-    return Array.from(channels.entries()).filter(([, ch]) => ch.state === 'joined')
+  setAuth: (token: string) => {
+    void realtimeController.setAuth(token)
   },
+}
 
-  subscribe(name) {
-    const { channels, syncChannels } = get()
-    const ch = channels.get(name)
-    if (!ch) {
-      toast.error(`[SUBSCRIBE] Channel "${name}" not found`)
-      return
-    }
-    ch.subscribe((status, err) => {
-      if (err) {
-        toast.error(`[SUBSCRIBE] Error: ${err.message}`)
-      } else if (status === 'SUBSCRIBED') {
-        toast.success(`[SUBSCRIBE] Subscribed to "${name}"`)
-      }
+const getSnapshot = (): RealtimeStore => ({
+  ...realtimeController.getState(),
+  ...actions,
+})
 
-      syncChannels()
-    })
-  },
+type Selector<T> = (state: RealtimeStore) => T
+type UseRealtimeStore = {
+  <T>(selector: Selector<T>): T
+  getState: () => RealtimeStore
+}
 
-  unsubscribe(name) {
-    const { channels, syncChannels } = get()
-    const ch = channels.get(name)
-    if (!ch) {
-      toast.error(`[UNSUBSCRIBE] Channel "${name}" not found`)
-      return
-    }
-    ch.unsubscribe()
-    syncChannels()
-  },
+export const useRealtimeStore = ((selector) => {
+  const state = useRealtimeControllerState(realtimeController)
+  return selector({
+    ...state,
+    ...actions,
+  })
+}) as UseRealtimeStore
 
-  trackPresence(name, payload) {
-    const ch = get().channels.get(name)
-    if (!ch) {
-      toast.error(`[TRACK] Channel "${name}" not found`)
-      return
-    }
-    ch.track(payload)
-  },
+useRealtimeStore.getState = getSnapshot
 
-  untrackPresence(name) {
-    const ch = get().channels.get(name)
-    if (!ch) {
-      toast.error(`[UNTRACK] Channel "${name}" not found`)
-      return
-    }
-    ch.untrack()
-  },
-
-  setAuth: (token) => get().client?.setAuth(token),
-}))
+export type { SocketStatus }

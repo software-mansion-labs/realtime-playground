@@ -1,62 +1,38 @@
-import { create } from 'zustand'
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { toast } from 'sonner'
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
-import { useRealtimeStore } from './realtimeStore'
+import {
+  useSupabaseAuthState,
+  type SupabaseAuthState,
+} from '@realtime-playground/realtime-core'
+import { authController } from './controllers'
 
-interface SupabaseStore {
-  client?: SupabaseClient
-  userId?: string
-  email?: string
-  token?: string
-
+interface SupabaseStore extends SupabaseAuthState {
   init: () => void
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
 
-export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
-  init() {
-    set({
-      client: createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY),
-    })
-  },
+const actions = {
+  init: () => authController.init(),
+  login: (email: string, password: string) => authController.login(email, password),
+  logout: () => authController.logout(),
+}
 
-  async login(email, password) {
-    const { client } = get()
-    if (!client) return
+const getSnapshot = (): SupabaseStore => ({
+  ...authController.getState(),
+  ...actions,
+})
 
-    const { data, error } = await client.auth.signInWithPassword({
-      email,
-      password,
-    })
+type Selector<T> = (state: SupabaseStore) => T
 
-    if (error) {
-      toast.error(`Login failed: ${error.message}`)
-      return
-    }
+export function useSupabaseStore(): SupabaseStore
+export function useSupabaseStore<T>(selector: Selector<T>): T
+export function useSupabaseStore<T>(selector?: Selector<T>) {
+  const state = useSupabaseAuthState(authController)
+  const snapshot = {
+    ...state,
+    ...actions,
+  } as SupabaseStore
 
-    if (data.session) {
-      const state = useRealtimeStore.getState()
-      const token = data.session.access_token
-      set({ token: token })
-      state.setAuth(token)
-      if (!state.client) {
-        toast.warning('Realtime client is not created. Update API KEY before creating client')
-      }
-    }
+  return selector ? selector(snapshot) : snapshot
+}
 
-    set({ userId: data.user.id, email })
-    useRealtimeStore.getState().syncChannels()
-  },
-
-  async logout() {
-    const { client } = get()
-    if (!client) return
-
-    await client.auth.signOut()
-    set({ userId: undefined, email: undefined })
-    useRealtimeStore.getState().setAuth(PUBLIC_SUPABASE_KEY)
-    useRealtimeStore.getState().syncChannels()
-  },
-}))
+useSupabaseStore.getState = getSnapshot

@@ -4,9 +4,10 @@
 
 ## Structure
 
-- `apps/next`: current Next.js playground app
-- `apps/expo`: placeholder for a future Expo app
-- `packages/tests`: placeholder for future shared test utilities
+- `apps/next`: Next.js playground and test runner UI
+- `apps/expo`: Expo playground and test runner UI
+- `packages/realtime-core`: shared realtime controller, collectors, types, and schemas
+- `packages/tests`: shared realtime test suites and test runner helpers
 
 ## Installation
 

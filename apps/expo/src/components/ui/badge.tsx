@@ -79,7 +79,6 @@ export function Badge({ children, variant = 'default', style, textStyle }: Badge
 
 const styles = StyleSheet.create({
   base: {
-    alignSelf: 'flex-start',
     alignItems: 'center',
     borderRadius: radii.full,
     borderWidth: StyleSheet.hairlineWidth,
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     paddingHorizontal: 8,
     paddingVertical: 2,
+    flexGrow: 0,
   },
   text: {
     fontSize: 12,

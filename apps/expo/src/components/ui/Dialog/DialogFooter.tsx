@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { View, type StyleProp, type ViewProps, type ViewStyle } from 'react-native'
+import { StyleSheet, View, type StyleProp, type ViewProps, type ViewStyle } from 'react-native'
 
 import { Button } from '../button'
 import { DialogClose } from './DialogClose'
-import { dialogStyles } from './dialogStyles'
 
 export type DialogFooterProps = ViewProps & {
   showCloseButton?: boolean
@@ -17,7 +16,7 @@ export function DialogFooter({
   ...props
 }: React.PropsWithChildren<DialogFooterProps>) {
   return (
-    <View style={[dialogStyles.footer, style]} {...props}>
+    <View style={[styles.footer, style]} {...props}>
       {children}
       {showCloseButton ? (
         <DialogClose asChild>
@@ -27,3 +26,12 @@ export function DialogFooter({
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  footer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    justifyContent: 'flex-end',
+  },
+})

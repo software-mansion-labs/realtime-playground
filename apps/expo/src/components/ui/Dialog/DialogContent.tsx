@@ -1,46 +1,104 @@
+import { SymbolView } from 'expo-symbols'
 import * as React from 'react'
 import {
+  AccessibilityRole,
+  KeyboardAvoidingView,
   Modal,
   Pressable,
-  Text,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
   View,
-  type AccessibilityRole,
-  type StyleProp,
-  type ViewStyle,
+  ViewStyle,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { getKeyboardAvoidingBehavior, getKeyboardDismissMode } from '../keyboard'
+import { colors, radii, shadow } from '../theme'
 import { useDialogContext } from './DialogContext'
 import { DialogOverlay } from './DialogOverlay'
-import { dialogStyles } from './dialogStyles'
 
 export type DialogContentProps = React.PropsWithChildren<{
   showCloseButton?: boolean
   style?: StyleProp<ViewStyle>
 }>
 
-export function DialogContent({
-  children,
-  showCloseButton = true,
-  style,
-}: DialogContentProps) {
+export function DialogContent({ children, showCloseButton = true, style }: DialogContentProps) {
   const { open, setOpen } = useDialogContext()
+  const insets = useSafeAreaInsets()
 
   return (
     <Modal animationType="fade" onRequestClose={() => setOpen(false)} transparent visible={open}>
-      <View style={dialogStyles.modalRoot}>
+      <View style={styles.modalRoot}>
         <DialogOverlay
           accessibilityRole={'button' as AccessibilityRole}
           onPress={() => setOpen(false)}
         />
-        <View style={[dialogStyles.content, style]}>
-          {children}
-          {showCloseButton ? (
-            <Pressable accessibilityRole="button" onPress={() => setOpen(false)} style={dialogStyles.closeButton}>
-              <Text style={dialogStyles.closeText}>x</Text>
-            </Pressable>
-          ) : null}
-        </View>
+        <KeyboardAvoidingView behavior={getKeyboardAvoidingBehavior()} style={styles.sheetFrame}>
+          <ScrollView
+            bounces={false}
+            contentContainerStyle={styles.scrollContent}
+            keyboardDismissMode={getKeyboardDismissMode()}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}
+          >
+            <View style={[styles.content, { paddingBottom: 24 + insets.bottom }, style]}>
+              {children}
+              {showCloseButton ? (
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => setOpen(false)}
+                  style={styles.closeButton}
+                >
+                  <SymbolView name="xmark" size={16} tintColor={colors.mutedForeground} />
+                </Pressable>
+              ) : null}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   )
 }
+
+const styles = StyleSheet.create({
+  closeButton: {
+    alignItems: 'center',
+    borderRadius: radii.full,
+    height: 28,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 12,
+    top: 12,
+    width: 28,
+  },
+  content: {
+    gap: 16,
+    padding: 24,
+    width: '100%',
+  },
+  modalRoot: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  scrollView: {
+    width: '100%',
+  },
+  sheetFrame: {
+    backgroundColor: colors.popover,
+    borderColor: colors.border,
+    borderTopLeftRadius: radii.xl,
+    borderTopRightRadius: radii.xl,
+    borderWidth: StyleSheet.hairlineWidth,
+    maxHeight: '100%',
+    maxWidth: 720,
+    width: '100%',
+    zIndex: 2,
+    ...shadow,
+  },
+})

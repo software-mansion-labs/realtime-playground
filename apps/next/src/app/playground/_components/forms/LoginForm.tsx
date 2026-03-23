@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { loginSchema, type LoginValues } from '@/schemas/client'
+import { createLoginFormDefaults, loginSchema, type LoginValues } from '@/schemas/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export function LoginForm({ onSubmit }: Props) {
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: loginSchema.pick({ email: true }).parse({}),
+    defaultValues: createLoginFormDefaults(),
     reValidateMode: 'onSubmit',
   })
 

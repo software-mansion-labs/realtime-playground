@@ -1,8 +1,6 @@
-import { StatusBar } from 'expo-status-bar'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {
   Badge,
@@ -14,6 +12,7 @@ import {
   Form,
   Input,
   Label,
+  Screen,
   Select,
   Separator,
   Skeleton,
@@ -44,14 +43,9 @@ export default function UIListScreen() {
   })
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
-      <StatusBar style="light" />
+    <Screen>
       <Toaster />
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.hero}>
-          <Text style={typography.title}>UI primitives</Text>
-        </View>
-
         <Card.Root>
           <Card.Header>
             <Card.Title>Buttons, badges, loading</Card.Title>
@@ -276,7 +270,7 @@ export default function UIListScreen() {
           </Card.Content>
         </Card.Root>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 

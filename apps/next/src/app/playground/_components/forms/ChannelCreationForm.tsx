@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { channelFormSchema, type ChannelFormValues } from '@/schemas/channel'
+import {
+  channelFormSchema,
+  createChannelFormDefaults,
+  type ChannelFormValues,
+} from '@/schemas/channel'
 
 interface Props {
   onSubmit: (values: ChannelFormValues) => void
@@ -16,7 +20,7 @@ interface Props {
 export function ChannelCreationForm({ onSubmit, disabled }: Props) {
   const form = useForm<ChannelFormValues>({
     resolver: zodResolver(channelFormSchema),
-    defaultValues: channelFormSchema.parse({ name: 'test' }),
+    defaultValues: createChannelFormDefaults('test'),
   })
 
   const presenceEnabled = useWatch({

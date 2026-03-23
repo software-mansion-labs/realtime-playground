@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, type TextStyle, type ViewStyle } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 
 export const colors = {
   background: '#111315',
@@ -46,53 +46,40 @@ export const spacing = {
 export const typography = StyleSheet.create({
   title: {
     color: colors.foreground,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
-    lineHeight: 30,
-  } satisfies TextStyle,
+    lineHeight: 24,
+  },
   sectionTitle: {
     color: colors.foreground,
     fontSize: 18,
     fontWeight: '700',
     lineHeight: 24,
-  } satisfies TextStyle,
+  },
   body: {
     color: colors.foreground,
     fontSize: 15,
     lineHeight: 22,
-  } satisfies TextStyle,
+  },
   muted: {
     color: colors.mutedForeground,
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 20,
-  } satisfies TextStyle,
+  },
   label: {
     color: colors.foreground,
     fontSize: 14,
     fontWeight: '600',
     lineHeight: 18,
-  } satisfies TextStyle,
+  },
   caption: {
     color: colors.mutedForeground,
     fontSize: 12,
     lineHeight: 16,
-  } satisfies TextStyle,
+  },
 })
 
-export const surfaces = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  } satisfies ViewStyle,
-  card: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: radii.xl,
-    borderWidth: StyleSheet.hairlineWidth,
-  } satisfies ViewStyle,
-})
-
-export const shadow = Platform.select<ViewStyle>({
+export const shadow = Platform.select({
   ios: {
     shadowColor: '#000000',
     shadowOpacity: 0.24,

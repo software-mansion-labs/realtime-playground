@@ -12,7 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { postgresListenerSchema, PostgresListenerValues } from '@/schemas/channel'
+import {
+  createPostgresListenerFormDefaults,
+  postgresListenerSchema,
+  type PostgresListenerValues,
+} from '@/schemas/channel'
 
 type Props = {
   onAdd: (values: PostgresListenerValues) => void
@@ -21,7 +25,7 @@ type Props = {
 export function PostgresListenerRow({ onAdd }: Props) {
   const form = useForm<PostgresListenerValues>({
     resolver: zodResolver(postgresListenerSchema),
-    defaultValues: postgresListenerSchema.parse({}),
+    defaultValues: createPostgresListenerFormDefaults(),
   })
 
   const handleSubmit = form.handleSubmit(onAdd)

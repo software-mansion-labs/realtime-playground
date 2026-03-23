@@ -1,12 +1,21 @@
 import * as React from 'react'
-import { Text, type StyleProp, type TextStyle } from 'react-native'
+import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native'
 
-import { dialogStyles } from './dialogStyles'
+import { colors } from '../theme'
 
 export type DialogTitleProps = React.PropsWithChildren<{
   style?: StyleProp<TextStyle>
 }>
 
 export function DialogTitle({ children, style }: DialogTitleProps) {
-  return <Text style={[dialogStyles.title, style]}>{children}</Text>
+  return <Text style={[styles.title, style]}>{children}</Text>
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: colors.foreground,
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 24,
+  },
+})

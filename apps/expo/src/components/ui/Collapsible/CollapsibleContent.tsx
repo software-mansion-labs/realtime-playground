@@ -15,10 +15,6 @@ export function CollapsibleContent({
 }: CollapsibleContentProps) {
   const { open } = useCollapsibleContext()
 
-  if (!open && !forceMount) {
-    return null
-  }
-
   return (
     <View style={[!open && styles.hidden, style]} {...props}>
       {children}

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createTestSettingsDefaults } from '@realtime-playground/realtime-core'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 
 interface TestSettings {
@@ -14,8 +15,12 @@ interface TestSettingsContextValue extends TestSettings {
 const TestSettingsContext = createContext<TestSettingsContextValue | null>(null)
 
 export function TestSettingsProvider({ children }: { children: ReactNode }) {
-  const [supabaseUrl, setSupabaseUrl] = useState(PUBLIC_SUPABASE_URL)
-  const [supabaseKey, setSupabaseKey] = useState(PUBLIC_SUPABASE_KEY)
+  const defaults = createTestSettingsDefaults({
+    supabaseUrl: PUBLIC_SUPABASE_URL,
+    supabaseKey: PUBLIC_SUPABASE_KEY,
+  })
+  const [supabaseUrl, setSupabaseUrl] = useState(defaults.supabaseUrl)
+  const [supabaseKey, setSupabaseKey] = useState(defaults.supabaseKey)
 
   const value: TestSettingsContextValue = {
     supabaseUrl: supabaseUrl,

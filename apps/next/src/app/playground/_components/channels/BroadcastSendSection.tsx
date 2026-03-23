@@ -4,7 +4,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { broadcastSendSchema, type BroadcastSendValues } from '@/schemas/channel'
+import {
+  broadcastSendSchema,
+  createBroadcastSendFormDefaults,
+  type BroadcastSendValues,
+} from '@/schemas/channel'
 
 type Props = {
   onSend: (values: BroadcastSendValues) => void
@@ -13,7 +17,7 @@ type Props = {
 export function BroadcastSendSection({ onSend }: Props) {
   const form = useForm<BroadcastSendValues>({
     resolver: zodResolver(broadcastSendSchema),
-    defaultValues: broadcastSendSchema.parse({}),
+    defaultValues: createBroadcastSendFormDefaults(),
   })
 
   const onSubmit = (values: BroadcastSendValues) => {

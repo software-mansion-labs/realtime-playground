@@ -13,7 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { realtimeClientSchema, vsnSchema, type RealtimeClientFormValues } from '@/schemas/client'
+import {
+  createRealtimeClientFormDefaults,
+  realtimeClientSchema,
+  vsnSchema,
+  type RealtimeClientFormValues,
+} from '@/schemas/client'
 
 type Props = {
   onSubmit: (values: RealtimeClientFormValues) => void
@@ -34,7 +39,7 @@ export function RealtimeClientForm({
 }: Props) {
   const form = useForm<RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
-    defaultValues: realtimeClientSchema.parse({}),
+    defaultValues: createRealtimeClientFormDefaults(),
   })
 
   const { errors } = form.formState
