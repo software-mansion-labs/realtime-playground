@@ -1,3 +1,8 @@
+import type {
+  RealtimePostgresDeletePayload,
+  RealtimePostgresInsertPayload,
+  RealtimePostgresUpdatePayload,
+} from '@supabase/supabase-js'
 import assert from 'assert'
 import {
   executeDelete,
@@ -12,12 +17,6 @@ import {
 import { TestSuite } from '../types'
 import { BROADCAST_CONFIG } from './const'
 
-type PgChangePayload = {
-  eventType: string
-  new?: { id: number }
-  old?: { id: number }
-}
-
 export default {
   'postgres changes extension': [
     {
@@ -27,7 +26,8 @@ export default {
         await supabase.realtime.setAuth()
 
         let subscribed: string | null = null
-        let result: PgChangePayload | null = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let result: RealtimePostgresInsertPayload<any> | null = null
         const topic = `topic:${randomId()}`
 
         const previousId = await executeInsert(supabase, 'pg_changes')
@@ -43,7 +43,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${previousId + 1}`,
             },
-            (payload) => (result = payload as unknown as PgChangePayload),
+            (payload) => (result = payload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -55,11 +55,10 @@ export default {
         await executeInsert(supabase, 'dummy')
 
         await waitFor(() => result !== null)
-        const insertPayload = result as unknown as PgChangePayload
 
-        assert.equal(typeof insertPayload.new!.id, 'number')
-        assert.equal(insertPayload.eventType, 'INSERT')
-        assert.equal(insertPayload.new!.id, previousId + 1)
+        assert.equal(typeof result!.new.id, 'number')
+        assert.equal(result!.eventType, 'INSERT')
+        assert.equal(result!.new.id, previousId + 1)
       },
     },
     {
@@ -68,7 +67,8 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: PgChangePayload | null = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let result: RealtimePostgresUpdatePayload<any> | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -86,7 +86,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${mainId}`,
             },
-            (payload) => (result = payload as unknown as PgChangePayload),
+            (payload) => (result = payload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -99,10 +99,10 @@ export default {
         executeUpdate(supabase, 'dummy', dummyId)
 
         await waitFor(() => result !== null)
-        const updatePayload = result as unknown as PgChangePayload
-        assert.equal(typeof updatePayload.new!.id, 'number')
-        assert.equal(updatePayload.eventType, 'UPDATE')
-        assert.equal(updatePayload.new!.id, mainId)
+
+        assert.equal(typeof result!.new.id, 'number')
+        assert.equal(result!.eventType, 'UPDATE')
+        assert.equal(result!.new.id, mainId)
       },
     },
     {
@@ -111,7 +111,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: PgChangePayload | null = null
+        let result: RealtimePostgresDeletePayload<any> | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -129,7 +129,7 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${mainId}`,
             },
-            (payload) => (result = payload as unknown as PgChangePayload),
+            (payload) => (result = payload),
           )
           .on('system', '*', ({ status }) => (subscribed = status))
           .subscribe()
@@ -142,10 +142,10 @@ export default {
         executeDelete(supabase, 'dummy', dummyId)
 
         await waitFor(() => result !== null)
-        const deletePayload = result as unknown as PgChangePayload
-        assert.equal(typeof deletePayload.old!.id, 'number')
-        assert.equal(deletePayload.eventType, 'DELETE')
-        assert.equal(deletePayload.old!.id, mainId)
+
+        assert.equal(typeof result!.old.id, 'number')
+        assert.equal(result!.eventType, 'DELETE')
+        assert.equal(result!.old.id, mainId)
       },
     },
     {
@@ -153,9 +153,12 @@ export default {
       body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
 
-        let insertResult: { eventType: string } | null = null
-        let updateResult: { eventType: string } | null = null
-        let deleteResult: { eventType: string } | null = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let insertResult: RealtimePostgresInsertPayload<any> | null = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let updateResult: RealtimePostgresUpdatePayload<any> | null = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let deleteResult: RealtimePostgresDeletePayload<any> | null = null
 
         const insertId = await executeInsert(supabase, 'pg_changes')
         const updateId = await executeInsert(supabase, 'pg_changes')
@@ -171,17 +174,17 @@ export default {
               table: 'pg_changes',
               filter: `id=eq.${insertId + 3}`,
             },
-            (payload) => (insertResult = payload as { eventType: string }),
+            (payload) => (insertResult = payload),
           )
           .on(
             'postgres_changes',
             { event: 'UPDATE', schema: 'public', table: 'pg_changes', filter: `id=eq.${updateId}` },
-            (payload) => (updateResult = payload as { eventType: string }),
+            (payload) => (updateResult = payload),
           )
           .on(
             'postgres_changes',
             { event: 'DELETE', schema: 'public', table: 'pg_changes', filter: `id=eq.${deleteId}` },
-            (payload) => (deleteResult = payload as { eventType: string }),
+            (payload) => (deleteResult = payload),
           )
           .subscribe()
 
@@ -192,14 +195,16 @@ export default {
           executeUpdate(supabase, 'pg_changes', updateId),
           executeDelete(supabase, 'pg_changes', deleteId),
         ])
+
         await Promise.all([
           waitFor(() => insertResult),
           waitFor(() => updateResult),
           waitFor(() => deleteResult),
         ])
-        assert.strictEqual((insertResult as unknown as { eventType: string }).eventType, 'INSERT')
-        assert.strictEqual((updateResult as unknown as { eventType: string }).eventType, 'UPDATE')
-        assert.strictEqual((deleteResult as unknown as { eventType: string }).eventType, 'DELETE')
+
+        assert.strictEqual(insertResult!.eventType, 'INSERT')
+        assert.strictEqual(updateResult!.eventType, 'UPDATE')
+        assert.strictEqual(deleteResult!.eventType, 'DELETE')
       },
     },
   ],

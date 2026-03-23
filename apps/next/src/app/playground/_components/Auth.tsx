@@ -1,6 +1,6 @@
 import { useSupabaseStore } from '@/store/supabaseStore'
 
-import { LoginValues } from '@/schemas/client'
+import { LoginValues } from './forms/LoginForm'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoginForm } from './forms'
 import { Button } from '@/components/ui/button'

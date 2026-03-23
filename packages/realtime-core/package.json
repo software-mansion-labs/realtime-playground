@@ -17,6 +17,7 @@
   "dependencies": {
     "@supabase/supabase-js": "2.100.0-canary.0",
     "react": "^19.2.0",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
   }
 }

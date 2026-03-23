@@ -1,7 +1,6 @@
 'use client'
 
-import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { FieldLabel } from '@/components/field-label'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -19,25 +18,28 @@ import {
   vsnSchema,
   type RealtimeClientFormValues,
 } from '@/schemas/client'
+import { useRealtimeStore } from '@/store/realtimeStore'
+import { RealtimeLogger } from '@/types/realtime'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { transformOptionalNumber } from './helpers'
 
 type Props = {
-  onSubmit: (values: RealtimeClientFormValues) => void
-  onDelete: () => void
-  onConnect: () => void
-  onDisconnect: () => void
-  disabled?: boolean
+  logger: RealtimeLogger
+  disabled: boolean
   status?: string
 }
 
-export function RealtimeClientForm({
-  onSubmit,
-  onDelete,
-  onConnect,
-  onDisconnect,
-  disabled = false,
-  status,
-}: Props) {
-  const form = useForm<RealtimeClientFormValues>({
+export function RealtimeClientForm({ disabled, status, logger }: Props) {
+  const onSubmit = ({ url, ...options }: RealtimeClientFormValues) => {
+    useRealtimeStore.getState().create(url, { ...realtimeOptions(options), logger })
+  }
+  const onDisconnect = () => useRealtimeStore.getState().client?.disconnect()
+  const onConnect = () => useRealtimeStore.getState().client?.connect()
+  const onDelete = () => useRealtimeStore.getState().destroy()
+
+  const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
     defaultValues: createRealtimeClientFormDefaults(),
   })
@@ -51,18 +53,12 @@ export function RealtimeClientForm({
       className="flex flex-col gap-4"
     >
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-url">
-            URL
-          </Label>
-          {errors.url && <p className="text-destructive text-xs">{errors.url.message}</p>}
-        </div>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-apikey">
-            API Key
-          </Label>
-          {errors.apiKey && <p className="text-destructive text-xs">{errors.apiKey.message}</p>}
-        </div>
+        <FieldLabel className="text-xs" htmlFor="realtime-client-form-url" error={errors.url}>
+          URL
+        </FieldLabel>
+        <FieldLabel className="text-xs" htmlFor="realtime-client-form-apikey" error={errors.apiKey}>
+          API Key
+        </FieldLabel>
         <Input
           id="realtime-client-form-url"
           placeholder="https://your-project.supabase.co/realtime/v1"
@@ -86,20 +82,20 @@ export function RealtimeClientForm({
         <Label className="text-xs" htmlFor="realtime-client-form-vsn">
           VSN
         </Label>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-heartbeat">
-            Heartbeat Interval (ms)
-          </Label>
-          {errors.heartbeatIntervalMs && (
-            <p className="text-destructive text-xs">{errors.heartbeatIntervalMs.message}</p>
-          )}
-        </div>
-        <div className="flex justify-between">
-          <Label className="text-xs" htmlFor="realtime-client-form-timeout">
-            Timeout (ms)
-          </Label>
-          {errors.timeout && <p className="text-destructive text-xs">{errors.timeout.message}</p>}
-        </div>
+        <FieldLabel
+          className="text-xs"
+          htmlFor="realtime-client-form-heartbeat"
+          error={errors.heartbeatIntervalMs}
+        >
+          Heartbeat Interval (ms)
+        </FieldLabel>
+        <FieldLabel
+          className="text-xs"
+          htmlFor="realtime-client-form-timeout"
+          error={errors.timeout}
+        >
+          Timeout (ms)
+        </FieldLabel>
         <Controller
           control={form.control}
           name="worker"
@@ -138,14 +134,14 @@ export function RealtimeClientForm({
           placeholder="30000"
           type="number"
           disabled={disabled}
-          {...form.register('heartbeatIntervalMs')}
+          {...form.register('heartbeatIntervalMs', { setValueAs: transformOptionalNumber })}
         />
         <Input
           id="realtime-client-form-timeout"
           placeholder="10000"
           type="number"
           disabled={disabled}
-          {...form.register('timeout')}
+          {...form.register('timeout', { setValueAs: transformOptionalNumber })}
         />
       </div>
 
@@ -170,4 +166,19 @@ export function RealtimeClientForm({
       )}
     </form>
   )
+}
+
+function realtimeOptions(options: Omit<RealtimeClientFormValues, 'url'>) {
+  const { worker, timeout, apiKey, vsn, heartbeatIntervalMs } = options
+  const params = {
+    apikey: apiKey,
+    vsn,
+  }
+
+  return {
+    params,
+    worker,
+    ...(timeout !== undefined ? { timeout } : {}),
+    ...(heartbeatIntervalMs !== undefined ? { heartbeatIntervalMs } : {}),
+  }
 }

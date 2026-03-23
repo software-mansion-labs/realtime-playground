@@ -3,4 +3,5 @@ export type {
   LogEntry,
   PostgresChange,
   PresenceByChannel,
+  RealtimeLogger,
 } from '@realtime-playground/realtime-core'

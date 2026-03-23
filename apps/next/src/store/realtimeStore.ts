@@ -4,21 +4,35 @@ import {
   type RealtimeControllerState,
   type SocketStatus,
 } from '@realtime-playground/realtime-core'
-import type { ChannelConfigValues } from '@/schemas/channel'
+import {
+  RealtimeChannel,
+  RealtimeChannelOptions,
+  RealtimeClient,
+  RealtimeClientOptions,
+} from '@supabase/supabase-js'
+import { toast } from 'sonner'
 import { realtimeController } from './controllers'
 
 type Logger = (kind: string, msg: string, data: unknown) => void
 
 export type RealtimeStore = RealtimeControllerState & {
   create: (config: RealtimeClientFormValues, logger?: Logger) => void
+}
+
+export type SocketStatus = 'closed' | 'connecting' | 'open' | 'closing'
+
+type State = {
+  client: RealtimeClient | null
+  channels: Map<string, RealtimeChannel>
+}
+
+type Action = {
+  create: (url: string, options: RealtimeClientOptions) => void
   destroy: () => void
-  syncStatus: () => void
   syncChannels: () => void
-  connect: () => void
-  disconnect: () => void
-  createChannel: (name: string, config?: ChannelConfigValues) => void
+
+  createChannel: (name: string, options?: RealtimeChannelOptions) => void
   removeChannel: (name: string) => void
-  subscribedChannels: () => ReturnType<typeof realtimeController.subscribedChannels>
   subscribe: (name: string) => void
   unsubscribe: (name: string) => void
   trackPresence: (name: string, payload: Record<string, unknown>) => void
@@ -26,21 +40,16 @@ export type RealtimeStore = RealtimeControllerState & {
   setAuth: (token: string) => void
 }
 
-const actions = {
-  create: (config: RealtimeClientFormValues, logger?: Logger) =>
-    realtimeController.create(config, logger),
+const actions: Action = {
+  create: (url, options) => realtimeController.create(url, options),
   destroy: () => realtimeController.destroy(),
-  syncStatus: () => realtimeController.syncStatus(),
   syncChannels: () => realtimeController.syncChannels(),
-  connect: () => realtimeController.connect(),
-  disconnect: () => realtimeController.disconnect(),
-  createChannel: (name: string, config?: ChannelConfigValues) => {
-    realtimeController.createChannel(name, config)
+  createChannel: (name: string, options?: RealtimeChannelOptions) => {
+    realtimeController.createChannel(name, options)
   },
   removeChannel: (name: string) => {
     realtimeController.removeChannel(name)
   },
-  subscribedChannels: () => realtimeController.subscribedChannels(),
   subscribe: (name: string) => {
     realtimeController.subscribeToChannel(name)
   },

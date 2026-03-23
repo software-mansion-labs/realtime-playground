@@ -20,7 +20,7 @@ export function BroadcastMessagesTable({ messages, onClear }: Props) {
   return (
     <Card>
       <CardHeader className="flex flex-col gap-2 pb-2">
-        <div className="flex items-center justify-between">
+        <div className="flex w-full items-center justify-between">
           <CardTitle className="text-base">Broadcast Messages</CardTitle>
           <div className="flex items-center gap-2">
             {messages.length > 0 && <Badge variant="secondary">{messages.length}</Badge>}

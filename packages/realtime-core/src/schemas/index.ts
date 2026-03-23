@@ -1,13 +1,13 @@
 import { REALTIME_POSTGRES_CHANGES_LISTEN_EVENT } from '@supabase/supabase-js'
 import { z } from 'zod'
 
-import type { RealtimeEnvDefaults, TestSettings } from './types'
+// import type { RealtimeEnvDefaults, TestSettings } from './types'
 
 // ---------------------------------------------------------------------------
 // Realtime Client
 // ---------------------------------------------------------------------------
 
-export const vsnSchema = z.enum(['1.0.0', '2.0.0'])
+export const vsnSchema = z.enum(['1.0.0', '2.0.0'], { error: 'Incorrect VSN' })
 export type Vsn = z.infer<typeof vsnSchema>
 
 const positiveIntStr = z
@@ -17,9 +17,11 @@ const positiveIntStr = z
     message: 'Must be a positive number',
   })
 
+const positiveIntSchema = z.number().int().positive({ error: 'Must be positive' })
+
 export const realtimeClientSchema = z.object({
-  url: z.string().min(1, 'URL is required'),
-  apiKey: z.string().min(1, 'API key is required'),
+  url: z.string().min(1, 'URL is required').nonoptional(),
+  apiKey: z.string().min(1, 'API key is required').nonoptional(),
   worker: z.boolean().default(true).nonoptional(),
   vsn: vsnSchema.default('2.0.0').nonoptional(),
   timeout: positiveIntStr.optional(),
@@ -33,8 +35,8 @@ export type RealtimeClientFormValues = z.infer<typeof realtimeClientSchema>
 // ---------------------------------------------------------------------------
 
 export const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required'),
-  password: z.string().min(1, 'Password is required'),
+  email: z.string().min(1, 'Email is required').nonoptional(),
+  password: z.string().min(1, 'Password is required').nonoptional(),
 })
 
 export type LoginValues = z.infer<typeof loginSchema>
@@ -48,6 +50,17 @@ export const channelConfigSchema = z.object({
   broadcast: z.object({
     ack: z.boolean().nonoptional(),
     self: z.boolean().nonoptional(),
+    replay: z
+      .object({
+        since: z
+          .date({ error: 'Required' })
+          .refine((d) => d <= new Date(), { error: 'Cannot be in the future' })
+          .transform((d) => d.getTime())
+          .nonoptional(),
+        // max limit: https://supabase.com/docs/guides/realtime/broadcast?queryGroups=language&language=js#broadcast-replay
+        limit: positiveIntSchema.max(25, { error: 'Max 25' }).optional(),
+      })
+      .optional(),
   }),
   presence: z.object({
     enabled: z.boolean().nonoptional(),
@@ -61,25 +74,14 @@ export const channelFormSchema = z.object({
 })
 
 export type ChannelFormValues = z.infer<typeof channelFormSchema>
-export type ChannelConfigValues = z.infer<typeof channelConfigSchema>
-
-// ---------------------------------------------------------------------------
-// Broadcast send form schema
-// ---------------------------------------------------------------------------
-
-export const broadcastSendSchema = z.object({
-  event: z.string().min(1, 'Event is required'),
-  message: z.string().optional(),
-})
-
-export type BroadcastSendValues = z.infer<typeof broadcastSendSchema>
+export type ChannelFormInput = z.input<typeof channelFormSchema>
 
 // ---------------------------------------------------------------------------
 // Postgres listener schema
 // ---------------------------------------------------------------------------
 
 export const postgresListenerSchema = z.object({
-  schema: z.string().min(1, 'Schema is required'),
+  schema: z.string().min(1, 'Schema is required').default('public').nonoptional(),
   table: z.string().optional(),
   event: z
     .enum(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT)
@@ -93,45 +95,37 @@ export type PostgresListenerValues = z.infer<typeof postgresListenerSchema>
 // Defaults creators
 // ---------------------------------------------------------------------------
 
-export const createRealtimeClientDefaults = (
-  env: RealtimeEnvDefaults = {},
-): RealtimeClientFormValues => ({
-  url: env.realtimeUrl ?? '',
-  apiKey: env.supabaseKey ?? '',
-  worker: true,
-  vsn: '2.0.0',
-  timeout: undefined,
-  heartbeatIntervalMs: undefined,
-})
+// export const createRealtimeClientDefaults = (
+//   env: RealtimeEnvDefaults = {},
+// ): RealtimeClientFormValues => ({
+//   url: env.realtimeUrl ?? '',
+//   apiKey: env.supabaseKey ?? '',
+//   worker: true,
+//   vsn: '2.0.0',
+//   timeout: undefined,
+//   heartbeatIntervalMs: undefined,
+// })
 
-export const createLoginDefaults = (env: RealtimeEnvDefaults = {}): LoginValues => ({
-  email: env.testUserEmail ?? '',
-  password: '',
-})
+// export const createLoginDefaults = (env: RealtimeEnvDefaults = {}): LoginValues => ({
+//   email: env.testUserEmail ?? '',
+//   password: '',
+// })
 
-export const createChannelDefaults = (name = 'test'): ChannelFormValues =>
-  channelFormSchema.parse({
-    name,
-    config: {
-      private: false,
-      broadcast: { ack: true, self: true },
-      presence: { enabled: true },
-    },
-  })
+// export const createChannelDefaults = (name = 'test'): ChannelFormInput => ({
+//   name,
+//   config: {
+//     private: false,
+//     broadcast: { ack: true, self: true },
+//     presence: { enabled: true },
+//   },
+// })
 
-export const createBroadcastSendDefaults = (): BroadcastSendValues =>
-  broadcastSendSchema.parse({
-    event: 'message',
-    message: '',
-  })
+// export const createPostgresListenerDefaults = (): PostgresListenerValues => ({
+//   schema: 'public',
+//   event: REALTIME_POSTGRES_CHANGES_LISTEN_EVENT.ALL,
+// })
 
-export const createPostgresListenerDefaults = (): PostgresListenerValues =>
-  postgresListenerSchema.parse({
-    schema: 'public',
-    event: REALTIME_POSTGRES_CHANGES_LISTEN_EVENT.ALL,
-  })
-
-export const createTestSettingsDefaults = (env: RealtimeEnvDefaults = {}): TestSettings => ({
-  supabaseUrl: env.supabaseUrl ?? '',
-  supabaseKey: env.supabaseKey ?? '',
-})
+// export const createTestSettingsDefaults = (env: RealtimeEnvDefaults = {}): TestSettings => ({
+//   supabaseUrl: env.supabaseUrl ?? '',
+//   supabaseKey: env.supabaseKey ?? '',
+// })
