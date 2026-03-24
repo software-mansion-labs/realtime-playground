@@ -1,5 +1,4 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   Table,
@@ -14,11 +13,7 @@ import { useEnv } from '@realtime-playground/realtime-core'
 import { runTest, Test, TestData } from '@realtime-playground/tests'
 import { ChevronsUpDown, Rocket } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
-import { Status, statusVariant } from './helpers'
-
-const statusBadge = (status: Status) => {
-  return <Badge variant={statusVariant(status)}>{status}</Badge>
-}
+import { RunButton, Status, StatusBadge } from './helpers'
 
 type RenderTestDataProps = {
   data: TestData
@@ -126,16 +121,17 @@ const TestCase = forwardRef(({ test, onStatusChange }: TestCaseProps, ref) => {
           <span className="text-foreground font-mono text-xs">{test.name}</span>
           <div className="flex items-center gap-4">
             {data && (
-              <CollapsibleTrigger className="flex items-center gap-1 transition-opacity hover:opacity-70">
+              <CollapsibleTrigger
+                className={cn(
+                  'flex items-center gap-1 transition-opacity hover:opacity-70',
+                  buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+                )}
+              >
                 <ChevronsUpDown className="text-muted-foreground size-3" />
               </CollapsibleTrigger>
             )}
-            {status && statusBadge(status)}
-            {status !== 'Running' && (
-              <Button variant="ghost" size="icon-sm" onClick={handleClick}>
-                <Rocket />
-              </Button>
-            )}
+            <StatusBadge status={status} />
+            <RunButton status={status} onClick={handleClick} />
           </div>
         </div>
         <CollapsibleContent>
