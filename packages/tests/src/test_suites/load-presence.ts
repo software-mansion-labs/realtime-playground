@@ -55,7 +55,7 @@ export default {
             }),
           )
 
-          return measureThroughput(latencies, CLIENTS, LOAD_DELIVERY_SLO)
+          return await measureThroughput(latencies, CLIENTS, LOAD_DELIVERY_SLO)
         } finally {
           await Promise.all(senders.map((client) => client.realtime.disconnect()))
         }

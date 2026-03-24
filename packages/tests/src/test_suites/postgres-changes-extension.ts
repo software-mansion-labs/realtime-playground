@@ -29,7 +29,7 @@ export default {
 
         let subscribed: string | null = null
         let result: RealtimePostgresInsertPayload<Payload> | null = null
-        const topic = 'topic:' + crypto.randomUUID()
+        const topic = `topic:${randomId()}`
 
         const previousId = await executeInsert(supabase, 'pg_changes')
         await executeInsert(supabase, 'dummy')
