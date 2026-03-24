@@ -21,7 +21,11 @@ export function Separator({
     <View
       accessibilityElementsHidden={decorative ? accessibilityElementsHidden : undefined}
       importantForAccessibility={decorative ? importantForAccessibility : undefined}
-      style={[styles.base, orientation === 'horizontal' ? styles.horizontal : styles.vertical, style]}
+      style={[
+        styles.base,
+        orientation === 'horizontal' ? styles.horizontal : styles.vertical,
+        style,
+      ]}
       {...props}
     />
   )

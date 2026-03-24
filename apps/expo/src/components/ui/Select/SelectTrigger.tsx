@@ -16,12 +16,7 @@ export type SelectTriggerProps = PressableProps & {
   style?: StyleProp<ViewStyle>
 }
 
-export function SelectTrigger({
-  children,
-  size = 'default',
-  style,
-  ...props
-}: SelectTriggerProps) {
+export function SelectTrigger({ children, size = 'default', style, ...props }: SelectTriggerProps) {
   const { open, setOpen } = useSelectContext()
 
   return (

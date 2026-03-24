@@ -18,11 +18,7 @@ export type DialogContentProps = React.PropsWithChildren<{
   style?: StyleProp<ViewStyle>
 }>
 
-export function DialogContent({
-  children,
-  showCloseButton = true,
-  style,
-}: DialogContentProps) {
+export function DialogContent({ children, showCloseButton = true, style }: DialogContentProps) {
   const { open, setOpen } = useDialogContext()
 
   return (
@@ -35,7 +31,11 @@ export function DialogContent({
         <View style={[dialogStyles.content, style]}>
           {children}
           {showCloseButton ? (
-            <Pressable accessibilityRole="button" onPress={() => setOpen(false)} style={dialogStyles.closeButton}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => setOpen(false)}
+              style={dialogStyles.closeButton}
+            >
               <Text style={dialogStyles.closeText}>x</Text>
             </Pressable>
           ) : null}
