@@ -1,5 +1,11 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { Rocket, RotateCcw } from 'lucide-react'
 
 export type TestCaseHandle = {
@@ -32,8 +38,15 @@ export type RunButtonProps = {
 export const RunButton = ({ status, onClick }: RunButtonProps) => {
   if (status === 'Running') return <></>
   return (
-    <Button variant="ghost" size="icon-sm" onClick={onClick}>
-      {!status ? <Rocket /> : <RotateCcw />}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="ghost" size="icon-sm" onClick={onClick}>
+            {!status ? <Rocket /> : <RotateCcw />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{!status ? 'Run' : 'Rerun'}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
