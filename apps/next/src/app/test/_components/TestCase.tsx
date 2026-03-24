@@ -11,7 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useEnv } from '@realtime-playground/realtime-core'
 import { runTest, Test, TestData } from '@realtime-playground/tests'
-import { ChevronsUpDown, Rocket } from 'lucide-react'
+import { ChevronsUpDown } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { RunButton, Status, StatusBadge } from './helpers'
 
