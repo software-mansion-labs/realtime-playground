@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Collapsible, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Test } from '@realtime-playground/tests'
 import { ChevronsUpDown } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react'
-import { statusVariant, type Status, type TestCaseHandle } from './helpers'
+import { RunButton, StatusBadge, type Status, type TestCaseHandle } from './helpers'
+import TestCase from './TestCase'
 
 type TestSectionProps = {
   name: string
@@ -75,14 +75,10 @@ const TestSection = forwardRef(({ name, tests, onStatusChange }: TestSectionProp
             <ChevronsUpDown className="text-muted-foreground size-4 shrink-0" />
             <CardTitle className="text-base">{name}</CardTitle>
           </CollapsibleTrigger>
-          <Button
-            disabled={status === 'Running'}
-            variant={statusVariant(status)}
-            size="sm"
-            onClick={handleClick}
-          >
-            {status || 'Run'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <StatusBadge status={status} />
+            <RunButton status={status} onClick={handleClick} />
+          </div>
         </CardHeader>
         <CardContent className={open ? undefined : 'hidden'}>
           <div>
