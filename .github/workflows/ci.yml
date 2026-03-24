@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: corepack enable
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: yarn
+      - run: yarn install --immutable
+      - name: Format check
+        run: yarn format:check
+      - name: Lint
+        run: yarn lint
+      - name: Typecheck
+        run: yarn typecheck

@@ -1,9 +1,10 @@
 node_modules
-**/node_modules
 .next
-.expo
-next-env.d.ts
-build
-dist
 out
-coverage
+build
+.expo
+dist
+.yarn
+*.tsbuildinfo
+next-env.d.ts
+**/node_modules

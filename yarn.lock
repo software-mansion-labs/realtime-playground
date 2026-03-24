@@ -1330,7 +1330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.4":
+"@eslint/js@npm:9.39.4, @eslint/js@npm:^9":
   version: 9.39.4
   resolution: "@eslint/js@npm:9.39.4"
   checksum: 10c0/5aa7dea2cbc5decf7f5e3b0c6f86a084ccee0f792d288ca8e839f8bc1b64e03e227068968e49b26096e6f71fd857ab6e42691d1b993826b9a3883f1bdd7a0e46
@@ -12182,14 +12182,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "realtime-playground@workspace:."
   dependencies:
-    "@eslint/js": "npm:^10.0.1"
+    "@eslint/js": "npm:^9"
     concurrently: "npm:^9.2.1"
-    eslint: "npm:^10.1.0"
+    eslint: "npm:^9"
     eslint-config-prettier: "npm:^10.1.8"
     prettier: "npm:^3.8.1"
     prettier-plugin-tailwindcss: "npm:^0.7.2"
-    typescript: "npm:^5.9.3"
-    typescript-eslint: "npm:^8.57.1"
+    typescript: "npm:^5"
+    typescript-eslint: "npm:^8"
   languageName: unknown
   linkType: soft
 
@@ -13792,7 +13792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.46.0, typescript-eslint@npm:^8.57.1":
+"typescript-eslint@npm:^8, typescript-eslint@npm:^8.46.0":
   version: 8.57.1
   resolution: "typescript-eslint@npm:8.57.1"
   dependencies:

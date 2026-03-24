@@ -17,6 +17,8 @@ import {
 import { TestSuite } from '../types'
 import { BROADCAST_CONFIG } from './const'
 
+type Payload = Record<string, unknown>
+
 export default {
   'postgres changes extension': [
     {
@@ -26,9 +28,8 @@ export default {
         await supabase.realtime.setAuth()
 
         let subscribed: string | null = null
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let result: RealtimePostgresInsertPayload<any> | null = null
-        const topic = `topic:${randomId()}`
+        let result: RealtimePostgresInsertPayload<Payload> | null = null
+        const topic = 'topic:' + crypto.randomUUID()
 
         const previousId = await executeInsert(supabase, 'pg_changes')
         await executeInsert(supabase, 'dummy')
@@ -67,8 +68,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let result: RealtimePostgresUpdatePayload<any> | null = null
+        let result: RealtimePostgresUpdatePayload<Payload> | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -111,7 +111,7 @@ export default {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
         await supabase.realtime.setAuth()
 
-        let result: RealtimePostgresDeletePayload<any> | null = null
+        let result: RealtimePostgresDeletePayload<Payload> | null = null
         let subscribed: string | null = null
         const topic = `topic:${randomId()}`
 
@@ -152,13 +152,9 @@ export default {
       name: 'user receives INSERT, UPDATE and DELETE concurrently',
       body: async (supabase) => {
         await signInUser(supabase, 'filipe@supabase.io', 'test_test')
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let insertResult: RealtimePostgresInsertPayload<any> | null = null
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let updateResult: RealtimePostgresUpdatePayload<any> | null = null
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let deleteResult: RealtimePostgresDeletePayload<any> | null = null
+        let insertResult: RealtimePostgresInsertPayload<Payload> | null = null
+        let updateResult: RealtimePostgresUpdatePayload<Payload> | null = null
+        let deleteResult: RealtimePostgresDeletePayload<Payload> | null = null
 
         const insertId = await executeInsert(supabase, 'pg_changes')
         const updateId = await executeInsert(supabase, 'pg_changes')

@@ -7,9 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "format": "yarn run -T prettier --check . --ignore-path ../../.prettierignore",
-    "ts": "yarn run -T tsc --project tsconfig.json --noEmit",
-    "lint": "yarn format && yarn ts"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@expo/log-box": "^55.0.7",
