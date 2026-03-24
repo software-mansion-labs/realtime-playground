@@ -13,8 +13,8 @@
     "dev": "concurrently \"yarn web\" \"yarn ios\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "yarn workspaces foreach -A --include '@realtime-playground/*' run lint",
-    "typecheck": "yarn workspaces foreach -A --include '@realtime-playground/*' run typecheck"
+    "lint": "yarn workspaces foreach -Api --include '@realtime-playground/*' run lint",
+    "typecheck": "yarn workspaces foreach -Api --include '@realtime-playground/*' run typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^9",
