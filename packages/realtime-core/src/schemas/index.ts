@@ -84,6 +84,7 @@ export type PostgresListenerValues = z.infer<typeof postgresListenerSchema>
 
 // ---------------------------------------------------------------------------
 // Broadcast
+// ---------------------------------------------------------------------------
 
 export const broadcastSendSchema = z.object({
   event: z.string().min(1, 'Event name is required').default('message').nonoptional(),

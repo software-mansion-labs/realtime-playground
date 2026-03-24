@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode } from 'react'
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error' | 'loading'
@@ -20,14 +22,16 @@ export interface ToasterProvider {
 class ToasterWrapper {
   provider?: ToasterProvider
 
-  setProvider(provider: ToasterProvider) {
-    this.provider = provider
-  }
-
-  private validateProvider(): asserts this is { provider: ToasterProvider } {
+  validateProvider(): asserts this is { provider: ToasterProvider } {
+    console.log('Validating toaster provider')
     if (!this.provider) {
       throw new Error('Toaster provider not set')
     }
+  }
+
+  setProvider(provider: ToasterProvider) {
+    console.log('Setting toaster provider')
+    this.provider = provider
   }
 
   info(title: TitleType, input?: ExtraPayload) {

@@ -8,10 +8,17 @@ import {
   TriangleAlertIcon,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { Toaster as Sonner, type ToasterProps } from 'sonner'
+import { useEffect } from 'react'
+import { Toaster as Sonner, type ToasterProps, toast } from 'sonner'
+
+import { toast as rlCoreToast } from '@realtime-playground/realtime-core'
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = 'system' } = useTheme()
+
+  useEffect(() => {
+    rlCoreToast.setProvider(toast)
+  }, [])
 
   return (
     <Sonner

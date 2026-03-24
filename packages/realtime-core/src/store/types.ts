@@ -1,11 +1,16 @@
-import {
+import type {
   RealtimeChannel,
   RealtimeChannelOptions,
   RealtimeClient,
   RealtimeClientOptions,
+  SupabaseClient,
 } from '@supabase/supabase-js'
 
 export type SocketStatus = 'closed' | 'connecting' | 'open' | 'closing'
+
+// ---------------------------------------------------------------------------
+// Realtime Store
+// ---------------------------------------------------------------------------
 
 export type RealtimeState = {
   client: RealtimeClient | null
@@ -31,3 +36,24 @@ export type RealtimeAction = {
 }
 
 export type RealtimeStore = RealtimeState & RealtimeAction
+
+// ---------------------------------------------------------------------------
+// Supabase Store
+// ---------------------------------------------------------------------------
+
+export type SupabaseState = {
+  client?: SupabaseClient
+  userId?: string
+  email?: string
+  token?: string
+  publicUrl?: string
+  publicKey?: string
+}
+
+export type SupabaseAction = {
+  init: (publicUrl: string, publicKey: string) => void
+  login: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+}
+
+export type SupabaseStore = SupabaseState & SupabaseAction

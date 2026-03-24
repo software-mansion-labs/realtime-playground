@@ -86,7 +86,7 @@ export const TestSectionCard = forwardRef<TestRunnerHandle, TestSectionCardProps
                   size={16}
                   tintColor={colors.primary}
                   animationSpec={
-                    status === 'Running' || true
+                    status === 'Running'
                       ? {
                           repeating: true,
                           speed: 0.5,

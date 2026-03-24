@@ -14,9 +14,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "2.100.0-canary.0",
-    "assert": "^2.1.0",
-    "zustand": "^5.0.12"
+  "peerDependencies": {
+    "@supabase/supabase-js": "*",
+    "assert": "*",
+    "zustand": "*"
   }
 }

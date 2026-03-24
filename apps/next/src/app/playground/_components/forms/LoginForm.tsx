@@ -36,13 +36,19 @@ export function LoginForm({ onSubmit }: Props) {
         <FieldLabel htmlFor="login-form-password" error={errors.password}>
           Password
         </FieldLabel>
-        <Input id="login-form-email" placeholder="user@example.com" {...form.register('email')} />
+        <Input
+          id="login-form-email"
+          placeholder="user@example.com"
+          {...form.register('email')}
+          autoComplete="email"
+        />
 
         <Input
           id="login-form-password"
           type="password"
           placeholder="Enter your password"
           {...form.register('password')}
+          autoComplete="current-password"
         />
       </div>
       <Button className="w-full" type="submit">

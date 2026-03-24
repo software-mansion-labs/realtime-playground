@@ -1,21 +1,9 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 import { create } from 'zustand'
 
 import { toast } from '../toaster'
 import { useRealtimeStore } from './realtimeStore'
-
-interface SupabaseStore {
-  client?: SupabaseClient
-  userId?: string
-  email?: string
-  token?: string
-  publicUrl?: string
-  publicKey?: string
-
-  init: (publicUrl: string, publicKey: string) => void
-  login: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-}
+import type { SupabaseStore } from './types'
 
 export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
   init: (publicUrl, publicKey) => {

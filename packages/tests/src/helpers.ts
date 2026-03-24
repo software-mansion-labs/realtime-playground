@@ -2,7 +2,7 @@ import { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
 import assert from 'assert'
 
 import { now, randomId } from './runtime'
-import { TestData } from './types'
+import type { TestData } from './types'
 
 export { now, randomId }
 

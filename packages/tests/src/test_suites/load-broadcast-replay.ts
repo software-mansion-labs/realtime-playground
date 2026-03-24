@@ -29,7 +29,6 @@ export default {
             config: { private: true, broadcast: { replay: { since, limit: 25 } } },
           })
           .on('broadcast', { event }, () => {
-            console.log('received message')
             latencies.push(now() - replayStart)
           })
           .subscribe()
