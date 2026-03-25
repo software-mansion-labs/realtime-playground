@@ -1,42 +1,66 @@
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Test } from '@realtime-playground/tests'
 import { ChevronsUpDown } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react'
-import { statusVariant, type Status, type TestCaseHandle } from './helpers'
+import { RunButton, StatusBadge, type Status, type TestCaseHandle } from './helpers'
 import TestCase from './TestCase'
 
 type TestSectionProps = {
   name: string
   tests: Test[]
+  onStatusChange?: (status: Status) => void
 }
 
-const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
+const TestSection = forwardRef(({ name, tests, onStatusChange }: TestSectionProps, ref) => {
   const [open, setOpen] = useState(true)
   const [status, setStatus] = useState<Status>(null)
   const testCasesRefs = useRef<(TestCaseHandle | null)[]>([])
+  const childStatuses = useRef<Status[]>(tests.map(() => null))
+
+  const computeSectionStatus = useCallback((): Status => {
+    const statuses = childStatuses.current
+    if (statuses.some((s) => s === 'Failed')) return 'Failed'
+    if (statuses.every((s) => s === 'Passed')) return 'Passed'
+    if (statuses.some((s) => s === 'Running')) return 'Running'
+    return null
+  }, [])
+
+  const handleChildStatusChange = useCallback(
+    (index: number) => (childStatus: Status) => {
+      childStatuses.current[index] = childStatus
+      const newStatus = computeSectionStatus()
+      setStatus(newStatus)
+      onStatusChange?.(newStatus)
+    },
+    [computeSectionStatus, onStatusChange],
+  )
 
   const prepare = useCallback(() => {
     setStatus('Running')
-    for (const c of testCasesRefs.current) {
-      c?.prepare()
+    onStatusChange?.('Running')
+    childStatuses.current = tests.map(() => null)
+    for (let i = 0; i < testCasesRefs.current.length; i++) {
+      testCasesRefs.current[i]?.prepare()
     }
-  }, [])
+  }, [onStatusChange, tests])
 
-  const runAllTests = async () => {
-    prepare()
-    let res: 'Passed' | 'Failed' = 'Passed'
-    for (const testCase of testCasesRefs.current) {
+  const runAllTests = useCallback(async () => {
+    for (let i = 0; i < testCasesRefs.current.length; i++) {
+      const testCase = testCasesRefs.current[i]
       if (testCase) {
-        if ((await testCase.handleRun()) === 'Failed') {
-          res = 'Failed'
-        }
+        await testCase.handleRun()
       }
     }
-    setStatus(res)
-    return res
-  }
+    const finalStatus = computeSectionStatus()
+    setStatus(finalStatus)
+    onStatusChange?.(finalStatus)
+  }, [onStatusChange, computeSectionStatus])
+
+  const handleClick = useCallback(() => {
+    prepare()
+    runAllTests()
+  }, [prepare, runAllTests])
 
   useImperativeHandle(ref, () => ({
     handleRun: runAllTests,
@@ -51,30 +75,25 @@ const TestSection = forwardRef(({ name, tests }: TestSectionProps, ref) => {
             <ChevronsUpDown className="text-muted-foreground size-4 shrink-0" />
             <CardTitle className="text-base">{name}</CardTitle>
           </CollapsibleTrigger>
-          <Button
-            disabled={!!status}
-            variant={statusVariant(status)}
-            size="sm"
-            onClick={runAllTests}
-          >
-            {status || 'Run'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <StatusBadge status={status} />
+            <RunButton status={status} onClick={handleClick} />
+          </div>
         </CardHeader>
-        <CollapsibleContent>
-          <CardContent>
-            <div>
-              {tests.map((t, i) => (
-                <TestCase
-                  key={t.name}
-                  test={t}
-                  ref={(el) => {
-                    testCasesRefs.current[i] = el as TestCaseHandle
-                  }}
-                />
-              ))}
-            </div>
-          </CardContent>
-        </CollapsibleContent>
+        <CardContent className={open ? undefined : 'hidden'}>
+          <div>
+            {tests.map((t, i) => (
+              <TestCase
+                key={t.name}
+                test={t}
+                onStatusChange={handleChildStatusChange(i)}
+                ref={(el) => {
+                  testCasesRefs.current[i] = el as TestCaseHandle
+                }}
+              />
+            ))}
+          </div>
+        </CardContent>
       </Card>
     </Collapsible>
   )

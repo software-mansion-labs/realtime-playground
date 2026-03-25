@@ -1,5 +1,4 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   Table,
@@ -12,13 +11,9 @@ import {
 import { cn } from '@/lib/utils'
 import { useEnv } from '@realtime-playground/realtime-core'
 import { runTest, Test, TestData } from '@realtime-playground/tests'
-import { ChevronsUpDown, Rocket } from 'lucide-react'
+import { ChevronsUpDown } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
-import { Status, statusVariant } from './helpers'
-
-const statusBadge = (status: Status) => {
-  return <Badge variant={statusVariant(status)}>{status}</Badge>
-}
+import { RunButton, Status, StatusBadge } from './helpers'
 
 type RenderTestDataProps = {
   data: TestData
@@ -86,9 +81,10 @@ const RenderTestData = ({ data, status }: RenderTestDataProps) => {
 
 type TestCaseProps = {
   test: Test
+  onStatusChange?: (status: Status) => void
 }
 
-const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
+const TestCase = forwardRef(({ test, onStatusChange }: TestCaseProps, ref) => {
   const [status, setStatus] = useState<Status>(null)
   const [data, setData] = useState<TestData | undefined>()
   const [open, setOpen] = useState(true)
@@ -96,21 +92,22 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
 
   const prepare = useCallback(() => {
     setStatus('Running')
+    onStatusChange?.('Running')
     setData(undefined)
-  }, [])
+  }, [onStatusChange])
 
   const handleRun = useCallback(async () => {
-    prepare()
     const res = await runTest(test, supabaseUrl, supabaseKey)
     setData(res.data)
-    if (res.status === 'passed') {
-      setStatus('Passed')
-      return 'Passed'
-    } else {
-      setStatus('Failed')
-      return 'Failed'
-    }
-  }, [test, supabaseUrl, supabaseKey, prepare])
+    const newStatus = res.status === 'passed' ? 'Passed' : 'Failed'
+    setStatus(newStatus)
+    onStatusChange?.(newStatus)
+  }, [test, supabaseUrl, supabaseKey, onStatusChange])
+
+  const handleClick = useCallback(() => {
+    prepare()
+    handleRun()
+  }, [handleRun, prepare])
 
   useImperativeHandle(ref, () => ({
     handleRun,
@@ -124,16 +121,17 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
           <span className="text-foreground font-mono text-xs">{test.name}</span>
           <div className="flex items-center gap-4">
             {data && (
-              <CollapsibleTrigger className="flex items-center gap-1 transition-opacity hover:opacity-70">
+              <CollapsibleTrigger
+                className={cn(
+                  'flex items-center gap-1 transition-opacity hover:opacity-70',
+                  buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+                )}
+              >
                 <ChevronsUpDown className="text-muted-foreground size-3" />
               </CollapsibleTrigger>
             )}
-            {status && statusBadge(status)}
-            {(!status || status === 'Failed') && (
-              <Button variant="ghost" size="icon-sm" onClick={handleRun}>
-                <Rocket />
-              </Button>
-            )}
+            <StatusBadge status={status} />
+            <RunButton status={status} onClick={handleClick} />
           </div>
         </div>
         <CollapsibleContent>

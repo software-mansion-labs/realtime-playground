@@ -1,38 +1,53 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
 import { EnvProvider } from '@realtime-playground/realtime-core'
 import { testCases } from '@realtime-playground/tests'
 import { useCallback, useRef, useState } from 'react'
-import { Status, statusVariant, type TestCaseHandle } from './_components/helpers'
+import { RunButton, Status, StatusBadge, type TestCaseHandle } from './_components/helpers'
 import TestSection from './_components/TestSection'
 import TestSettingsModal from './_components/TestSettingsModal'
 
 export default function TestsPage() {
   const [status, setStatus] = useState<Status>(null)
   const testSuitesRefs = useRef<(TestCaseHandle | null)[]>([])
+  const sectionCount = Object.keys(testCases).length
+  const childStatuses = useRef<Status[]>(Array.from({ length: sectionCount }, () => null))
+
+  const computePageStatus = useCallback((): Status => {
+    const statuses = childStatuses.current
+    if (statuses.some((s) => s === 'Failed')) return 'Failed'
+    if (statuses.every((s) => s === 'Passed')) return 'Passed'
+    if (statuses.some((s) => s === 'Running')) return 'Running'
+    return null
+  }, [])
+
+  const handleSectionStatusChange = useCallback(
+    (index: number) => (sectionStatus: Status) => {
+      childStatuses.current[index] = sectionStatus
+      setStatus(computePageStatus())
+    },
+    [computePageStatus],
+  )
 
   const prepare = useCallback(() => {
     setStatus('Running')
-    for (const c of testSuitesRefs.current) {
-      c?.prepare()
+    childStatuses.current = Array.from({ length: sectionCount }, () => null)
+    for (let i = 0; i < testSuitesRefs.current.length; i++) {
+      testSuitesRefs.current[i]?.prepare()
     }
-  }, [])
+  }, [sectionCount])
 
-  const runAllTests = async () => {
+  const handleClick = useCallback(async () => {
     prepare()
-    let res: 'Passed' | 'Failed' = 'Passed'
-    for (const testCase of testSuitesRefs.current) {
+    for (let i = 0; i < testSuitesRefs.current.length; i++) {
+      const testCase = testSuitesRefs.current[i]
       if (testCase) {
-        if ((await testCase.handleRun()) === 'Failed') {
-          res = 'Failed'
-        }
+        await testCase.handleRun()
       }
     }
-    setStatus(res)
-    return res
-  }
+    setStatus(computePageStatus())
+  }, [prepare, computePageStatus])
 
   return (
     <EnvProvider
@@ -46,14 +61,8 @@ export default function TestsPage() {
           <h1 className="text-2xl font-bold">Test Runner</h1>
           <div className="flex items-center gap-2">
             <TestSettingsModal />
-            <Button
-              disabled={!!status}
-              variant={statusVariant(status)}
-              size="sm"
-              onClick={runAllTests}
-            >
-              {status || 'Run'}
-            </Button>
+            <RunButton status={status} onClick={handleClick} />
+            <StatusBadge status={status} />
           </div>
         </div>
         <div className="h-[calc(100%-2rem)] space-y-4 overflow-y-auto">
@@ -62,6 +71,7 @@ export default function TestsPage() {
               key={k}
               name={k}
               tests={v}
+              onStatusChange={handleSectionStatusChange(i)}
               ref={(el) => {
                 testSuitesRefs.current[i] = el as TestCaseHandle
               }}
