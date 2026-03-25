@@ -30,7 +30,6 @@ export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
       const state = useRealtimeStore.getState()
       const token = data.session.access_token
 
-      set({ token })
       state.setAuth(token)
 
       if (!state.client) {
@@ -51,7 +50,7 @@ export const useSupabaseStore = create<SupabaseStore>((set, get) => ({
     }
 
     await client.auth.signOut()
-    set({ userId: undefined, email: undefined, token: undefined })
+    set({ userId: undefined, email: undefined })
     useRealtimeStore.getState().setAuth(get().publicKey || '')
     useRealtimeStore.getState().syncChannels()
   },

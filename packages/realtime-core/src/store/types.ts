@@ -45,7 +45,6 @@ export type SupabaseState = {
   client?: SupabaseClient
   userId?: string
   email?: string
-  token?: string
   publicUrl?: string
   publicKey?: string
 }
