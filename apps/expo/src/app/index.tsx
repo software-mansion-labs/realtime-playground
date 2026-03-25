@@ -1,25 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-
-import { colors, surfaces, typography } from '../components/ui/theme'
+import { EnvProvider } from '@realtime-playground/realtime-core'
+import { TestsScreenContent } from '../components/testUI'
+import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '../lib/constants'
 
 export default function IndexScreen() {
   return (
-    <SafeAreaView style={surfaces.screen} edges={['left', 'right']}>
-      <View style={styles.content}>
-        <Text style={typography.title}>Welcome</Text>
-        <Text style={typography.muted}>
-          Open the header info menu to view the Expo UI component list.
-        </Text>
-      </View>
-    </SafeAreaView>
+    <EnvProvider
+      defaults={{
+        supabaseUrl: PUBLIC_SUPABASE_URL,
+        supabaseKey: PUBLIC_SUPABASE_KEY,
+      }}
+    >
+      <TestsScreenContent />
+    </EnvProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    gap: 12,
-    paddingHorizontal: 24,
-  },
-})

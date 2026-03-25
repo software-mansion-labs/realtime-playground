@@ -1,12 +1,5 @@
 import * as React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  type StyleProp,
-  type TextStyle,
-  type ViewStyle,
-} from 'react-native'
+import { StyleSheet, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native'
 
 import { colors, radii } from './theme'
 import { renderTextChild } from './utils'
@@ -79,7 +72,6 @@ export function Badge({ children, variant = 'default', style, textStyle }: Badge
 
 const styles = StyleSheet.create({
   base: {
-    alignSelf: 'flex-start',
     alignItems: 'center',
     borderRadius: radii.full,
     borderWidth: StyleSheet.hairlineWidth,
@@ -88,6 +80,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     paddingHorizontal: 8,
     paddingVertical: 2,
+    flexGrow: 0,
   },
   text: {
     fontSize: 12,

@@ -1,19 +1,14 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { FieldLabel } from '@/components/field-label'
-import { PUBLIC_TEST_USER_EMAIL } from '@/lib/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
-const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').nonoptional(),
-  password: z.string().min(1, 'Password is required').nonoptional(),
-})
+import { loginSchema, type LoginValues } from '@realtime-playground/realtime-core'
 
-export type LoginValues = z.infer<typeof loginSchema>
+import { FieldLabel } from '@/components/field-label'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { PUBLIC_TEST_USER_EMAIL } from '@/lib/constants'
 
 type Props = {
   onSubmit: (values: LoginValues) => void
@@ -24,6 +19,7 @@ export function LoginForm({ onSubmit }: Props) {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: PUBLIC_TEST_USER_EMAIL,
+      password: '',
     },
     reValidateMode: 'onSubmit',
   })
@@ -40,13 +36,19 @@ export function LoginForm({ onSubmit }: Props) {
         <FieldLabel htmlFor="login-form-password" error={errors.password}>
           Password
         </FieldLabel>
-        <Input id="login-form-email" placeholder="user@example.com" {...form.register('email')} />
+        <Input
+          id="login-form-email"
+          placeholder="user@example.com"
+          {...form.register('email')}
+          autoComplete="email"
+        />
 
         <Input
           id="login-form-password"
           type="password"
           placeholder="Enter your password"
           {...form.register('password')}
+          autoComplete="current-password"
         />
       </div>
       <Button className="w-full" type="submit">

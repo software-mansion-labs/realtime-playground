@@ -1,14 +1,19 @@
 'use client'
 
-import { Controller, useForm, useWatch, type UseFormReturn } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { FieldLabel } from '@/components/field-label'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
 import { Input } from '@/components/ui/input'
-import { FieldLabel } from '@/components/field-label'
 import { Label } from '@/components/ui/label'
-import { channelFormSchema, type ChannelFormInput, type ChannelFormValues } from '@/schemas/channel'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  channelFormSchema,
+  createChannelDefaults,
+  type ChannelFormInput,
+  type ChannelFormValues,
+} from '@realtime-playground/realtime-core'
+import { Controller, useForm, useWatch, type UseFormReturn } from 'react-hook-form'
 
 import { transformOptionalNumber } from './helpers'
 
@@ -22,14 +27,7 @@ type Props = {
 export function ChannelCreationForm({ onSubmit, disabled }: Props) {
   const form = useForm<ChannelFormInput, unknown, ChannelFormValues>({
     resolver: zodResolver(channelFormSchema),
-    defaultValues: {
-      name: 'test',
-      config: {
-        private: false,
-        broadcast: { ack: true, self: true },
-        presence: { enabled: true },
-      },
-    },
+    defaultValues: createChannelDefaults('test'),
   })
 
   return (

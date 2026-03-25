@@ -9,15 +9,15 @@ export const cardStyles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    borderRadius: radii.xl,
+    borderRadius: radii.sm,
     borderWidth: StyleSheet.hairlineWidth,
     gap: 20,
-    paddingVertical: 24,
+    paddingVertical: 12,
     ...shadow,
   },
   content: {
     gap: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
   },
   description: {
     color: colors.mutedForeground,
@@ -28,16 +28,17 @@ export const cardStyles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
   },
   header: {
     gap: 8,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
   },
   title: {
     color: colors.foreground,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
-    lineHeight: 24,
+    lineHeight: 20,
+    textTransform: 'capitalize',
   },
 })

@@ -1,17 +1,12 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+
+import { broadcastSendSchema, type BroadcastSendValues } from '@realtime-playground/realtime-core'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { z } from 'zod'
-
-const broadcastSendSchema = z.object({
-  event: z.string().min(1, 'Event is required').default('message').nonoptional(),
-  message: z.string().optional(),
-})
-
-type BroadcastSendValues = z.infer<typeof broadcastSendSchema>
 
 type Props = {
   onSend: (values: BroadcastSendValues) => void

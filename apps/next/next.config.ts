@@ -4,6 +4,7 @@ import { loadRootEnv } from '../../scripts/load-root-env.mjs'
 loadRootEnv()
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['@realtime-playground/realtime-core', '@realtime-playground/tests'],
   env: {
     PUBLIC_REALTIME_URL: process.env.PUBLIC_REALTIME_URL ?? '',
     PUBLIC_SUPABASE_URL: process.env.PUBLIC_SUPABASE_URL ?? '',

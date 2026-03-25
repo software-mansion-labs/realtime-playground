@@ -1,9 +1,12 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useClientCreated, useRealtimeStore } from '@/store/realtimeStore'
+import {
+  ChannelFormValues,
+  useClientCreated,
+  useRealtimeStore,
+} from '@realtime-playground/realtime-core'
 import { ChannelCreationForm } from './forms/ChannelCreationForm'
-import type { ChannelFormValues } from '@/schemas/channel'
 
 export function RealtimeChannels() {
   const handleCreate = ({ name, config }: ChannelFormValues) => {

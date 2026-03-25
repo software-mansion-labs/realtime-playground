@@ -9,12 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { runTest, Test, TestData } from '@/lib/test'
-import { ChevronsUpDown, Rocket } from 'lucide-react'
-import { useCallback, forwardRef, useImperativeHandle, useState } from 'react'
-import { Status, statusVariant } from './helpers'
-import { useTestSettings } from '@/hooks/useTestSettings'
 import { cn } from '@/lib/utils'
+import { useEnv } from '@realtime-playground/realtime-core'
+import { runTest, Test, TestData } from '@realtime-playground/tests'
+import { ChevronsUpDown, Rocket } from 'lucide-react'
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import { Status, statusVariant } from './helpers'
 
 const statusBadge = (status: Status) => {
   return <Badge variant={statusVariant(status)}>{status}</Badge>
@@ -92,7 +92,7 @@ const TestCase = forwardRef(({ test }: TestCaseProps, ref) => {
   const [status, setStatus] = useState<Status>(null)
   const [data, setData] = useState<TestData | undefined>()
   const [open, setOpen] = useState(true)
-  const { supabaseUrl, supabaseKey } = useTestSettings()
+  const { supabaseUrl, supabaseKey } = useEnv()
 
   const prepare = useCallback(() => {
     setStatus('Running')

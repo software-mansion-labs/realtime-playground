@@ -1,11 +1,12 @@
 'use client'
 
-import { testCases } from '@/lib/test'
-import { useCallback, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
+import { EnvProvider } from '@realtime-playground/realtime-core'
+import { testCases } from '@realtime-playground/tests'
+import { useCallback, useRef, useState } from 'react'
 import { Status, statusVariant, type TestCaseHandle } from './_components/helpers'
 import TestSection from './_components/TestSection'
-import { TestSettingsProvider } from '@/hooks/useTestSettings'
 import TestSettingsModal from './_components/TestSettingsModal'
 
 export default function TestsPage() {
@@ -34,7 +35,12 @@ export default function TestsPage() {
   }
 
   return (
-    <TestSettingsProvider>
+    <EnvProvider
+      defaults={{
+        supabaseUrl: PUBLIC_SUPABASE_URL,
+        supabaseKey: PUBLIC_SUPABASE_KEY,
+      }}
+    >
       <div className="mx-auto flex h-full max-w-7xl flex-col overflow-y-hidden p-2 font-mono text-sm">
         <div className="flex h-16 items-center justify-between pb-4">
           <h1 className="text-2xl font-bold">Test Runner</h1>
@@ -63,6 +69,6 @@ export default function TestsPage() {
           ))}
         </div>
       </div>
-    </TestSettingsProvider>
+    </EnvProvider>
   )
 }

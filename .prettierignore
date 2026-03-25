@@ -6,3 +6,5 @@ build
 dist
 .yarn
 *.tsbuildinfo
+next-env.d.ts
+**/node_modules

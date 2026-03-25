@@ -1,10 +1,10 @@
-import { Test } from '@/lib/test'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Test } from '@realtime-playground/tests'
+import { ChevronsUpDown } from 'lucide-react'
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react'
 import { statusVariant, type Status, type TestCaseHandle } from './helpers'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ChevronsUpDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import TestCase from './TestCase'
 
 type TestSectionProps = {

@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,8 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { useTestSettings } from '@/hooks/useTestSettings'
+import { useEnv } from '@realtime-playground/realtime-core'
 import { ArrowLeft, ClipboardPaste, Cog } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import SqlSnippet from './SqlSnippet'
@@ -19,7 +19,7 @@ import SqlSnippet from './SqlSnippet'
 type Screen = 'settings' | 'setup'
 
 function SettingsScreen({ onShowSetup }: { onShowSetup: () => void }) {
-  const { supabaseUrl, supabaseKey, setSupabaseUrl, setSupabaseKey } = useTestSettings()
+  const { supabaseUrl, supabaseKey, setSupabaseUrl, setSupabaseKey } = useEnv()
 
   const handlePaste = async () => {
     const text = await navigator.clipboard.readText()

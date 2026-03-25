@@ -3,21 +3,11 @@ import { StyleSheet, View, type StyleProp, type ViewProps, type ViewStyle } from
 import { useCollapsibleContext } from './CollapsibleContext'
 
 export type CollapsibleContentProps = ViewProps & {
-  forceMount?: boolean
   style?: StyleProp<ViewStyle>
 }
 
-export function CollapsibleContent({
-  children,
-  forceMount = false,
-  style,
-  ...props
-}: CollapsibleContentProps) {
+export function CollapsibleContent({ children, style, ...props }: CollapsibleContentProps) {
   const { open } = useCollapsibleContext()
-
-  if (!open && !forceMount) {
-    return null
-  }
 
   return (
     <View style={[!open && styles.hidden, style]} {...props}>
