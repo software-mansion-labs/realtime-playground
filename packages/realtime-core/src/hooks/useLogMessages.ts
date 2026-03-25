@@ -21,7 +21,7 @@ export function useLogMessages() {
       {
         timestamp: new Date().toISOString(),
         kind,
-        message,
+        message: typeof message === 'string' ? message : String(message),
         data:
           data !== null && typeof data === 'object' ? (data as Record<string, unknown>) : undefined,
       },
