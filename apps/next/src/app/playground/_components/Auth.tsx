@@ -1,12 +1,11 @@
 import { LoginValues, useSupabaseStore } from '@realtime-playground/realtime-core'
 
-import { CopyButton } from '@/components/copy'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoginForm } from './forms'
 
 export default function Auth() {
-  const { userId, email: userEmail, token, login, logout } = useSupabaseStore()
+  const { userId, email: userEmail, login, logout } = useSupabaseStore()
 
   const handleLogin = async ({ email, password }: LoginValues) => {
     await login(email, password)
@@ -33,12 +32,6 @@ export default function Auth() {
               <p className="text-muted-foreground text-xs">
                 <span className="font-semibold">Email:</span> {userEmail}
               </p>
-              {token && (
-                <p className="flex items-center text-xs wrap-break-word">
-                  <span className="font-semibold">Copy Token:</span>
-                  <CopyButton className="hover:text-primary" content={token} />
-                </p>
-              )}
             </div>
             <Button variant="destructive" className="w-full" onClick={logout}>
               Log Out
