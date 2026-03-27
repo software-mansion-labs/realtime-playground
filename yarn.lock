@@ -4360,7 +4360,7 @@ __metadata:
     "@expo/metro-runtime": "npm:~55.0.6"
     "@realtime-playground/realtime-core": "workspace:*"
     "@realtime-playground/tests": "workspace:*"
-    "@supabase/supabase-js": "npm:2.100.0-canary.0"
+    "@supabase/supabase-js": "npm:2.100.1"
     "@types/babel__core": "npm:^7"
     "@types/react": "npm:19.2.0"
     "@types/react-dom": "npm:^19"
@@ -4395,7 +4395,7 @@ __metadata:
     "@hookform/resolvers": "npm:^5.2.2"
     "@realtime-playground/realtime-core": "workspace:*"
     "@realtime-playground/tests": "workspace:*"
-    "@supabase/supabase-js": "npm:2.100.0-canary.0"
+    "@supabase/supabase-js": "npm:2.100.1"
     "@tailwindcss/postcss": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:19.2.0"
@@ -4583,21 +4583,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/auth-js@npm:2.100.0-canary.0"
+"@supabase/auth-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/auth-js@npm:2.100.1"
   dependencies:
     tslib: "npm:2.8.1"
-  checksum: 10c0/3bf0023dffd29353a41b3ff48c8ea07e8c64bca83f0fa9d40023e023751b6c3f4726b603f588545bf585093310842baef82bc619cb84e8f1f0830c53a21fe6a5
+  checksum: 10c0/2ba06444392fb06b7d5c8c8cbc6fd12272835a49289b329c49338724bc6860f32b67eb12f72c689ef86686b74e4df4b761848043d668fd13e7bc818986d2abe0
   languageName: node
   linkType: hard
 
-"@supabase/functions-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/functions-js@npm:2.100.0-canary.0"
+"@supabase/functions-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/functions-js@npm:2.100.1"
   dependencies:
     tslib: "npm:2.8.1"
-  checksum: 10c0/5d5a5facf8444eff157be3751d14e1ea35c591277c9b9df6e6989a7c90976261922bc6afa76c056f8e3e564ca5f216d0cb0aa4f2ad524f97e26d6f3c11bf954a
+  checksum: 10c0/66dfa87b901bb0acc3866e369f6f85760b5af86babfb30514994b2348a7720efcb4c4edf1ec2a8e578e0781d632de250f71d19c21beba2b7d4d3233a5f6305b7
   languageName: node
   linkType: hard
 
@@ -4608,47 +4608,47 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/postgrest-js@npm:2.100.0-canary.0"
+"@supabase/postgrest-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/postgrest-js@npm:2.100.1"
   dependencies:
     tslib: "npm:2.8.1"
-  checksum: 10c0/1b6341f2fe6df375bc1167920ee735ade76c038f20e44ce89494708e3a9430615e6def2882bc2e8316129fe81d6d8e37a772ce6586c02ebc0e89d34b37b9bbbf
+  checksum: 10c0/cf04cf45c1d263af12a90794791425f93fbdfa65eef72fb4bb0c28e907da3d4e56d4590e435ea1c51f18e8846bea0fc716b316459f0635b7c24f4b0682502633
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/realtime-js@npm:2.100.0-canary.0"
+"@supabase/realtime-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/realtime-js@npm:2.100.1"
   dependencies:
     "@supabase/phoenix": "npm:^0.4.0"
     "@types/ws": "npm:^8.18.1"
     tslib: "npm:2.8.1"
     ws: "npm:^8.18.2"
-  checksum: 10c0/122d47985dcd363d589c00f35c3da0752ce2e65c1aae2d5666c2ab40a61d2a1a22316a6c34aad967729f47f808f731ffde92854fe478e3186182f8b64cfa1167
+  checksum: 10c0/e3b9cbc58be41325b4a48902095722c720bfbee853a7e580f576537486a8286400da6da4095c65cc92ec24a10ef423525270e9fbce875551ec5efb468a6ebbe8
   languageName: node
   linkType: hard
 
-"@supabase/storage-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/storage-js@npm:2.100.0-canary.0"
+"@supabase/storage-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/storage-js@npm:2.100.1"
   dependencies:
     iceberg-js: "npm:^0.8.1"
     tslib: "npm:2.8.1"
-  checksum: 10c0/d95d6ede69609652530880b9e88f86c48d7334362cc49230e3e2ee718cd8bbb65f8d0d4ad15b0f9a3887c0969d895f0321c43545e07c4a021278025bef45f766
+  checksum: 10c0/d589c8754d56ae7ea02e047fbb57b3bebe0c6150efa6ecb05cce260ac824bea768ec9925981fbb46470137081df4722fc10ae709ba9fbfd4ba7c16cb378ee5e0
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:2.100.0-canary.0":
-  version: 2.100.0-canary.0
-  resolution: "@supabase/supabase-js@npm:2.100.0-canary.0"
+"@supabase/supabase-js@npm:2.100.1":
+  version: 2.100.1
+  resolution: "@supabase/supabase-js@npm:2.100.1"
   dependencies:
-    "@supabase/auth-js": "npm:2.100.0-canary.0"
-    "@supabase/functions-js": "npm:2.100.0-canary.0"
-    "@supabase/postgrest-js": "npm:2.100.0-canary.0"
-    "@supabase/realtime-js": "npm:2.100.0-canary.0"
-    "@supabase/storage-js": "npm:2.100.0-canary.0"
-  checksum: 10c0/c546d274a8718b5d43db528abff12104770e96bc2d5657c0481daa2ad999e637f856aca7978b0388738652d766f5eb87c90ec0e285cbf65820a4d2b5a550dbee
+    "@supabase/auth-js": "npm:2.100.1"
+    "@supabase/functions-js": "npm:2.100.1"
+    "@supabase/postgrest-js": "npm:2.100.1"
+    "@supabase/realtime-js": "npm:2.100.1"
+    "@supabase/storage-js": "npm:2.100.1"
+  checksum: 10c0/13b0e5c2587508d5d9ad23cecafd0dfed241f416d794789b28285e630141ddd79d5b51304de33518d89809380d3ca8618acf83858f600999cd64c2d4f1c45f44
   languageName: node
   linkType: hard
 

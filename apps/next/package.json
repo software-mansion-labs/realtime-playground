@@ -13,7 +13,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@realtime-playground/realtime-core": "workspace:*",
     "@realtime-playground/tests": "workspace:*",
-    "@supabase/supabase-js": "2.100.0-canary.0",
+    "@supabase/supabase-js": "2.100.1",
     "assert": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
