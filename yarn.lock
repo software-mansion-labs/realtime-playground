@@ -4360,12 +4360,10 @@ __metadata:
     "@expo/metro-runtime": "npm:~55.0.6"
     "@realtime-playground/realtime-core": "workspace:*"
     "@realtime-playground/tests": "workspace:*"
-    "@supabase/supabase-js": "npm:2.100.1"
     "@types/babel__core": "npm:^7"
     "@types/react": "npm:19.2.0"
     "@types/react-dom": "npm:^19"
     "@types/react-native-web": "npm:^0"
-    assert: "npm:^2.1.0"
     expo: "npm:~55.0.8"
     expo-constants: "npm:~55.0.9"
     expo-font: "npm:~55.0.4"
@@ -4384,7 +4382,6 @@ __metadata:
     react-native-web: "npm:^0.21.0"
     react-native-worklets: "npm:0.7.2"
     typescript: "npm:~5.9.2"
-    zustand: "npm:^5.0.12"
   languageName: unknown
   linkType: soft
 
@@ -4395,12 +4392,10 @@ __metadata:
     "@hookform/resolvers": "npm:^5.2.2"
     "@realtime-playground/realtime-core": "workspace:*"
     "@realtime-playground/tests": "workspace:*"
-    "@supabase/supabase-js": "npm:2.100.1"
     "@tailwindcss/postcss": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:19.2.0"
     "@types/react-dom": "npm:19.2.0"
-    assert: "npm:^2.1.0"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     eslint: "npm:^9"
@@ -4424,29 +4419,28 @@ __metadata:
     tailwindcss: "npm:^4"
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:^5"
-    zod: "npm:^4.3.6"
-    zustand: "npm:^5.0.11"
   languageName: unknown
   linkType: soft
 
 "@realtime-playground/realtime-core@workspace:*, @realtime-playground/realtime-core@workspace:packages/realtime-core":
   version: 0.0.0-use.local
   resolution: "@realtime-playground/realtime-core@workspace:packages/realtime-core"
+  dependencies:
+    "@supabase/supabase-js": "npm:*"
+    zod: "npm:*"
+    zustand: "npm:*"
   peerDependencies:
-    "@supabase/supabase-js": "*"
     react: "*"
-    zod: "*"
-    zustand: "*"
   languageName: unknown
   linkType: soft
 
 "@realtime-playground/tests@workspace:*, @realtime-playground/tests@workspace:packages/tests":
   version: 0.0.0-use.local
   resolution: "@realtime-playground/tests@workspace:packages/tests"
-  peerDependencies:
-    "@supabase/supabase-js": "*"
-    assert: "*"
-    zustand: "*"
+  dependencies:
+    "@supabase/supabase-js": "npm:*"
+    assert: "npm:^2.1.0"
+    zustand: "npm:*"
   languageName: unknown
   linkType: soft
 
@@ -4639,7 +4633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:2.100.1":
+"@supabase/supabase-js@npm:*, @supabase/supabase-js@npm:2.100.1":
   version: 2.100.1
   resolution: "@supabase/supabase-js@npm:2.100.1"
   dependencies:
@@ -12043,6 +12037,7 @@ __metadata:
   resolution: "realtime-playground@workspace:."
   dependencies:
     "@eslint/js": "npm:^9"
+    "@supabase/supabase-js": "npm:2.100.1"
     concurrently: "npm:^9.2.1"
     eslint: "npm:^9"
     eslint-config-prettier: "npm:^10.1.8"
@@ -12050,6 +12045,8 @@ __metadata:
     prettier-plugin-tailwindcss: "npm:^0.7.2"
     typescript: "npm:^5"
     typescript-eslint: "npm:^8"
+    zod: "npm:^4.3.6"
+    zustand: "npm:^5.0.12"
   languageName: unknown
   linkType: soft
 
@@ -14439,6 +14436,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"zod@npm:*, zod@npm:^3.25 || ^4.0, zod@npm:^3.25.0 || ^4.0.0, zod@npm:^4.3.6":
+  version: 4.3.6
+  resolution: "zod@npm:4.3.6"
+  checksum: 10c0/860d25a81ab41d33aa25f8d0d07b091a04acb426e605f396227a796e9e800c44723ed96d0f53a512b57be3d1520f45bf69c0cb3b378a232a00787a2609625307
+  languageName: node
+  linkType: hard
+
 "zod@npm:^3.24.1, zod@npm:^3.25.76":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
@@ -14446,14 +14450,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25 || ^4.0, zod@npm:^3.25.0 || ^4.0.0, zod@npm:^4.3.6":
-  version: 4.3.6
-  resolution: "zod@npm:4.3.6"
-  checksum: 10c0/860d25a81ab41d33aa25f8d0d07b091a04acb426e605f396227a796e9e800c44723ed96d0f53a512b57be3d1520f45bf69c0cb3b378a232a00787a2609625307
-  languageName: node
-  linkType: hard
-
-"zustand@npm:^5.0.11, zustand@npm:^5.0.12":
+"zustand@npm:*, zustand@npm:^5.0.12":
   version: 5.0.12
   resolution: "zustand@npm:5.0.12"
   peerDependencies:

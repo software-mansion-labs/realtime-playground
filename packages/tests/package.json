@@ -14,9 +14,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@supabase/supabase-js": "*",
-    "assert": "*",
+    "assert": "^2.1.0",
     "zustand": "*"
   }
 }
