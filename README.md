@@ -44,4 +44,3 @@ To change secrets in order to test different project use `Test Settings` on mobi
 <img src="./docs/test_settings_mobile.png" alt="test_settings_mobile" width="400" />
 
 <img src="./docs/test_settings_web.png" alt="test_settings_mobile" width="400" />
-
