@@ -1,6 +1,18 @@
-# Realtime Playground monorepo
+an you # Realtime Playground and Test Runner
 
-![screenshot](./docs/screenshot.png)
+Sandbox playground for manual and E2E tests run in browser.
+
+### Playground
+
+<img src="./docs/playground.png" alt="screenshot_playground" width="600" />
+
+### Test Runner in browser
+
+<img src="./docs/test_runner.png" alt="screenshot_test_runner" width="600" />
+
+### Test Runner on mobile
+
+<img src="./docs/mobile.png" alt="screenshot_mobile" width="300" />
 
 ## Structure
 
@@ -24,3 +36,12 @@ yarn dev # runs both web and mobile servers and starts ios simulator
 ```
 
 Both `apps/next` and `apps/expo` load environment variables from the repo root `.env`.
+
+## Change project secrets
+
+To change secrets in order to test different project use `Test Settings` on mobile or browser
+
+<img src="./docs/test_settings_mobile.png" alt="test_settings_mobile" width="400" />
+
+<img src="./docs/test_settings_web.png" alt="test_settings_mobile" width="400" />
+
