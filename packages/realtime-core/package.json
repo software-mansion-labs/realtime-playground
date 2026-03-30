@@ -14,10 +14,12 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@supabase/supabase-js": "*",
-    "react": "*",
     "zod": "*",
     "zustand": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }
