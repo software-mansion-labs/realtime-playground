@@ -4,7 +4,7 @@ import { testCases } from '@realtime-playground/tests'
 import { useCallback, useRef, useState } from 'react'
 import { RunButton, Status, StatusBadge, type TestCaseHandle } from './_components/helpers'
 import TestSection from './_components/TestSection'
-import TestSettingsModal from './_components/TestSettingsModal'
+import SettingsModal from '@/components/SettingsModal'
 
 export default function TestsPage() {
   const [status, setStatus] = useState<Status>(null)
@@ -52,7 +52,7 @@ export default function TestsPage() {
       <div className="flex h-16 items-center justify-between pb-4">
         <h1 className="text-2xl font-bold">Test Runner</h1>
         <div className="flex items-center gap-2">
-          <TestSettingsModal />
+          <SettingsModal showSetup />
           <RunButton status={status} onClick={handleClick} />
           <StatusBadge status={status} />
         </div>

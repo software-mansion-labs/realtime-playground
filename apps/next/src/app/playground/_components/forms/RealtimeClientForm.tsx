@@ -58,29 +58,6 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-4"
     >
-      <div className="grid grid-cols-2 gap-2">
-        <FieldLabel className="text-xs" htmlFor="realtime-client-form-url" error={errors.url}>
-          URL
-        </FieldLabel>
-        <FieldLabel className="text-xs" htmlFor="realtime-client-form-apikey" error={errors.apiKey}>
-          API Key
-        </FieldLabel>
-        <Input
-          id="realtime-client-form-url"
-          placeholder="https://your-project.supabase.co/realtime/v1"
-          disabled={disabled}
-          aria-invalid={!!errors.url}
-          {...form.register('url')}
-        />
-        <Input
-          id="realtime-client-form-apikey"
-          placeholder="your-anon-key"
-          disabled={disabled}
-          aria-invalid={!!errors.apiKey}
-          {...form.register('apiKey')}
-        />
-      </div>
-
       <div className="grid grid-cols-[auto_auto_1fr_1fr] place-content-stretch gap-2">
         <Label className="text-xs" htmlFor="realtime-client-form-worker">
           Worker?
