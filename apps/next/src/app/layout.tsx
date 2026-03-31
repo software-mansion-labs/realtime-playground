@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
+import { EnvProvider } from '@realtime-playground/realtime-core'
 import { NavLinks } from '@/components/nav-links'
 import { Toaster } from '@/components/ui/sonner'
 import { Geist, Geist_Mono } from 'next/font/google'
@@ -23,7 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <NavLinks />
           </nav>
 
-          <div className="h-[calc(100%-4rem)] min-h-0 overflow-hidden">{children}</div>
+          <EnvProvider
+            defaults={{
+              supabaseUrl: PUBLIC_SUPABASE_URL,
+              supabaseKey: PUBLIC_SUPABASE_KEY,
+            }}
+          >
+            <div className="h-[calc(100%-4rem)] min-h-0 overflow-hidden">{children}</div>
+          </EnvProvider>
         </div>
         <Toaster position="bottom-left" theme="dark" closeButton />
       </body>
