@@ -1,7 +1,5 @@
 'use client'
 
-import { PUBLIC_SUPABASE_KEY, PUBLIC_SUPABASE_URL } from '@/lib/constants'
-import { EnvProvider } from '@realtime-playground/realtime-core'
 import { testCases } from '@realtime-playground/tests'
 import { useCallback, useRef, useState } from 'react'
 import { RunButton, Status, StatusBadge, type TestCaseHandle } from './_components/helpers'
@@ -50,35 +48,28 @@ export default function TestsPage() {
   }, [prepare, computePageStatus])
 
   return (
-    <EnvProvider
-      defaults={{
-        supabaseUrl: PUBLIC_SUPABASE_URL,
-        supabaseKey: PUBLIC_SUPABASE_KEY,
-      }}
-    >
-      <div className="mx-auto flex h-full max-w-7xl flex-col overflow-y-hidden p-2 font-mono text-sm">
-        <div className="flex h-16 items-center justify-between pb-4">
-          <h1 className="text-2xl font-bold">Test Runner</h1>
-          <div className="flex items-center gap-2">
-            <TestSettingsModal />
-            <RunButton status={status} onClick={handleClick} />
-            <StatusBadge status={status} />
-          </div>
-        </div>
-        <div className="h-[calc(100%-2rem)] space-y-4 overflow-y-auto">
-          {Object.entries(testCases).map(([k, v], i) => (
-            <TestSection
-              key={k}
-              name={k}
-              tests={v}
-              onStatusChange={handleSectionStatusChange(i)}
-              ref={(el) => {
-                testSuitesRefs.current[i] = el as TestCaseHandle
-              }}
-            />
-          ))}
+    <div className="mx-auto flex h-full max-w-7xl flex-col overflow-y-hidden p-2 font-mono text-sm">
+      <div className="flex h-16 items-center justify-between pb-4">
+        <h1 className="text-2xl font-bold">Test Runner</h1>
+        <div className="flex items-center gap-2">
+          <TestSettingsModal />
+          <RunButton status={status} onClick={handleClick} />
+          <StatusBadge status={status} />
         </div>
       </div>
-    </EnvProvider>
+      <div className="h-[calc(100%-2rem)] space-y-4 overflow-y-auto">
+        {Object.entries(testCases).map(([k, v], i) => (
+          <TestSection
+            key={k}
+            name={k}
+            tests={v}
+            onStatusChange={handleSectionStatusChange(i)}
+            ref={(el) => {
+              testSuitesRefs.current[i] = el as TestCaseHandle
+            }}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
