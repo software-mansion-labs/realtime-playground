@@ -1,6 +1,6 @@
-an you # Realtime Playground and Test Runner
+# Realtime Playground and Test Runner
 
-Sandbox playground for manual and E2E tests run in browser.
+Sandbox playground for manual and E2E tests run in browser and on mobile.
 
 ### Playground
 
