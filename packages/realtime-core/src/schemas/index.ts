@@ -11,8 +11,6 @@ export type Vsn = z.infer<typeof vsnSchema>
 const positiveIntSchema = z.number().int().positive({ error: 'Must be positive' })
 
 export const realtimeClientSchema = z.object({
-  url: z.string().min(1, 'URL is required').nonoptional(),
-  apiKey: z.string().min(1, 'API key is required').nonoptional(),
   worker: z.boolean().default(true).nonoptional(),
   vsn: vsnSchema.default('2.0.0').nonoptional(),
   timeout: positiveIntSchema.optional(),
@@ -97,16 +95,7 @@ export type BroadcastSendValues = z.infer<typeof broadcastSendSchema>
 // Defaults creators
 // ---------------------------------------------------------------------------
 
-interface RealtimeEnvDefaults {
-  realtimeUrl?: string
-  supabaseKey?: string
-}
-
-export const createRealtimeClientDefaults = (
-  env: RealtimeEnvDefaults = {},
-): RealtimeClientFormValues => ({
-  url: env.realtimeUrl ?? '',
-  apiKey: env.supabaseKey ?? '',
+export const createRealtimeClientDefaults = (): RealtimeClientFormValues => ({
   worker: true,
   vsn: '2.0.0',
   timeout: undefined,

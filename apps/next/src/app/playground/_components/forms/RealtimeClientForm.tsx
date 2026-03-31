@@ -8,6 +8,7 @@ import {
   createRealtimeClientDefaults,
   realtimeClientSchema,
   RealtimeLogger,
+  useEnv,
   useRealtimeStore,
   vsnSchema,
   type RealtimeClientFormValues,
@@ -25,7 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { PUBLIC_REALTIME_URL, PUBLIC_SUPABASE_KEY } from '@/lib/constants'
 import { transformOptionalNumber } from './helpers'
 
 type Props = {
@@ -35,8 +35,13 @@ type Props = {
 }
 
 export function RealtimeClientForm({ disabled, status, logger }: Props) {
-  const onSubmit = ({ url, ...options }: RealtimeClientFormValues) => {
-    useRealtimeStore.getState().create(url, { ...realtimeOptions(options), logger })
+  const { supabaseUrl, supabaseKey } = useEnv()
+
+  const onSubmit = (options: RealtimeClientFormValues) => {
+    useRealtimeStore.getState().create(supabaseUrl + '/realtime/v1', {
+      ...realtimeOptions(options, supabaseKey),
+      logger,
+    })
   }
   const onDisconnect = () => useRealtimeStore.getState().client?.disconnect()
   const onConnect = () => useRealtimeStore.getState().client?.connect()
@@ -44,10 +49,7 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
 
   const form = useForm<z.input<typeof realtimeClientSchema>, unknown, RealtimeClientFormValues>({
     resolver: zodResolver(realtimeClientSchema),
-    defaultValues: createRealtimeClientDefaults({
-      realtimeUrl: PUBLIC_REALTIME_URL,
-      supabaseKey: PUBLIC_SUPABASE_KEY,
-    }),
+    defaultValues: createRealtimeClientDefaults(),
   })
 
   const { errors } = form.formState
@@ -151,8 +153,8 @@ export function RealtimeClientForm({ disabled, status, logger }: Props) {
   )
 }
 
-function realtimeOptions(options: Omit<RealtimeClientFormValues, 'url'>) {
-  const { worker, timeout, apiKey, vsn, heartbeatIntervalMs } = options
+function realtimeOptions(options: Omit<RealtimeClientFormValues, 'url'>, apiKey: string) {
+  const { worker, timeout, vsn, heartbeatIntervalMs } = options
   const params = {
     apikey: apiKey,
     vsn,
